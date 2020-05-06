@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="2">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="left"
+        android:orientation="vertical"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/my_answer_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="selection"
+            android:textColor="@color/list_view_text_color"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/shot_loc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="shot location:"
+            android:textColor="@color/list_view_text_color"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/shot_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="shot type:"
+            android:textColor="@color/list_view_text_color"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/time_taken"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="shot type:"
+            android:textColor="@color/list_view_text_color"
+            android:textSize="14dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="left"
+        android:orientation="vertical"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/correct_answer_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="correct answer"
+            android:textColor="@color/list_view_text_color"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/correct_shot_loc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="correct_shot_loc"
+            android:textColor="@color/list_view_text_color"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/correct_shot_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="correct shot type:"
+            android:textColor="@color/list_view_text_color"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/correct_time_taken"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="correct shot type:"
+            android:textColor="@color/list_view_text_color"
+            android:textSize="14dp" />
+
+    </LinearLayout>
+</LinearLayout>

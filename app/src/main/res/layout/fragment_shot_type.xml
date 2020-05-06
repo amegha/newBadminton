@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_color"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Long press to know the meaning of the shot!!"
+        android:textColor="@color/app_text"
+        android:textSize="14dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="left"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/button_space"
+            android:gravity="left"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/smash"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/button_space"
+                android:background="@drawable/round_button"
+                android:onClick="smash"
+                android:text="smash"
+                android:textColor="@color/button_text_color" />
+            <!--            @style/Widget.Holo.Light.Button-->
+
+            <Button
+                android:id="@+id/drop"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/button_space"
+                android:background="@drawable/round_button"
+                android:onClick="drop"
+                android:text="drop"
+                android:textColor="@color/button_text_color" />
+
+            <Button
+                android:id="@+id/block"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/round_button"
+                android:onClick="block"
+                android:text="block"
+                android:textColor="@color/button_text_color" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/button_space"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/clear"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/button_space"
+                android:background="@drawable/round_button"
+                android:onClick="clear"
+                android:text="clear"
+                android:textColor="@color/button_text_color" />
+
+            <Button
+                android:id="@+id/net"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/button_space"
+                android:background="@drawable/round_button"
+                android:onClick="net"
+                android:text="net"
+                android:textColor="@color/button_text_color" />
+
+            <Button
+                android:id="@+id/drive"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/round_button"
+                android:onClick="drive"
+                android:text="drive"
+                android:textColor="@color/button_text_color" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/push"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/round_button"
+                android:onClick="push"
+                android:text="push"
+                android:textColor="@color/button_text_color" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/round_button"
+        android:onClick="submit"
+        android:layout_marginRight="@dimen/button_space"
+        android:layout_marginLeft="@dimen/button_space"
+        android:text="SUBMIT"
+        android:textColor="@color/app_text" />
+<!--    android:backgroundTint="@color/light_blue"-->
+
+
+</LinearLayout>

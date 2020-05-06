@@ -1,0 +1,172 @@
+<resources>
+    <string name="app_name">Badminton Recent</string>
+    <string name="cannotopencamera">Camera Permission Denied.</string>
+    <string name="top_middle">top\nmiddle</string>
+    <string name="top_left">top\nleft</string>
+    <string name="top_right">top\nright</string>
+    <string name="question_info">Click on the type of shot you think is about to take place as well as the location!</string>
+    <string name="confirm_answer">Please Confirm Your answer</string>
+    <string name="clear">The attacking clear is used to get your opponent out of position to return a weak shot. If you\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
+    <string name="smash">The attacking smash is used to get your opponent out of position to return a weak shot. If you\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
+    <string name="drop">The attacking drop is used to get your opponent out of position to return a weak shot. If you\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
+    <string name="push">The attacking push is used to get your opponent out of position to return a weak shot. If you\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
+    <string name="net">The attacking net is used to get your opponent out of position to return a weak shot. If you\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
+    <string name="block">The attacking block is used to get your opponent out of position to return a weak shot. If you\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
+    <string name="drive">The attacking drive is used to get your opponent out of position to return a weak shot. If you\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
+    <string name="test">The attacking test is used to get your opponent out of position to return a weak shot. If you\\\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
+    <string name="player_error">Error initializing YouTube player:</string>
+
+
+    <string-array name="state">
+        <item>--State--</item>
+        <item>Andhra Pradesh</item>
+        <item>Arunachal Pradesh</item>
+        <item>Bihar</item>
+        <item>Chandigarh</item>
+        <item>Chhattisgarh</item>
+        <item>Gujarat</item>
+        <item>Himachal Pradesh</item>
+        <item>Jammu</item>
+        <item>Jharkhand</item>
+        <item>Karnataka</item>
+    </string-array>
+    <string-array name="city">
+        <item>--City--</item>
+        <item>Ambikanagara</item>
+        <item>Anekal</item>
+        <item>Ankola</item>
+        <item> Anniger</item>
+        <item>Badami</item>
+        <item>Bagalkot</item>
+        <item>Bagepalli</item>
+        <item>Bail Hongal</item>
+        <item>Bangalore</item>
+        <item>Bangarapet</item>
+    </string-array>
+    <string-array name="location">
+        <item>--Location--</item>
+        <item>Domlur</item>
+        <item>Indira Nagar</item>
+        <item>Jeevanbheema Nagar</item>
+        <item>Malleshwaram</item>
+        <item>Sadashivnagar</item>
+
+    </string-array>
+    <string-array name="training_center">
+        <item>--Training Center--</item>
+        <item>abc traning Center</item>
+        <item>Optipace Traning</item>
+        <item>xyz Traning</item>
+        <item>pqr Training</item>
+        <item>Ajith Training</item>
+    </string-array>
+
+    <string-array name="On_court_skills">
+        <item>Singles</item>
+        <item>Doubles</item>
+        <item>Shadow/Footwaork</item>
+    </string-array>
+
+
+    <string-array name="training_cat1">
+        <item>--Fitness(Strength and Conditioning)--</item>
+        <item>Agility (indoor)</item>
+        <item>Strength</item>
+        <item>Power</item>
+        <item>Speed</item>
+        <item>Stamina(Endurance)</item>
+        <item>Core-Strength /Stability</item>
+        <item>Reaction /Reflex Training</item>
+        <item>Flexibility</item>
+    </string-array>
+
+    <string-array name="Strokes_singles">
+        <item>Forehand Net Defensive Keep/Block</item>
+        <item>Forehand Net Lift/Clear</item>
+        <item>Forehand Net Flick/Push</item>
+        <item>Forehand Net Dribble</item>
+        <item>Forehand Net Cross/Netshot</item>
+        <item>Forehand Net Tap</item>
+        <item>Backhand Net Defensive Keep/Block</item>
+        <item>Backhand Net Lift/Clear</item>
+        <item>Backhand Net Flick/Push</item>
+        <item>Backhand Net Dribble</item>
+        <item>Backhand Net Cross/Netshot</item>
+        <item>Backhand Net Tap</item>
+        <item>Forehand Flank Toss/ Clear(Defensive/Attacking)</item>
+        <item>Forehand Flank Drop</item>
+        <item>Forehand Flank Half-Smash</item>
+        <item>Forehand Flank Smash</item>
+        <item>Forehand Flank Reverse Slice</item>
+        <item>Forehand Flank Defensive Drive(Low)</item>
+        <item>Backhand Flank Toss/ Clear(Defensive/Attacking)</item>
+        <item>Backhand Flank Drop</item>
+        <item>Backhand Flank Half-Smash</item>
+        <item>Backhand Flank Smash</item>
+        <item>Backhand Flank Reverse Slice</item>
+        <item>Backhand Flank Defensive Drive(Low)</item>
+        <item>Forehand Side-Court(Middle)Defensive-Block/Straight/Cross</item>
+        <item>Forehand Side-Court(Middle)Counter-Drive</item>
+        <item>Forehand Side-Court(Middle)Attacking-Strokes</item>
+        <item>Backhand Side-Court(MiddleDefensive-Block/Straight/Cross)</item>
+        <item>Backhand Side-Court(Middle)Counter-Drive</item>
+        <item>Backhand Side-Court(Middle)Attacking-Strokes</item>
+        <item>Overhead/Around the head Toss/Clear</item>
+        <item>Overhead/Around the head Drop</item>
+        <item>Overhead/Around the head Half-Smash</item>
+        <item>Overhead/Around the head Smash</item>
+        <item>Overhead/Around the head Reverse-Slice</item>
+        <item>Service Forehand-Short</item>
+        <item>Service Forehand Flick</item>
+        <item>Service Forehand-High</item>
+        <item>Service Backhand Short</item>
+        <item>Service Backhand Flick</item>
+    </string-array>
+    <string-array name="shadow_strokes">
+        <item>Forehand Net Approach</item>
+        <item>Forehand Net Stroke-Execution</item>
+        <item>Forehand Net Recovery</item>
+        <item>Backhand Net</item>
+        <item>Forehand Flank</item>
+        <item> Backhand Flank</item>
+        <item>Forehand SideCourt(Middle)</item>
+        <item>Backhand SideCourt(Middle)</item>
+        <item>Overhead /Around the Head</item>
+        <item>Centre Positioning/Transition</item>
+    </string-array>
+
+    <string-array name="strokes_doubles">
+        <item>Defense Block</item>
+        <item>Defense Drive/Counter</item>
+        <item>Defense Clear/Lift</item>
+        <item>Offence(BackCourt) Smash</item>
+        <item>Offence(BackCourt) Half-Smash	</item>
+        <item>Offence(BackCourt) Drop</item>
+        <item>Offence(MidCourt) Smash</item>
+        <item>Offence(MidCourt) Parallel-Drive</item>
+        <item>Offence(MidCourt) Drop/Slice</item>
+        <item>Offence(FrontCourt) Push	</item>
+        <item>Offence(FrontCourt) Attack</item>
+        <item>Offence(FrontCourt) Blocks/Interception</item>
+        <item>Service Short</item>
+        <item>Service Flick</item>
+        <item>Service Receiving	Short</item>
+        <item>Service Receiving Flick</item>
+        <item>Net Play</item>
+    </string-array>
+
+
+    <string-array name="training_cat3_grip">
+        <item>Forehand Forward</item>
+        <item>Forehand Flank</item>
+        <item>Forehand Back-Court</item>
+        <item>Backhand Tap</item>
+        <item>Backhand Edge/Back-Court</item>
+        <item>Backhand Keep</item>
+        <item>Neutral</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

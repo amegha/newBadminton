@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/green_court"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:weightSum="3">
+
+    <Button
+        android:id="@+id/out_net"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:alpha="0.7"
+        android:background="@drawable/raised_button"
+        android:onClick="outLeft"
+        android:text="Out(net)"
+
+        android:textColor="@color/shot_loc_button_text_color" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+
+        <Button
+            android:id="@+id/out_left"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:alpha="0.7"
+            android:background="@drawable/raised_button"
+            android:onClick="outLeft"
+            android:text="out(left)"
+            android:textColor="@color/shot_loc_button_text_color" />
+
+        <Button
+            android:layout_width="@dimen/button_width"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:alpha="0.7"
+            android:background="@drawable/raised_button"
+            android:onClick="outRight"
+            android:text="out(right)"
+            android:textColor="@color/shot_loc_button_text_color" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp"
+        android:gravity="left"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/button_space"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:orientation="vertical">
+            <!--            android:layout_marginRight="@dimen/button_space"-->
+
+            <Button
+                android:id="@+id/top_left"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/button_space"
+                android:layout_weight="1"
+                android:alpha="0.7"
+                android:background="@drawable/raised_button"
+                android:onClick="topLeft"
+                android:text="@string/top_left"
+                android:textColor="@color/shot_loc_button_text_color" />
+
+
+            <Button
+                android:id="@+id/middle_left"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/button_space"
+                android:layout_weight="1"
+
+                android:alpha="0.7"
+                android:background="@drawable/raised_button"
+                android:onClick="middleLeft"
+                android:text="middle left"
+                android:textColor="@color/shot_loc_button_text_color" />
+
+            <Button
+                android:id="@+id/bottom_left"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/button_space"
+                android:layout_weight="1"
+                android:alpha="0.7"
+                android:background="@drawable/raised_button"
+                android:onClick="bottomLeft"
+                android:text="bottom left"
+                android:textColor="@color/shot_loc_button_text_color" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+            <!--            android:layout_marginRight="@dimen/button_space"-->
+
+            <Button
+                android:id="@+id/top_middle"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/button_space"
+                android:layout_weight="1"
+                android:alpha="0.7"
+                android:background="@drawable/raised_button"
+                android:onClick="topMiddle"
+                android:text="@string/top_middle"
+                android:textColor="@color/shot_loc_button_text_color" />
+
+            <Button
+                android:id="@+id/middle_middle"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/button_space"
+                android:layout_weight="1"
+                android:alpha="0.7"
+                android:background="@drawable/raised_button"
+                android:onClick="middleMiddle"
+                android:text="middle middle"
+                android:textColor="@color/shot_loc_button_text_color" />
+
+            <Button
+                android:id="@+id/bottom_middle"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/button_space"
+                android:layout_weight="1"
+                android:alpha="0.7"
+                android:background="@drawable/raised_button"
+                android:onClick="bottomMiddle"
+                android:text="bottom middle"
+                android:textColor="@color/shot_loc_button_text_color" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/button_space"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/top_right"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/button_space"
+                android:layout_weight="1"
+                android:alpha="0.7"
+                android:background="@drawable/raised_button"
+                android:onClick="topRight"
+                android:text="@string/top_right"
+                android:textColor="@color/shot_loc_button_text_color" />
+
+            <Button
+                android:id="@+id/middle_right"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/button_space"
+                android:layout_weight="1"
+                android:alpha="0.7"
+                android:background="@drawable/raised_button"
+                android:onClick="middleRight"
+                android:text="middle right"
+                android:textColor="@color/shot_loc_button_text_color" />
+
+            <Button
+                android:id="@+id/bottom_right"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/button_space"
+                android:layout_weight="1"
+                android:alpha="0.7"
+                android:background="@drawable/raised_button"
+                android:onClick="bottomRight"
+                android:text="bottom right"
+                android:textColor="@color/shot_loc_button_text_color" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout><!--    </ScrollView>-->
+    <!--</LinearLayout>-->

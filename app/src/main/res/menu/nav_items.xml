@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <!--
+                Add menu items here
+                Menu items with icon and Title
+        -->
+        <item
+            android:id="@+id/first"
+            android:icon="@drawable/ic_mode_edit_black_24dp"
+            android:title="Score Entry" />
+        <item
+            android:id="@+id/second"
+            android:icon="@drawable/performance_grapg"
+            android:title="Performance" />
+        <item
+            android:id="@+id/third"
+            android:icon="@drawable/ic_poll_black_24dp"
+            android:title="Score Obtained" />
+        <item
+            android:id="@+id/four"
+            android:icon="@drawable/ic_vpn_key_black_24dp"
+            android:title="Reset Password" />
+        <!--Added about and signout 08/04/2020 by pooja-->
+        <item
+            android:id="@+id/five"
+            android:icon="@drawable/play_game"
+            android:title="Play Game" />
+
+        <item
+            android:id="@+id/six"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="About" />
+        <item
+            android:id="@+id/seven"
+            android:icon="@drawable/ic_arrow_back_black_24dp"
+            android:title="Sign Out" />
+
+
+    </group>
+</menu>

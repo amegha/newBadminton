@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <group android:checkableBehavior="single">
+            <!--
+                    Add menu items here
+                    Menu items with icon and Title
+            -->
+            <item
+                android:id="@+id/first"
+                android:icon="@drawable/ic_mode_edit_black_24dp"
+                android:title="Student Score Entry" />
+            <item
+                android:id="@+id/second"
+                android:icon="@drawable/performance_grapg"
+                android:title="Performance" />
+            <item
+                android:id="@+id/third"
+                android:icon="@drawable/ic_poll_black_24dp"
+                android:title="Score Obtained" />
+        </group>
+
+</menu>

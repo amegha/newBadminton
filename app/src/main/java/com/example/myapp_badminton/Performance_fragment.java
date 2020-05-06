@@ -1,0 +1,40 @@
+package com.example.myapp_badminton;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
+
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class Performance_fragment extends Fragment {
+String username;
+    public Performance_fragment(String name) {
+        // Required empty public constructor
+        this.username=name;
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view=inflater.inflate(R.layout.fragment_performance, container, false);
+        Intent intent1=getActivity().getIntent();
+       // Bundle b=intent1.getExtras();
+
+        //username=b.getString("x");
+        Bundle b1=new Bundle();
+
+        b1.putString("x", username);
+        Intent intent=new Intent(this.getActivity(),PlayerPerformance.class).putExtras(b1);
+        startActivity(intent);
+
+        return view;
+    }
+}
