@@ -53,7 +53,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     final ArrayList<String> state_options = new ArrayList<String>();
     final ArrayList<String> city_options = new ArrayList<String>();
     String imageString;
-    String email_s;
+    String email_s, module;
+
     //otherpart
     MyDbAdapter helper;
     // ArrayAdapter<CharSequence> adapter;
@@ -219,7 +220,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
     private void getAcademyInfo() {
-        new WebService(this).execute(API.ServerAddress + "" + API.GET_ACADEMY_INFO, "do nothing");
+        module="academy";
+        new WebService(this).execute(API.ServerAddress + "" + API.GET_ACADEMY_INFO, "module="+module);
 
     }
 
@@ -503,18 +505,15 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     @Override
     public void onTaskComplete(String result) {
-        String arrRes[] =result.split(",");
-        String[] locationArr;
+        Log.e("ontask complete", "Upload status" + result);
+        String arrRes[] = result.split(",");
+        String locationXml;
         if (result.equals("Registered Successfully")) {
             Log.e("ViewUserDetails", "Upload status" + result);
-        } else if(arrRes[0]=="0") {
-            for(int i=1;i<arrRes.length;i++) {
-                locationArr= arrRes[i].split(":");
-            }
-
-
-        }
-            else{
+        } else if (arrRes[0] == "academy") {
+            locationXml = arrRes[1];
+            Parsexml.parse_xml_file(locationXml);
+        } else {
             Toast.makeText(this, "Could not connect to server " + result, Toast.LENGTH_SHORT).show();
         }
 
@@ -522,7 +521,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
     public void validateEmailId(View view) {
-        String module = "verify_mailID";
+        module = "verify_mailID";
         new WebService(this).execute(API.ServerAddress + "" + API.GENERATE_OTP, "mail_id=" + email_s + "&module=" + module);
     }
 }
