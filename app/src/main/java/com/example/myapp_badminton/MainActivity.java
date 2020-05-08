@@ -506,11 +506,12 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     @Override
     public void onTaskComplete(String result) {
         Log.e("ontask complete", "Upload status" + result);
-        String arrRes[] = result.split(",");
+        String[] arrRes;
+        arrRes = result.split(",");
         String locationXml;
         if (result.equals("Registered Successfully")) {
             Log.e("ViewUserDetails", "Upload status" + result);
-        } else if (arrRes[0] == "academy") {
+        } else if (arrRes[0].equals("academy")) {
             locationXml = arrRes[1];
             Parsexml.parse_xml_file(locationXml);
         } else {
