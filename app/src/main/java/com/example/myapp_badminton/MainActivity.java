@@ -16,6 +16,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -41,6 +42,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
 import static android.os.Environment.getExternalStorageDirectory;
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     final ArrayList<String> city_options = new ArrayList<String>();
     String imageString;
     String email_s, module;
+    Parsexml parsexml;
 
     //otherpart
     MyDbAdapter helper;
@@ -126,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         autoTextCity = findViewById(R.id.city);
         autoTextLocation = findViewById(R.id.location);
         autoTextAcademyName = findViewById(R.id.academy_name);
+        parsexml = new Parsexml();
         /*player = findViewById(R.id.rb_player);
         coach = findViewById(R.id.rb_coach);
         mentor = findViewById(R.id.rb_mentor);*/
@@ -217,11 +221,20 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             }
         });
         getAcademyInfo();
+        /*System.out.println("from mainActivity!!" + Collections.singletonList(parsexml.stateList));
+        String[] statesArr = new String[parsexml.stateList.size()];
+        statesArr = (String[]) parsexml.stateList.toArray(statesArr);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (this, android.R.layout.select_dialog_item, statesArr);
+        autoTextState.setThreshold(1);//will start working from first character
+        autoTextState.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+//        autoTextState.setTextColor(Color.RED);*/
     }
 
     private void getAcademyInfo() {
-        module="academy";
-        new WebService(this).execute(API.ServerAddress + "" + API.GET_ACADEMY_INFO, "module="+module);
+        module = "academy";
+        new WebService(this).execute(API.ServerAddress + "" + API.GET_ACADEMY_INFO, "module=" + module);
 
     }
 
@@ -513,7 +526,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             Log.e("ViewUserDetails", "Upload status" + result);
         } else if (arrRes[0].equals("academy")) {
             locationXml = arrRes[1];
-            Parsexml.parse_xml_file(locationXml);
+            parsexml.parse_xml_file(locationXml);
         } else {
             Toast.makeText(this, "Could not connect to server " + result, Toast.LENGTH_SHORT).show();
         }
