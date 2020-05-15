@@ -13,7 +13,7 @@ public class GetAnswersImpl1 implements GetAnswers {
     private WebService webService;
     private HashMap<Integer, String> map1 = new HashMap<>();
 
-    public GetAnswersImpl1(PlayVideo playVideo, WebService webService) {
+    public  GetAnswersImpl1(PlayVideo playVideo, WebService webService) {
         this.serverAddress = serverAddress;
         this.playVideo = playVideo;
         this.webService = webService;

@@ -41,9 +41,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import static android.os.Environment.getExternalStorageDirectory;
 
@@ -57,7 +59,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     String imageString;
     String email_s, module;
     Parsexml parsexml;
-
+    String[] academyResponse, cities, locations, acaNames, Scities;
+    ArrayList stateInfo, cityInfo, locationInfo, academyNameInfo;
     //otherpart
     MyDbAdapter helper;
     // ArrayAdapter<CharSequence> adapter;
@@ -130,6 +133,10 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         autoTextLocation = findViewById(R.id.location);
         autoTextAcademyName = findViewById(R.id.academy_name);
         parsexml = new Parsexml();
+        stateInfo = new ArrayList();
+        cityInfo = new ArrayList();
+        locationInfo = new ArrayList();
+        academyNameInfo = new ArrayList();
         /*player = findViewById(R.id.rb_player);
         coach = findViewById(R.id.rb_coach);
         mentor = findViewById(R.id.rb_mentor);*/
@@ -520,16 +527,71 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     public void onTaskComplete(String result) {
         Log.e("ontask complete", "Upload status" + result);
         String[] arrRes;
-        arrRes = result.split(",");
+        arrRes = result.split("/");
         String locationXml;
+        Log.e("ViewUserDetails", "arrRes[0]" + arrRes[0] + " arrRes[1] " + arrRes[1]);
         if (result.equals("Registered Successfully")) {
             Log.e("ViewUserDetails", "Upload status" + result);
         } else if (arrRes[0].equals("academy")) {
             locationXml = arrRes[1];
-            parsexml.parse_xml_file(locationXml);
+//            parsexml.parse_xml_file(locationXml);
+            parseResponse(locationXml);
         } else {
             Toast.makeText(this, "Could not connect to server " + result, Toast.LENGTH_SHORT).show();
         }
+
+
+    }
+
+    private void parseResponse(String result) {
+        academyResponse = result.split("-");
+        for (int i = 0; i < academyResponse.length; i++) {
+            if (i == 0) {
+                stateInfo.add(academyResponse[0].split(","));
+//                System.out.println("stateInfo " + Collections.singletonList(stateInfo))
+                System.out.println("cityStateMap: " + Collections.singletonList(stateInfo));
+
+            } else if (i == 1) {
+                cityInfo.add(academyResponse[1].split(";")); //same state cities are seperated by ;chennai;Hydrabaad;Belagavi.Bengaluru
+//                    Scities=new String[cityInfo.length];
+
+                System.out.println("cityInfo " + Collections.singletonList(cityInfo));
+//                    for (int j = 0; j < cityInfo.length; j++) {
+//                    cities = cityInfo[0].split(",");
+//                        Scities[j] = cities[0];
+                System.out.println("cityInfo " + Collections.singletonList(cities));
+            } else if (i == 2) {
+                locationInfo.add(academyResponse[2].split(";"));
+                System.out.println("LocationInfo" + Collections.singletonList(locationInfo));
+//                    locations = locationInfo[0].split(",");
+//                    System.out.println("Locations" + Collections.singletonList(locations));
+            } else if (i == 3) {
+                academyNameInfo.add(academyResponse[3].split(";"));
+                System.out.println("academyNameInfo " + Collections.singletonList(academyNameInfo));
+//                    acaNames = academyNameInfo[0].split(",");
+//                    System.out.println("academyNameInfo " + Collections.singletonList(acaNames));
+
+            }
+
+        }
+        populateTheAutoText();
+        locationValidation();
+
+    }
+
+    private void locationValidation() {
+        if (stateInfo.contains(autoTextState.getText().toString())) {
+            Toast.makeText(this, "we do not operate in this location yet!!", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void populateTheAutoText() {
+        ArrayAdapter<List> adapter = new ArrayAdapter<List>
+                (this, android.R.layout.select_dialog_item, stateInfo);
+
+        autoTextState.setThreshold(2);
+        autoTextState.setAdapter(adapter);
 
 
     }
