@@ -1,0 +1,4992 @@
+https://stackoverflow.com/questions/574195/android-youtube-app-play-video-intent/12439378#12439378
+
+https://stackoverflow.com/questions/56491694/how-to-play-youtube-video-inside-my-activity-picture-in-picture-mode
+
+2/1/2020
+1. pause video programatically, question answer class, on submit store the answers and rediret back to video activity and play from wher it stopped and repeat the same.
+2. make ppl watch the whole video(15sec) with no manual pause or play.. and provide a button watch again and an answer button
+removing the video view related functionalities.. before code
+
+package com.example.my_badminton;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.MediaController;
+import android.widget.Toast;
+import android.widget.VideoView;
+
+import androidx.annotation.RequiresApi;
+
+import java.time.Duration;
+import java.time.Instant;
+
+public class YoutubeTrail extends Activity {
+    String html = "<iframe width=\"560\" height=\"315\" src=\"http://www.youtube.com/watch?v=cRFnsOUoHmM\" frameborder=\"0\" allowfullscreen></iframe>\"";
+    String url = "<iframe src='https://www.youtube.com/watch?v=cRFnsOUoHmM?fs=0' width='100%' height='100%' style='border: none;'></iframe>";
+    int prevPausePos, currPausePos, pauseFlag, secondsCompleted, answerFlag;
+    Button watchAgain, answerQuestions;
+    String link;
+    private VideoView vv;
+    Runnable stopPlayerTask = new Runnable() {
+        @Override
+        public void run() {
+            vv.pause();
+            currPausePos = vv.getCurrentPosition();
+            answerQuestions.setEnabled(true);
+//          startActivity(new Intent(YoutubeTrail.this,SubmitAnswer.class));
+//            showQuestions();
+        }
+    };
+
+
+    private void showQuestions() {
+        new AlertDialog.Builder(this)
+                .setTitle("Answer the question")
+                .setMessage("Q1.xxxxx?")
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setPositiveButton("ans", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        answerFlag = 1;
+                        vv.seekTo(currPausePos);
+                        vv.start();
+                        autoPauseVideo();
+                    }
+                }).show();
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_paly_video);
+        vv = (VideoView) findViewById(R.id.video_view);
+        watchAgain = findViewById(R.id.watch_again);
+        answerQuestions = findViewById(R.id.answer_questions);
+        watchAgain.setEnabled(false);
+        answerQuestions.setEnabled(false);
+        try {
+            link = "http://stage1.optipacetech.com/badminton/videos/counting.mp4";
+            MediaController mediaController = new MediaController(this);
+            mediaController.setAnchorView(vv);
+            Uri video = Uri.parse(link);
+            vv.setMediaController(null);
+            vv.setVideoURI(video);
+            vv.start();
+            autoPauseVideo();
+
+
+        } catch (Exception e) {
+            // TODO: handle exception
+            Toast.makeText(this, "Error connecting", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void autoPauseVideo() {
+        Handler handler = new Handler();
+        handler.postDelayed(stopPlayerTask, 12000 /*+ (secondsCompleted+1000)*/);//pauses at 9 secs
+        watchAgain.setEnabled(true);
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void palyVideo(View view) throws InterruptedException {
+        if (pauseFlag == 1) {
+//            currPausePos = vv.getCurrentPosition();
+            vv.seekTo(currPausePos);
+            vv.start();
+            Instant ends = Instant.now();
+            Instant starts = Instant.now();
+            Thread.sleep(10);
+
+            Log.e("instant ", " " + Duration.between(starts, ends));
+            autoPauseVideo();
+        } else {
+            watchAgain.setEnabled(false);
+        }
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void pauseVideo(View view) throws InterruptedException {
+        vv.pause();
+        pauseFlag = 1;
+        currPausePos = vv.getCurrentPosition();
+
+
+
+       /* Stopwatch stopwatch = Stopwatch.createStarted();
+        doSomething();
+        stopwatch.stop(); // optional
+
+        long millis = stopwatch.elapsed(TimeUnit.MILLISECONDS);
+
+        log.info("that took: " + stopwatch); // formatted string like "12.3 ms"*/
+
+    }
+
+    public void answerQuestions(View view) {
+        Toast.makeText(this, "Redirect to class!!!", Toast.LENGTH_SHORT).show();
+        showQuestions();
+     /*   vv.seekTo(currPausePos);
+        vv.start();
+        autoPauseVideo();*/
+    }
+
+    public void watchAgain(View view) {
+        if (answerFlag == 1) {
+            vv.seekTo(currPausePos);
+        } else {
+            
+            vv.seekTo(prevPausePos);
+        }
+        vv.start();
+        autoPauseVideo();
+
+
+    }
+}
+
+
+07/01/2020
+1. disable answer/watch button till the video stops automatically--- done
+2. cant play the video. for android version 9 and above
+ added *****android:usesCleartextTraffic="true" in manifest****** and worked
+
+below is the clarification from android doc
+___________________________________________________________________________________________________________________________________________________________
+Indicates whether the app intends to use cleartext network traffic, such as cleartext HTTP. The default value for apps that target API level 27 or lower is "true". Apps that target API level 28 or higher default to "false".
+
+When the attribute is set to "false", platform components (for example, HTTP and FTP stacks, DownloadManager, and MediaPlayer) will refuse the app's requests to use cleartext traffic. Third-party libraries are strongly encouraged to honor this setting as well. The key reason for avoiding cleartext traffic is the lack of confidentiality, authenticity, and protections against tampering; a network attacker can eavesdrop on transmitted data and also modify it without being detected.
+___________________________________________________________________________________________________________________________________________________________
+
+08/01/2020
+
+wifi manager is added..
+
+13/01/2020
+pager2 with tab layout pending..
+
+14/01/2020
+
+preserve the value when switching from frame to frame
+___________________________________________________________________________________________________________________________________________________________
+16/01/2020
+1.make fragmnet to get displayed
+Bundle b = new Bundle();
+b.putString("Key", "YourValue");
+b.putInt("YourKey", 1);
+
+2. make frgmnet available in an activity
+FragmentB fragB = new FragmentB();
+3.get the pauses from db onItemClick listener in the listofviews
+fragB.setArguments(b); 
+getFragmentManager().beginTransaction().replace(R.id.your_container, fragB);
+
+Fragment B:
+
+Bundle b = this.getArguments();
+if(b != null){
+   int i = b.getInt("YourKey");
+   String s =b.getString("Key");
+}
+
+STOP THE VIDEO AT GIVEN TIME:
+ if (mVideoView.getCurrentPosition() >= 12000) {
+                            mVideoView.stopPlayback();
+                            mShouldStop = true;
+                        }
+
+3.
+thread is used to to stop at desired time.. which is not acting on views.. 
+before adding the pauses:
+package com.example.my_badminton;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.MediaController;
+import android.widget.Toast;
+import android.widget.VideoView;
+
+import java.io.IOException;
+
+public class YoutubeTrail extends Activity {
+    String html = "<iframe width=\"560\" height=\"315\" src=\"http://www.youtube.com/watch?v=cRFnsOUoHmM\" frameborder=\"0\" allowfullscreen></iframe>\"";
+    String url = "<iframe src='https://www.youtube.com/watch?v=cRFnsOUoHmM?fs=0' width='100%' height='100%' style='border: none;'></iframe>";
+
+    int initPos, currPos, watchAgainCount;
+    Button watchAgain, answerQuestions;
+    String link;
+    MediaController mediaController;
+    Handler handler;
+    Intent intent;
+    int REQUEST_ANSWER = 1;
+    private boolean isReceiverRegistered = false;
+
+    private VideoView vv;
+    Runnable stopPlayerTask = new Runnable() {
+        @Override
+        public void run() {
+            vv.pause();
+            currPos = vv.getCurrentPosition();
+//            watchAgain.setEnabled(true);
+//            answerQuestions.setEnabled(true);
+            buttonEnable();
+            watchAgainCount = 0;
+
+        }
+    };
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            NetworkInfo info = getNetworkInfo(context);
+            if (info != null && info.isConnected()) {
+                //Todo code to execute if wifi connected
+            } else {                  //Todo code to execute if wifi disconnected
+            }
+        }
+    };
+    private String shotLoc, shotType;
+    private boolean shdStop=false;
+
+    private void buttonEnable() {
+        watchAgain.setVisibility(View.VISIBLE);
+        answerQuestions.setVisibility(View.VISIBLE);
+    }
+
+    private void showQuestions() {
+        intent = new Intent(this, SubmitAnswer.class);
+
+        new AlertDialog.Builder(this)
+                .setTitle("Answer the question")
+                .setMessage("Q1.xxxxx?")
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setPositiveButton("ans", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivityForResult(intent, REQUEST_ANSWER);
+                       /* initPos = currPos;
+                        vv.seekTo(initPos);
+                        vv.start();
+                        buttonDisable();
+//                        answerQuestions.setEnabled(false);
+                        autoPauseVideo();*/
+                    }
+                }).show();
+    }
+
+    private void buttonDisable() {
+        watchAgain.setVisibility(View.GONE);
+        answerQuestions.setVisibility(View.GONE);
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_paly_video);
+        vv = (VideoView) findViewById(R.id.video_view);
+        watchAgain = findViewById(R.id.watch_again);
+        answerQuestions = findViewById(R.id.answer_questions);
+        link = "http://stage1.optipacetech.com/badminton/videos/counting.mp4";
+        handler = new Handler();
+/*        if (isConnectingToInternet(this)) {
+//            onStart();
+            try {
+                mediaController = new MediaController(this);
+                mediaController.setAnchorView(vv);
+                Uri video = Uri.parse(link);
+                vv.setMediaController(null);
+                vv.setVideoURI(video);
+                vv.start();
+                autoPauseVideo();
+
+
+            } catch (Exception e) {
+                // TODO: handle exception
+                Toast.makeText(this, "Error connecting", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+//            enableWifi();
+
+        }*/
+
+
+//        watchAgain.setEnabled(false);
+//        answerQuestions.setEnabled(false);
+
+
+    }
+
+    private void autoPauseVideo() {
+//        handler.postDelayed(stopPlayerTask, 12000 /*+ (secondsCompleted+1000)*/);//pauses at 9 secs
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(!shdStop)
+                if (vv.getCurrentPosition() >= 12000) {
+                    vv.stopPlayback();
+                    shdStop=true;
+                }
+            }
+        }).start();
+    }
+
+    public void answerQuestions(View view) {
+        showQuestions();
+    }
+
+    public void watchAgain(View view) {
+//        if (answerFlag == 0)
+        if (watchAgainCount == 0) {
+            watchAgainCount++;
+
+            vv.seekTo(initPos);
+//        else
+//        vv.seekTo(currPos);
+
+            vv.start();
+//            answerQuestions.setEnabled(false);
+            buttonDisable();
+            autoPauseVideo();
+        } else {
+            Toast.makeText(this, "please wait!!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean isConnectingToInternet(Context applicationContext) {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process mIpAddrProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int mExitValue = mIpAddrProcess.waitFor();
+            System.out.println(" mExitValue " + mExitValue);
+            if (mExitValue == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (InterruptedException ignore) {
+            ignore.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+        if (isConnectingToInternet(this))
+            try {
+                mediaController = new MediaController(this);
+                mediaController.setAnchorView(vv);
+                Uri video = Uri.parse(link);
+                vv.setMediaController(null);
+                vv.setVideoURI(video);
+                vv.seekTo(initPos);
+                vv.start();
+                buttonDisable();
+                autoPauseVideo();
+
+
+            } catch (Exception e) {
+                // TODO: handle exception
+                Toast.makeText(this, "Error connecting", Toast.LENGTH_SHORT).show();
+            }
+        else {
+            Toast.makeText(this, "No Network", Toast.LENGTH_SHORT).show();
+//            registerReceiver(receiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+
+            enableWifi();
+        }
+    }
+
+    private void enableWifi() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                this);
+        alertDialog.setTitle("Confirm...");
+        alertDialog.setMessage("Do you want to go to wifi settings?");
+        alertDialog.setPositiveButton("yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                    }
+                });
+        alertDialog.setNegativeButton("no",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        alertDialog.show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        buttonDisable();
+        handler.removeCallbacks(stopPlayerTask);
+        if (isReceiverRegistered) {
+            isReceiverRegistered = false;
+
+            unregisterReceiver(receiver);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        registerReceiver(receiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+        if (!isReceiverRegistered) {
+            isReceiverRegistered = true;
+            registerReceiver(receiver, new IntentFilter("android.net.wifi.STATE_CHANGE"));
+            vv.resume();
+        }
+    }
+
+    private NetworkInfo getNetworkInfo(Context context) {
+        ConnectivityManager connManager = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_ANSWER) {
+            if (resultCode == Activity.RESULT_OK) {
+                Bundle bundle = data.getExtras();
+                shotLoc = (String) bundle.get("shot_location");
+                shotType = (String) bundle.get("shot_type");
+                Log.e("type and loc", "onActivityResult: " + shotLoc + "\n" + shotType);
+                    /*Intent intent;
+                    intent = new Intent(SwipeCard.this, OnlineTransActivity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);*/
+                initPos = currPos;
+                vv.seekTo(initPos);
+                vv.start();
+                buttonDisable();
+                autoPauseVideo();
+
+
+            } else {
+                Toast.makeText(getApplicationContext(), "Answer is not submitted", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
+
+
+}
+___________________________________________________________________________________________________________________________________________________________
+17/01/2019
+1.place hint buttons on next to buttons.
+2.ask karthik if long press buttons are ok?
+3.display the result.
+___________________________________________________________________________________________________________________________________________________________
+20/01/2020
+1.
+image inside dialog
+Dialog settingsDialog = new Dialog(this);
+settingsDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+settingsDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout
+        , null));
+settingsDialog.show();
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <ImageView android:layout_width="wrap_content" 
+        android:layout_height="wrap_content" android:src="YOUR IMAGE"/>
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="OK" android:onClick="dismissListener"/>
+</LinearLayout>
+
+2.add listview in scroll view..
+
+___________________________________________________________________________________________________________________________________________________________
+21/01/2020
+1. add customized array
+22/01/2020
+1. create answers(model) and add setter and getters. and add this object in array adapter.
+/data/data/com.example.my_badminton
+
+___________________________________________________________________________________________________________________________________________________________
+28/01/2020
+provider:
+
+package com.example.my_badminton;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.MediaPlayer;
+import android.media.PlaybackParams;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.MediaController;
+import android.widget.Toast;
+import android.widget.VideoView;
+
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.android.youtube.player.YouTubePlayer.Provider;
+
+
+import java.io.IOException;
+
+@SuppressLint("Registered")
+public class YoutubeTrail extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
+    private static final int RECOVERY_REQUEST = 1;
+    YouTubePlayerView youTubePlayerView;
+    YouTubePlayer.OnInitializedListener onInitializedListener;
+    private MyPlayerStateChangeListener playerStateChangeListener;
+    private MyPlaybackEventListener playbackEventListener;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_youtube);
+        playerStateChangeListener = new MyPlayerStateChangeListener();
+        playbackEventListener = new MyPlaybackEventListener();
+        youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player_view);
+
+        /*onInitializedListener = new YouTubePlayer.OnInitializedListener() {
+
+            @Override
+            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+
+            }
+
+            @Override
+            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+            }
+        };*/
+        youTubePlayerView.initialize(PlayerConfig.API_KEY, onInitializedListener);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RECOVERY_REQUEST) {
+            // Retry initialization if user performed a recovery action
+            getYouTubePlayerProvider().initialize(PlayerConfig.API_KEY, this);
+        }
+    }
+
+    protected Provider getYouTubePlayerProvider() {
+        return youTubePlayerView;
+    }
+
+    private void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onInitializationSuccess(Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+        youTubePlayer.loadVideo("-72P_EFphSc");/*15qGHhFaWao*/
+        youTubePlayer.play();
+    }
+
+    @Override
+    public void onInitializationFailure(Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+    }
+
+    private final class MyPlaybackEventListener implements YouTubePlayer.PlaybackEventListener {
+
+        @Override
+        public void onPlaying() {
+            // Called when playback starts, either due to user action or call to play().
+            showMessage("Playing");
+        }
+
+        @Override
+        public void onPaused() {
+            // Called when playback is paused, either due to user action or call to pause().
+            showMessage("Paused");
+        }
+
+        @Override
+        public void onStopped() {
+            // Called when playback stops for a reason other than being paused.
+            showMessage("Stopped");
+        }
+
+        @Override
+        public void onBuffering(boolean b) {
+            // Called when buffering starts or ends.
+        }
+
+        @Override
+        public void onSeekTo(int i) {
+            // Called when a jump in playback position occurs, either
+            // due to user scrubbing or call to seekRelativeMillis() or seekToMillis()
+        }
+    }
+
+    private final class MyPlayerStateChangeListener implements YouTubePlayer.PlayerStateChangeListener {
+
+        @Override
+        public void onLoading() {
+            // Called when the player is loading a video
+            // At this point, it's not ready to accept commands affecting playback such as play() or pause()
+        }
+
+        @Override
+        public void onLoaded(String s) {
+            // Called when a video is done loading.
+            // Playback methods such as play(), pause() or seekToMillis(int) may be called after this callback.
+        }
+
+        @Override
+        public void onAdStarted() {
+            // Called when playback of an advertisement starts.
+        }
+
+        @Override
+        public void onVideoStarted() {
+            // Called when playback of the video starts.
+        }
+
+        @Override
+        public void onVideoEnded() {
+            // Called when the video reaches its end.
+        }
+
+        @Override
+        public void onError(YouTubePlayer.ErrorReason errorReason) {
+            // Called when an error occurs.
+        }
+    }
+}
+_______________________________________________________________________________________________________________________________________
+before adding pause==vv.getCurrantPos
+
+package com.example.my_badminton;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.MediaPlayer;
+import android.media.PlaybackParams;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.MediaController;
+import android.widget.Toast;
+import android.widget.VideoView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.IOException;
+
+public class PlayVideo extends AppCompatActivity {
+    static MediaPlayer mediaPlayer;
+    String html = "<iframe width=\"560\" height=\"315\" src=\"http://www.youtube.com/watch?v=cRFnsOUoHmM\" frameborder=\"0\" allowfullscreen></iframe>\"";
+    String url = "<iframe src='https://www.youtube.com/watch?v=cRFnsOUoHmM?fs=0' width='100%' height='100%' style='border: none;'></iframe>";
+    int initPos, currPos, watchAgainCount, pauseAt = 0;
+    Button watchAgain, answerQuestions;
+    String link;
+    MediaController mediaController;
+    //    AnswersModel answersModel;
+    Handler handler;
+    Intent intent;
+    int REQUEST_ANSWER = 1;
+    //    DBHandler db;
+    int pauses[] = {5, 6, 7};//9,19,29
+    private boolean isReceiverRegistered = false;
+    private VideoView vv;
+    Runnable stopPlayerTask = new Runnable() {
+        @Override
+        public void run() {
+            vv.pause();
+            currPos = (vv.getCurrentPosition());/*(pauses[pauseAt])/11; vv.getCurrentPosition();*/
+            Log.e("run: ", "stopped at sec " + vv.getCurrentPosition() + " currpos is " + currPos);
+            buttonEnable();
+            watchAgainCount = 0;
+
+
+        }
+    };
+    final MediaPlayer.OnInfoListener onInfoToPlayStateListener = new MediaPlayer.OnInfoListener() {
+
+        @Override
+        public boolean onInfo(MediaPlayer mp, int what, int extra) {
+            switch (what) {
+                case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START: {
+                    Log.e("info", "MEDIA_INFO_VIDEO_RENDERING_START");
+                    vv.seekTo(initPos);
+                    vv.start();
+                    buttonDisable();
+                    autoPauseVideo(pauses[pauseAt], pauseAt);
+                    return true;
+                }
+                case MediaPlayer.MEDIA_INFO_BUFFERING_START: {
+                    Log.e("info", "MEDIA_INFO_BUFFERING_START");
+
+                    return true;
+                }
+                case MediaPlayer.MEDIA_INFO_BUFFERING_END: {
+                    Log.e("info", "MEDIA_INFO_BUFFERING_END");
+
+
+                    return true;
+                }
+            }
+            return false;
+        }
+    };
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            NetworkInfo info = getNetworkInfo(context);
+            if (info != null && info.isConnected()) {
+                //Todo code to execute if wifi connected
+            } else {                  //Todo code to execute if wifi disconnected
+            }
+        }
+    };
+    private String shotLoc, shotType;
+    private boolean shdStop = false;
+
+    private void buttonEnable() {
+        watchAgain.setVisibility(View.VISIBLE);
+        answerQuestions.setVisibility(View.VISIBLE);
+    }
+
+    private void showQuestions() {
+        intent = new Intent(this, SubmitAnswer.class);
+
+        new AlertDialog.Builder(this)
+                .setTitle("Answer the question")
+                .setMessage("Q1.xxxxx?")
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setPositiveButton("ans", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivityForResult(intent, REQUEST_ANSWER);
+                       /* initPos = currPos;
+                        vv.seekTo(initPos);
+                        vv.start();
+                        buttonDisable();
+//                        answerQuestions.setEnabled(false);
+                        autoPauseVideo();*/
+                    }
+                }).show();
+    }
+
+    private void buttonDisable() {
+        watchAgain.setVisibility(View.GONE);
+        answerQuestions.setVisibility(View.GONE);
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_paly_video);
+        vv = (VideoView) findViewById(R.id.video_view);
+//        db=new DBHandler(this);
+        watchAgain = findViewById(R.id.watch_again);
+        answerQuestions = findViewById(R.id.answer_questions);
+        link = "http://stage1.optipacetech.com/badminton/videos/counting.mp4";
+        handler = new Handler();
+
+/*        if (isConnectingToInternet(this)) {
+//            onStart();
+            try {
+                mediaController = new MediaController(this);
+                mediaController.setAnchorView(vv);
+                Uri video = Uri.parse(link);
+                vv.setMediaController(null);
+                vv.setVideoURI(video);
+                vv.start();
+                autoPauseVideo();
+
+
+            } catch (Exception e) {
+                // TODO: handle exception
+                Toast.makeText(this, "Error connecting", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+//            enableWifi();
+
+        }*/
+
+
+//        watchAgain.setEnabled(false);
+//        answerQuestions.setEnabled(false);
+
+
+    }
+
+    private void autoPauseVideo(final int pauseAt, int nonTimer) {
+        //to stop on media player
+/*while(vv.getCurrentPosition()==pauseAt)
+            Toast.makeText(this, "stopHere!!!", Toast.LENGTH_SHORT).show();
+            vv.pause();
+            currPos = vv.getCurrentPosition();
+            buttonEnable();
+            watchAgainCount = 0;
+        }*/
+        Log.e("autoPauseVideo:", " timer " + pauseAt + "\n video time " + nonTimer);
+        handler.postDelayed(stopPlayerTask, pauseAt /*+ (secondsCompleted+1000)*/);//pauses at 9 secs
+       /* new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(!shdStop)
+                if (vv.getCurrentPosition() >= pauseAt) {
+                    vv.stopPlayback();
+                    shdStop=true;
+                    currPos = vv.getCurrentPosition();
+//                    buttonEnable();
+                    watchAgainCount = 0;
+                }
+            }
+        }).start();*/
+    }
+
+    public void answerQuestions(View view) {
+        showQuestions();
+    }
+
+    public void watchAgain(View view) {
+//        if (answerFlag == 0)
+        if (watchAgainCount == 0) {
+            watchAgainCount++;
+
+            vv.seekTo(initPos);
+//        else
+//        vv.seekTo(currPos);
+
+            vv.start();
+//            answerQuestions.setEnabled(false);
+            buttonDisable();
+            autoPauseVideo(pauses[pauseAt], pauseAt);
+        } else {
+            Toast.makeText(this, "please wait!!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean isConnectingToInternet(Context applicationContext) {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process mIpAddrProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int mExitValue = mIpAddrProcess.waitFor();
+            System.out.println(" mExitValue " + mExitValue);
+            if (mExitValue == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (InterruptedException ignore) {
+            ignore.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+        if (isConnectingToInternet(this))
+            try {
+                mediaController = new MediaController(this);
+                mediaController.setAnchorView(vv);
+                Uri video = Uri.parse(link);
+                vv.setMediaController(mediaController);
+
+                vv.setVideoURI(video);
+                Log.e("onPrepared11: ", "pauses[pauseAt] " + pauses[pauseAt] + " pauseAt " + pauseAt + "initpos" + initPos);
+                vv.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        PlaybackParams myPlayBackParams = null;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                            myPlayBackParams = new PlaybackParams();
+                            myPlayBackParams.setSpeed(0.2f); //you can set speed here
+                            mp.setPlaybackParams(myPlayBackParams);
+                            vv.setOnInfoListener(onInfoToPlayStateListener);
+                            /*if (vv.requestFocus()) {
+                                vv.seekTo(initPos);
+                                vv.start();
+                                buttonDisable();
+                                autoPauseVideo(pauses[pauseAt], pauseAt);
+
+                            }*/
+                            //mp.seekTo(initPos);
+                        }
+
+
+                        Log.e("onPrepared22: ", "pauses[pauseAt] " + pauses[pauseAt] + " pauseAt " + pauseAt + "initpos" + initPos);
+
+                    }
+                });
+
+                //vv.seekTo(initPos);
+                //vv.start();
+                //buttonDisable();
+
+
+            } catch (Exception e) {
+                // TODO: handle exception
+                Toast.makeText(this, "Error connecting", Toast.LENGTH_SHORT).show();
+            }
+        else {
+            Toast.makeText(this, "No Network", Toast.LENGTH_SHORT).show();
+//            registerReceiver(receiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+
+            enableWifi();
+        }
+    }
+
+    private void enableWifi() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                this);
+        alertDialog.setTitle("Confirm...");
+        alertDialog.setMessage("Do you want to go to wifi settings?");
+        alertDialog.setPositiveButton("yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                    }
+                });
+        alertDialog.setNegativeButton("no",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        alertDialog.show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        buttonDisable();
+        handler.removeCallbacks(stopPlayerTask);
+        if (isReceiverRegistered) {
+            isReceiverRegistered = false;
+            unregisterReceiver(receiver);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        registerReceiver(receiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+        if (!isReceiverRegistered) {
+            isReceiverRegistered = true;
+            registerReceiver(receiver, new IntentFilter("android.net.wifi.STATE_CHANGE"));
+            vv.resume();
+        }
+    }
+
+    private NetworkInfo getNetworkInfo(Context context) {
+        ConnectivityManager connManager = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_ANSWER) {
+            if (resultCode == Activity.RESULT_OK) {
+                final Bundle bundle = data.getExtras();
+                shotLoc = (String) bundle.get("shot_location");
+                shotType = (String) bundle.get("shot_type");
+//                db.saveAnswers(shotLoc,shotType);
+                Log.e("type and loc", "onActivityResult: " + shotLoc + "\n" + shotType);
+
+                /*answersModel.setShotLocation((String) bundle.get("shot_location"));
+                answersModel.setShotType((String) bundle.get("shot_type"));*/
+
+
+                    /*Intent intent;
+                    intent = new Intent(SwipeCard.this, OnlineTransActivity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);*/
+                Log.e("onActivityResult0", "curr pos " + currPos + "\n init pos " + initPos);
+
+                if (!(pauseAt > pauses.length)) {
+                    Log.e("onActivityResult1", "curr pos " + currPos + "\n init pos " + initPos);
+                    initPos = currPos;
+                    pauseAt = pauseAt + 1;
+                    Log.e("onActivityResult2", "curr pos " + currPos + "\n init pos " + initPos);
+
+
+                    // below code is useless coz after activity result it goes to onstart() which has below code.
+
+                   /* vv.seekTo(initPos);
+//                    vv.start();
+                    buttonDisable();
+                    try {
+                        autoPauseVideo(pauses[pauseAt++]);
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        e.printStackTrace();
+                    }*/
+                }
+
+                vv.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        Log.e("redirecting", "to view answer");
+                        startActivity(new Intent(getApplication(), ViewAnswers.class).putExtras(bundle));
+
+                    }
+                });
+
+            }
+
+
+        } else {
+            Toast.makeText(getApplicationContext(), "Answer is not submitted", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+}
+___________________________________________________________________________________________________________________________________________________
+29/01/2020
+try this for progress bar position
+@Override
+public void run() {
+    // TODO Auto-generated method stub
+
+    try {
+        while (mp != null) {
+            int currentPosition = mp.getCurrentPosition();
+            Message msg = new Message();
+            msg.what = currentPosition;
+            threadHandler.sendMessage(msg);
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                System.out.println("interrupt exeption" + e);
+            }
+        }
+    }
+
+    catch (Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+        System.out.println("My exeption" + e);
+    } 
+}
+
+
+when handlerTime = handlerTime + 10 
+the values are 
+E/run:: current pos 0
+E/info: MEDIA_INFO_VIDEO_RENDERING_START
+E/run:: current pos 26
+E/run:: current pos 33
+E/run:: current pos 41
+E/run:: current pos 51
+E/run:: current pos 63
+E/run:: current pos 78
+I/zygote64: Do partial code cache collection, code=61KB, data=46KB
+I/zygote64: After code cache collection, code=61KB, data=46KB
+    Increasing code cache capacity to 256KB
+E/run:: current pos 94
+E/run:: current pos 113
+E/run:: current pos 133
+E/run:: current pos 156
+E/run:: current pos 180
+E/run:: current pos 209
+E/run:: current pos 238
+E/run:: current pos 287
+E/run:: current pos 320
+W/Adreno-ES20: <core_glFinish:34>: glFinish skipped: 0
+W/Adreno-ES20: <core_glFinish:34>: glFinish skipped: 0
+E/run:: current pos 354
+E/run:: current pos 391
+E/run:: current pos 429
+E/run:: current pos 470
+E/run:: current pos 512
+E/run:: current pos 557
+E/run:: current pos 603
+E/run:: current pos 652
+I/zygote64: Do full code cache collection, code=124KB, data=94KB
+I/zygote64: After code cache collection, code=96KB, data=65KB
+E/run:: current pos 703
+E/run:: current pos 755
+E/run:: current pos 810
+E/run:: current pos 866
+E/run:: current pos 924
+E/run:: current pos 985
+E/run:: current pos 1047
+E/run:: current pos 1125
+E/run:: current pos 1191
+E/run:: current pos 1260
+E/run:: current pos 1330
+E/run:: current pos 1403
+E/run:: current pos 1477
+E/run:: current pos 1553
+E/run:: current pos 1632
+E/run:: current pos 1712
+E/run:: current pos 1795
+E/run:: current pos 1854
+E/run:: current pos 1941
+E/run:: current pos 2030
+E/run:: current pos 2120
+E/run:: current pos 2213
+E/run:: current pos 2307
+E/run:: current pos 2419
+E/run:: current pos 2518
+E/run:: current pos 2618
+W/Adreno-EGL: <qeglDrvAPI_eglGetConfigAttrib:612>: EGL_BAD_ATTRIBUTE
+D/vndksupport: Loading /vendor/lib64/hw/gralloc.msm8937.so from current namespace instead of sphal namespace.
+E/run:: current pos 2721
+I/zygote64: Do partial code cache collection, code=123KB, data=89KB
+    After code cache collection, code=123KB, data=89KB
+    Increasing code cache capacity to 512KB
+E/run:: current pos 2825
+E/run:: current pos 2932
+E/run:: current pos 3041
+E/run:: current pos 3152
+W/Adreno-ES20: <core_glFinish:34>: glFinish skipped: 0
+W/Adreno-ES20: <core_glFinish:34>: glFinish skipped: 0
+E/run:: current pos 3247
+E/run:: current pos 3362
+E/run:: current pos 3466
+E/run:: current pos 3585
+E/run:: current pos 3705
+E/run:: current pos 3828
+E/run:: current pos 3974
+E/run:: current pos 4100
+E/run:: current pos 4216
+I/zygote64: Compiler allocated 6MB to compile void android.view.ViewRootImpl.performTraversals()
+E/run:: current pos 4346
+E/run:: current pos 4479
+E/run:: current pos 4613
+E/run:: current pos 4736
+E/run:: current pos 4875
+E/run:: current pos 5017
+E/run:: current pos 5159
+E/run:: current pos 5319
+E/run:: current pos 5465
+E/run:: current pos 5603
+E/run:: current pos 5754
+E/run:: current pos 5906
+E/run:: current pos 6042
+E/run:: current pos 6199
+E/run:: current pos 6346
+E/run:: current pos 6507
+E/run:: current pos 6703
+E/run:: current pos 6867
+E/run:: current pos 7034
+E/run:: current pos 7183
+E/run:: current pos 7354
+E/run:: current pos 7527
+E/run:: current pos 7702
+E/run:: current pos 7867
+E/run:: current pos 8045
+E/run:: current pos 8212
+E/run:: current pos 8399
+_________________________________
+when handlerTime = handlerTime + 100
+E/run:: current pos 0
+W/MediaPlayerNative: info/warning (3, 0)
+E/info: MEDIA_INFO_VIDEO_RENDERING_START
+E/run:: current pos 51
+E/run:: current pos 112
+E/run:: current pos 192
+E/run:: current pos 302
+I/zygote64: Do partial code cache collection, code=58KB, data=47KB
+I/zygote64: After code cache collection, code=58KB, data=47KB
+    Increasing code cache capacity to 256KB
+E/run:: current pos 422
+E/run:: current pos 563
+W/Adreno-ES20: <core_glFinish:34>: glFinish skipped: 0
+W/Adreno-ES20: <core_glFinish:34>: glFinish skipped: 0
+E/run:: current pos 723
+E/run:: current pos 904
+E/run:: current pos 1091
+E/run:: current pos 1312
+E/run:: current pos 1540
+E/run:: current pos 1801
+E/run:: current pos 2101
+E/run:: current pos 2386
+E/run:: current pos 2707
+E/run:: current pos 3048
+E/run:: current pos 3392
+E/run:: current pos 3795
+E/run:: current pos 4195
+E/run:: current pos 4594
+E/run:: current pos 5048
+E/run:: current pos 5508
+I/zygote64: Do full code cache collection, code=123KB, data=88KB
+I/zygote64: After code cache collection, code=97KB, data=64KB
+E/run:: current pos 5970
+E/run:: current pos 6480
+____________________________________________
+when handlerTime = handlerTime + 1
+E/run:: current pos 0
+E/run:: current pos 89
+E/run:: current pos 100
+E/run:: current pos 107
+E/run:: current pos 114
+E/run:: current pos 126
+W/MediaPlayerNative: info/warning (3, 0)
+E/run:: current pos 147
+E/info: MEDIA_INFO_VIDEO_RENDERING_START
+E/run:: current pos 156
+I/zygote64: Do partial code cache collection, code=60KB, data=46KB
+I/zygote64: After code cache collection, code=60KB, data=46KB
+    Increasing code cache capacity to 256KB
+E/run:: current pos 170
+E/run:: current pos 178
+E/run:: current pos 183
+E/run:: current pos 195
+E/run:: current pos 205
+E/run:: current pos 213
+E/run:: current pos 218
+E/run:: current pos 224
+E/run:: current pos 231
+E/run:: current pos 238
+E/run:: current pos 246
+E/run:: current pos 254
+E/run:: current pos 265
+E/run:: current pos 279
+E/run:: current pos 289
+E/run:: current pos 301
+E/run:: current pos 307
+I/zygote64: Do full code cache collection, code=124KB, data=94KB
+I/zygote64: After code cache collection, code=92KB, data=62KB
+E/run:: current pos 313
+E/run:: current pos 320
+E/run:: current pos 327
+E/run:: current pos 333
+E/run:: current pos 340
+E/run:: current pos 290
+E/run:: current pos 297
+E/run:: current pos 304
+E/run:: current pos 311
+E/run:: current pos 320
+E/run:: current pos 328
+E/run:: current pos 337
+E/run:: current pos 345
+E/run:: current pos 353
+E/run:: current pos 362
+E/run:: current pos 372
+E/run:: current pos 381
+E/run:: current pos 390
+E/run:: current pos 399
+E/run:: current pos 409
+if want to pause, increase the remaining time by counting the time paused and add.
+______________________________________________________________________________________________________________________________________________
+30/01/2020
+ the pauses are{
+0.16692996423721312(),0.7987609985694886
+1.7136649866485596, 2.1010930276565554
+3.4260490295639037,4.04645494802475
+5.262332974250794,5.753871975681305
+7.0304789957084655,7.969838037670136
+8.617399953269958,9.336854976158142
+10.425100980926514,10.86966297329712
+_________________________________________________________________________________________________________________________________________________
+vv.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        int current, tempCurr, duration;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+
+                            myPlayBackParams.setSpeed(0.2f); //you can set speed here
+                            mp.setPlaybackParams(myPlayBackParams);
+                            vv.setOnInfoListener(onInfoToPlayStateListener);
+                            handler.postDelayed(stopPlayerTask, handlerTime);
+
+                        }
+                    }
+                });
+
+_________________________________________________________________________________________________________________________________________________
+31/01/2020
+1.fine pausing at first 	
+2.mp.setPlayback play the video automatically..
+test codes are written in new download file
+__________________________________________________________________________________________________________________________________________________
+03/02/2020
+perfectly working(pausing )
+package com.example.my_badminton;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.MediaPlayer;
+import android.media.PlaybackParams;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Parcelable;
+import android.os.PersistableBundle;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.MediaController;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.VideoView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.IOException;
+
+@RequiresApi(api = Build.VERSION_CODES.O)
+public class PlayVideo extends AppCompatActivity {
+    static MediaPlayer mediaPlayer;
+    final MediaPlayer.OnInfoListener onInfoToPlayStateListener = new MediaPlayer.OnInfoListener() {
+
+        @Override
+        public boolean onInfo(MediaPlayer mp, int what, int extra) {
+            switch (what) {
+                case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START: {
+                    Log.e("info", "MEDIA_INFO_VIDEO_RENDERING_START");
+                    /*vv.seekTo(initPos);
+                    vv.start();
+                    buttonDisable();
+                    autoPauseVideo(pauses[pauseAt], pauseAt);*/
+                    return true;
+                }
+                case MediaPlayer.MEDIA_INFO_BUFFERING_START: {
+                    Log.e("info", "MEDIA_INFO_BUFFERING_START");
+
+                    return true;
+                }
+                case MediaPlayer.MEDIA_INFO_BUFFERING_END: {
+                    Log.e("info", "MEDIA_INFO_BUFFERING_END");
+
+
+                    return true;
+                }
+            }
+            return false;
+        }
+    };
+    String html = "<iframe width=\"560\" height=\"315\" src=\"http://www.youtube.com/watch?v=cRFnsOUoHmM\" frameborder=\"0\" allowfullscreen></iframe>\"";
+    String url = "<iframe src='https://www.youtube.com/watch?v=cRFnsOUoHmM?fs=0' width='100%' height='100%' style='border: none;'></iframe>";
+    int initPos, currPos, watchAgainCount, pauseAt, REQUEST_ANSWER = 1, answerCount;
+    Button watchAgain, answerQuestions;
+    String link;
+    MediaController mediaController;
+    Bundle bundle = new Bundle();
+    TextView ctv;
+    //    AnswersModel answersModel;
+    Handler handler;
+    Intent intent;
+    //    DBHandler db;\
+    int[] pauses = {166, 798, 1713, 2101, 3426, 4046, 5262, 5753, 7030, 7969, 8617, 9336, 10425, 10869};
+    //    String[] pauses = {"0166", "0798","1713", "2101", "3426", "4046", "5262", "5753", "7030", "7969", "8617", "9336", "10425", "10869"};
+    int handlerTime = 0, remainingTime = 500000;
+    String sCurrPos = "";
+    private boolean isReceiverRegistered = false;
+    private VideoView vv;
+    Runnable stopPlayerTask = new Runnable() {
+        @Override
+        public void run() {
+            remainingTime = remainingTime - handlerTime;
+            sCurrPos = String.valueOf(currPos = (vv.getCurrentPosition()));/*(pauses[pauseAt])/11; vv.getCurrentPosition();*/
+            /*if (sCurrPos.length() == 3) { // assuming that the first pause will be after 100th sec so ==3
+                sCurrPos = "0" + sCurrPos;// append 0 so that it matches with given pause time
+                Log.e("run: ", "String current pos subString " + sCurrPos.substring(0, 3) + " pause[] value " + pauses[pauseAt].substring(0, 3));
+            }*/
+            if (pauses[pauseAt] <= currPos)/*sCurrPos.length() >= 4 && sCurrPos.substring(0, 3).equals(pauses[pauseAt].substring(0, 3))*/ {
+                Log.e("run: ", "String current pos subString " + sCurrPos + " pause[] value " + pauses[pauseAt] + "media Player " + mediaPlayer);
+                mediaPlayer.pause();
+//                vv.pause();
+                buttonEnable();
+                watchAgainCount = 0;
+            }
+
+            ctv.setText(sCurrPos);
+
+            if (remainingTime > 0 && vv.isPlaying()) {
+                handler.postDelayed(stopPlayerTask, handlerTime = handlerTime + 1);
+            }
+
+        }
+    };
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            NetworkInfo info = getNetworkInfo(context);
+            if (info != null && info.isConnected()) {
+                //Todo code to execute if wifi connected
+            } else {                  //Todo code to execute if wifi disconnected
+            }
+        }
+    };
+    private String shotLoc, shotType;
+    private boolean shdStop = false;
+
+    private void buttonEnable() {
+        watchAgain.setVisibility(View.VISIBLE);
+        answerQuestions.setVisibility(View.VISIBLE);
+    }
+
+    private void showQuestions() {
+        intent = new Intent(this, SubmitAnswer.class);
+
+        new AlertDialog.Builder(this)
+                .setTitle("Answer the question")
+                .setMessage("Q1.xxxxx?")
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setPositiveButton("ans", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivityForResult(intent, REQUEST_ANSWER);
+                    }
+                }).show();
+    }
+
+    private void buttonDisable() {
+        watchAgain.setVisibility(View.GONE);
+        answerQuestions.setVisibility(View.GONE);
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_paly_video);
+        vv = (VideoView) findViewById(R.id.video_view);
+        ctv = findViewById(R.id.count_down);
+//        db=new DBHandler(this);
+        watchAgain = findViewById(R.id.watch_again);
+        answerQuestions = findViewById(R.id.answer_questions);
+        link = "http://stage1.optipacetech.com/badminton/videos/training.mp4";
+//        link = "android.resource://" + getPackageName() + "/" + R.raw.training;
+        handler = new Handler();
+
+        if (isConnectingToInternet(this))
+            try {
+                if (mediaController == null) {
+                    mediaController = new MediaController(this);
+                }
+                mediaController.setAnchorView(vv);
+                Uri video = Uri.parse(link);
+                vv.setMediaController(null);
+
+                vv.setVideoURI(video);
+//                vv.seekTo(initPos);
+//                vv.start();
+                buttonDisable();
+//                while (vv.getCurrentPosition() == pauses[pauseAt] * 1000) {
+//                autoPauseVideo(pauses[pauseAt], pauseAt);
+//                }
+
+                Log.e("onPrepared11: ", "pauses[pauseAt] " + pauses[pauseAt] + " pauseAt " + pauseAt + "initpos" + initPos + "answercount");
+                vv.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        mediaPlayer = mp;
+                        int current, tempCurr, duration;
+                        PlaybackParams myPlayBackParams = null;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                            myPlayBackParams = new PlaybackParams();
+                            myPlayBackParams.setSpeed(0.2f); //you can set speed here
+
+//                            if (answerCount == 0) {
+                            mp.setPlaybackParams(myPlayBackParams);
+//                            }
+                            mp.seekTo(initPos, MediaPlayer.SEEK_CLOSEST);
+                            mp.start();
+                            vv.setOnInfoListener(onInfoToPlayStateListener);
+                            handler.postDelayed(stopPlayerTask, handlerTime);
+                            /*vv.seekTo(initPos);
+                            vv.start();*/
+                            buttonDisable();
+
+                        }
+                        Log.e("onPrepared22: ", "pauses[pauseAt] " + pauses[pauseAt] + " pauseAt " + pauseAt + "initpos" + initPos);
+                    }
+                });
+            } catch (Exception e) {
+                // TODO: handle exception
+                Toast.makeText(this, "Error connecting", Toast.LENGTH_SHORT).show();
+            }
+        else {
+            Toast.makeText(this, "No Network", Toast.LENGTH_SHORT).show();
+//            registerReceiver(receiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+
+            enableWifi();
+        }
+    }
+
+    private void autoPauseVideo(final int pauseAt, int nonTimer) {
+        //to stop on media player
+/*while(vv.getCurrentPosition()==pauseAt)
+            Toast.makeText(this, "stopHere!!!", Toast.LENGTH_SHORT).show();*/
+        vv.pause();
+        currPos = vv.getCurrentPosition();
+        buttonEnable();
+        watchAgainCount = 0;
+
+        Log.e("autoPauseVideo:", " timer " + pauseAt + "\n video time " + nonTimer);
+//        handler.postDelayed(stopPlayerTask, vv.getCurrentPosition()/*+ (secondsCompleted+1000)*/);//pauses at 9 secs
+//        handler.post(stopPlayerTask);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putInt("Position", pauses[pauseAt]);// coz this is where we want the video to get paused.
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        currPos = savedInstanceState.getInt("Position");
+        vv.seekTo(currPos);
+    }
+
+    @Override
+    public void onRestoreInstanceState(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onRestoreInstanceState(savedInstanceState, persistentState);
+        currPos = savedInstanceState.getInt("Position");
+        vv.seekTo(currPos);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void answerQuestions(View view) {
+        // testing.. this view is acted as play button
+        /*if (!(pauseAt > pauses.length)) {
+            initPos = currPos;
+            pauseAt = pauseAt + 1;
+            Log.e("answerButton pressed", " init pos is " + initPos);
+            vv.requestFocus();
+//            mediaPlayer.start();
+            mediaPlayer.seekTo(initPos,MediaPlayer.SEEK_CLOSEST);
+            mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+                @Override
+                public void onSeekComplete(MediaPlayer mp) {
+                    mediaPlayer.start();
+                }
+            });
+*//*
+            vv.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+                        @Override
+                        public void onSeekComplete(MediaPlayer mp) {
+                            vv.seekTo(initPos);
+                            vv.start();
+                            Log.e("answerButton pressed", " onprepared " + initPos);
+
+                        }
+                    });
+
+
+
+                }
+            });
+*//*
+            buttonDisable();
+            handler.postDelayed(stopPlayerTask, handlerTime);
+
+        }*/
+        showQuestions();
+    }
+
+    public void watchAgain(View view) {
+//        if (answerFlag == 0)
+        if (watchAgainCount == 0) {
+            watchAgainCount++;
+
+            mediaPlayer.seekTo(initPos, MediaPlayer.SEEK_CLOSEST);
+            vv.seekTo(initPos);
+//        else
+//        vv.seekTo(currPos);
+
+            vv.start();
+//            answerQuestions.setEnabled(false);
+            buttonDisable();
+//            autoPauseVideo(pauses[pauseAt], pauseAt);
+        } else {
+            Toast.makeText(this, "please wait!!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean isConnectingToInternet(Context applicationContext) {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process mIpAddrProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int mExitValue = mIpAddrProcess.waitFor();
+            System.out.println(" mExitValue " + mExitValue);
+            if (mExitValue == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (InterruptedException ignore) {
+            ignore.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+
+    }
+
+    private void enableWifi() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                this);
+        alertDialog.setTitle("Confirm...");
+        alertDialog.setMessage("Do you want to go to wifi settings?");
+        alertDialog.setPositiveButton("yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                    }
+                });
+        alertDialog.setNegativeButton("no",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        alertDialog.show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        buttonDisable();
+        handler.removeCallbacks(stopPlayerTask);
+        if (isReceiverRegistered) {
+            isReceiverRegistered = false;
+            unregisterReceiver(receiver);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        registerReceiver(receiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+        if (!isReceiverRegistered) {
+            isReceiverRegistered = true;
+            registerReceiver(receiver, new IntentFilter("android.net.wifi.STATE_CHANGE"));
+            vv.resume();
+        }
+    }
+
+    private NetworkInfo getNetworkInfo(Context context) {
+        ConnectivityManager connManager = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_ANSWER) {
+            if (resultCode == Activity.RESULT_OK) {
+                final Bundle bundle = data.getExtras();
+                shotLoc = (String) bundle.get("shot_location");
+                shotType = (String) bundle.get("shot_type");
+//                db.saveAnswers(shotLoc,shotType);
+                Log.e("type and loc", "onActivityResult: " + shotLoc + "\n" + shotType);
+
+                /*answersModel.setShotLocation((String) bundle.get("shot_location"));
+                answersModel.setShotType((String) bundle.get("shot_type"));*/
+
+
+                    /*Intent intent;
+                    intent = new Intent(SwipeCard.this, OnlineTransActivity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);*/
+                Log.e("onActivityResult0", "curr pos " + currPos + "\n init pos " + initPos);
+
+                if (!(pauseAt > pauses.length)) {
+                    Log.e("onActivityResult1", "curr pos " + currPos + "\n init pos " + initPos);
+                    initPos = currPos;
+                    pauseAt = pauseAt + 1;
+                    answerCount++;
+                    Log.e("onActivityResult2", "curr pos " + currPos + "\n init pos " + initPos);
+
+
+                    // below code is useless coz after activity result it goes to onstart() which has below code.
+
+                   /* vv.seekTo(initPos);
+//                    vv.start();
+                    buttonDisable();
+                    try {
+                        autoPauseVideo(pauses[pauseAt++]);
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        e.printStackTrace();
+                    }*/
+                }
+
+                vv.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        Log.e("redirecting", "to view answer");
+                        startActivity(new Intent(getApplication(), ViewAnswers.class).putExtras(bundle));
+
+                    }
+                });
+
+            }
+
+
+        } else {
+            Toast.makeText(getApplicationContext(), "Answer is not submitted", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+}
+
+2. on finish of video (one session) send the answer to the server.
+3.POINTS TO BE NOTED is saved in mail
+4. ListOfAnswers to be done..
+
+07/02/2020
+1.left out modules
+a.total time to answer the questions.
+b.total score.
+
+10/02/2020
+1. change the button style..
+2. after adding progress bar, sometimes the video starts from first.(testing)--resolved, but again the handler is called..
+3. add progress bar in the onInfoToPlayStateListener().---not helping
+
+tested styles
+1. Widget.AppCompat.Button.Colored
+
+button style and background theme
+
+
+17/02/2020
+
+1.download_answer.php pending
+2. answer validation.pending
+3.upload answer and score.pending
+4. cant play this video when server is not reachable.handle this.
+5. try mvc architecture.
+
+
+19/02/2020
+1. the data is not getting posting. 404 error.
+
+20/02/2020
+1.fetch pauses from playvideo.
+
+
+25/02/2020
+1.time calculation per question-done.
+2.button on court- partially done.
+3. Total score calculation -pending
+4 Total duration taken to answer -done
+5.onClickListener of custom adapter shd show the video clip-- pending
+
+26/02/2020
+1. set text in view answers for total answers.
+
+02/03/2020
+
+SELECT PAUSES  FROM PAUSES_TABLE WHERE PID IN(2,3)
+1. 	review the video fot the slot.-done
+2. stop at last pause---- pending(if non related video part, then clip the video by admin)  
+3. mp throws exception illegal state exception--pending
+4. review for 0th item crashing-- done
+5. if crashes then  the listview is not shown, save the answers in db.	-- done
+6. display myanswers in a dialog.--done
+
+
+04/03/2020
+1. set flag after game was completed.---pending
+2. able CORRECT_ANSWER has no column named PAUSES --done
+CREATE TABLE IF NOT EXISTS CORRECT_ANSWER(AID INTEGER PRIMARY KEY,SHOT_TYPE TEXT,SHOT_LOCTION TEXT,PAUSES NUMBER,SERVER_TIME NUMBER)----done
+3. correct asnwer stores the value everytime the app is launched (checking if table is empty)--done
+check whether the table is emplty, if yes then add the data into table----done
+4.score validation in geanswerImpl-done
+
+6/03/2020
+5. doesnt play video when network is off, after turning on also doesnt play, write networkListener --pending
+6. correct answer values are storeed in the database with a space-- make changes in pause.php---pending
+
+09/03/2020
+1.score calculation for type, loc,time each 1 point
+2. sync to server-- pending
+3. formed the xml in db handler. access the return value
+
+example
+{
+    "name": "sample",
+    "def": [
+        {
+            "setId": 1,
+            "setDef": [
+                {
+                    "name": "ABC",
+                    "type": "STRING"
+                },
+                {
+                    "name": "XYZ",
+                    "type": "STRING"
+                }
+            ]
+        },
+        {
+            "setId": 2,
+            "setDef": [
+                {
+                    "name": "abc",
+                    "type": "STRING"
+                },
+                {
+                    "name": "xyz",
+                    "type": "STRING"
+                }
+            ]
+        }
+    ]
+}
+
+JSONObject object = new JSONObject();
+object.put("name", "sample");
+JSONArray array = new JSONArray();
+
+JSONObject arrayElementOne = new JSONObject();
+arrayElementOne.put("setId", 1);
+JSONArray arrayElementOneArray = new JSONArray();
+
+JSONObject arrayElementOneArrayElementOne = new JSONObject();
+arrayElementOneArrayElementOne.put("name", "ABC");
+arrayElementOneArrayElementOne.put("type", "STRING");
+
+JSONObject arrayElementOneArrayElementTwo = new JSONObject();
+arrayElementOneArrayElementTwo.put("name", "XYZ");
+arrayElementOneArrayElementTwo.put("type", "STRING");
+
+arrayElementOneArray.put(arrayElementOneArrayElementOne);
+arrayElementOneArray.put(arrayElementOneArrayElementTwo);
+
+arrayElementOne.put("setDef", arrayElementOneArray);
+array.put(arrayElementOne);
+object.put("def", array);
+
+10/03/2020
+1. while fetching the answer get the video name also to stream the video----pending
+2.php for uploading the player data..
+
+11/03/2020
+1. download correct answer result ---
+	678:Top Middle:Push:240:10,678:Middle middle:Drive:602:12 ----------- server result 
+	1:678:Top Middle:0:240:10:,2:678:Middle middle:0:602:12:, ----------app result
+2. xml formed and sent to server 
+
+<player_record>
+<selection>
+<shot_type>Push</shot_type>
+<shot_location>Top middle</shot_location>
+<time>14</time>
+<score>2</score>
+<vid>678</vid></selection>
+
+<selection>
+<shot_type>Drive</shot_type>
+<shot_location>Middle middle</shot_location>
+<time>13</time>	
+<score>2</score>
+<vid>678</vid></selection>
+
+<selection>
+<shot_type>Drive</shot_type>
+<shot_location>Top middle</shot_location>
+<time>7</time>
+<score>1</score>
+<vid>678</vid></selection>
+
+<selection>
+<shot_type>Drive</shot_type>
+<shot_location>Middle middle</shot_location>
+<time>9</time>
+<score>3</score>
+<vid>678</vid></selection>
+
+<selection>
+<shot_type>Push</shot_type>
+<shot_location>Top middle</shot_location>
+<time>10</time>
+<score>3</score>
+<vid>678</vid></selection>
+
+<selection>
+<shot_type>Drive</shot_type>
+<shot_location>Middle middle</shot_location>
+<time>11</time>
+<score>3</score>
+<vid>678</vid></selection>
+
+<selection>
+<shot_type>Push</shot_type>
+<shot_location>Top middle</shot_location>
+<time>19</time>
+<score>2</score>
+<vid>678</vid></selection>
+
+<selection>
+<shot_type>Drive</shot_type>
+<shot_location>Middle middle</shot_location>
+<time>11</time>
+<score>3</score>
+<vid>678</vid></selection>
+
+<total_time>94</total_time>
+<total_score>19</total_score>
+<pid>047</pid>
+</player_record>
+
+
+null1:Push:Top Middle:240:10:678:,2:Drive:Middle middle:602:12:678:,
+
+2. clear the sqlite soon after syncing to serve-- pending
+
+java.lang.RuntimeException: Failure delivering result ResultInfo{who=null, request=1, result=-1, data=Intent { (has extras) }} to activity {com.example.my_badminton/com.example.my_badminton.PlayVideo}: java.lang.NullPointerException: Attempt to invoke virtual method 'boolean java.lang.String.equalsIgnoreCase(java.lang.String)' on a null object reference
+
+3.
+
+
+
+<selection%d>
+<shot_type>%s</shot_type>
+<shot_location>%s</shot_location>
+<time>%s</time>
+<score>%s</score>
+</selection%s>
+
+12/03/2020
+1. pid in xml is hardcoded, shd be fetched from db or server.
+2. to get the video id by sending the u_id
+to get the vid which are not viewed by the u_id--->SELECT DISTINCT `V_ID` FROM `ANSWERS` WHERE `V_ID` NOT IN(select `V_ID` from USER_LOG WHERE U_ID=1) order by RAND() limit 1 
+to get the pauses for the above query---->SELECT * FROM `ANSWERS` WHERE `V_ID` = (SELECT DISTINCT `V_ID` FROM `ANSWERS` WHERE `V_ID` NOT IN(select `V_ID` from USER_LOG WHERE U_ID=1) order by RAND() limit 1)
+3. get the video id and pauses for it ----done
+4. implement the watch nextvideo()---- done
+
+
+13/03/2020
+1. get the videos wen next video button is pressed
+2. in between of the video if player comes out of the game then starts from beginning.
+	soln: get the last pause from local db and assign it to answerCount---------------least priority----pending
+problem : after resuming, oncreate the videoName is fetched from server and played(video name is random, need not be the same video which was paused )
+soln: store the videoname in db, on resuming the video, fetch the video name from the dblite----done
+	
+to test
+1. fetch video from server
+2. delete tables once game is over
+3. sync data to server in table player_answer_info and player_pause_answers.
+4. update in server table user log. 
+
+
+download_player_answers.php response:
+2:bottom:net:2000:,2:bottom:Drop:2000:,videos/video2.mp4
+
+correctAnswers = {String[3]@5759}(split by ,)
+ 0 = "2:bottom:net:2000:" 
+answerContents = {String[4]@5849} (split by :
+ 0 = "2"
+ 1 = "bottom"
+ 2 = "net"
+ 3 = "2000"
+ 1 = "2:bottom:Drop:2000:"
+ 2 = "videos/video2.mp4"
+
+
+3:top right:net:2000:12,3:top right:Drive:2000:15,videos/video3.mp4
+
+
+
+<player_record>
+<selection>
+<shot_type>Push</shot_type>
+<shot_location>Top middle</shot_location>
+<time>6</time>
+<score>1</score>
+<vid>2</vid></selection>
+
+<total_time>6</total_time>
+<total_score>1</total_score>
+<pid>047</pid>
+</player_record>
+
+1.if (correctShotType[answerCount].equalsIgnoreCase(shotType)) { in play video class this line code crashing
+2.insert into user_log watch_flag field is default set to 0 
+	
+
+16/03/2020
+1.680:Middle Middle:Drive:234:15,videos/video1.mp4
+2. next video is playing the same video....pending, wen it comes back to play video starts playin the same video so added onResume and onPostResume(), but not helping---Done
+3. delete the db after sync to server ---done
+4. check my answers review --- done
+5. delete db after pressing next video. ----done	
+
+things to ask praveen
+2. automation of level for player after playing all the videos with threashold score.
+3.get the videos on the basis of level assigned to it when initially getting the answer/pauses
+
+
+2020-03-16 18:02:20.656 13269-13269/com.example.my_badminton E/AndroidRuntime: FATAL EXCEPTION: main
+    Process: com.example.my_badminton, PID: 13269
+    java.lang.IllegalArgumentException: reportSizeConfigurations: ActivityRecord not found for: Token{1437f44 ActivityRecord{2104857 u0 com.example.my_badminton/.ViewAnswers t-1 f}}
+        at android.os.Parcel.readException(Parcel.java:2020)
+        at android.os.Parcel.readException(Parcel.java:1962)
+        at android.app.IActivityManager$Stub$Proxy.reportSizeConfigurations(IActivityManager.java:9312)
+        at android.app.ActivityThread.reportSizeConfigurations(ActivityThread.java:2956)
+        at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2899)
+        at android.app.ActivityThread.-wrap11(Unknown Source:0)
+        at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1616)
+        at android.os.Handler.dispatchMessage(Handler.java:106)
+        at android.os.Looper.loop(Looper.java:176)
+        at android.app.ActivityThread.main(ActivityThread.java:6651)
+        at java.lang.reflect.Method.invoke(Native Method)
+        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:547)
+        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:824)
+2020-03-16 18:02:20.750 13269-13995/com.example.my_badminton D/Response fro
+
+
+18/03/2020
+1. sync to server xml data
+
+<player_record>
+<selection>
+<shot_type>Push</shot_type>
+<shot_location>Middle middle</shot_location>
+<time>14</time>
+<score>0</score>
+<vid>2</vid></selection>
+
+<selection>
+<shot_type>Drive</shot_type>
+<shot_location>Middle middle</shot_location>
+<time>15</time>
+<score>0</score>
+<vid>2</vid></selection>
+
+<total_time>29</total_time>
+<total_score>0</total_score>
+<pid>047</pid>
+</player_record>
+
+2. pooja pending module
+1.password reset
+2. database connectivity for admin and coach
+
+3. merge my code in her code --- pending
+4. check video_upload.php ---- done
+5. convert one of the project to library
+
+19/03/2020
+
+things to tell pooja
+1.web service  in MyDbAdapter
+
+
+20/03/2020
+activities
+1. /home/megha/Desktop/badminton/pooja/My_Badminton_megha(before cleanup) is my code before cleaning up
+2
+
+
+pooja's code
+
+the code containing SQLiteOpenHelper
+1.MyDbAdapter -- 
+2. ScoreStorageAdapter--
+
+
+things to do
+3.background color change
+4. font
+5. merge
+6. start game button background
+
+
+
+
+
+1.clean up my code--- done
+2. test cleaned up code.----pending
+3.merge with poojas code.-pending
+4. test after merging---pending
+5.change the path to uploads from videos in code(videos are beeing taken from videos folder in php)
+
+
+﻿https://stackoverflow.com/questions/574195/android-youtube-app-play-video-intent/12439378#12439378
+
+https://stackoverflow.com/questions/56491694/how-to-play-youtube-video-inside-my-activity-picture-in-picture-mode
+
+2/1/2020
+1. pause video programatically, question answer class, on submit store the answers and rediret back to video activity and play from wher it stopped and repeat the same.
+2. make ppl watch the whole video(15sec) with no manual pause or play.. and provide a button watch again and an answer button
+removing the video view related functionalities.. before code
+
+package com.example.my_badminton;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.MediaController;
+import android.widget.Toast;
+import android.widget.VideoView;
+
+import androidx.annotation.RequiresApi;
+
+import java.time.Duration;
+import java.time.Instant;
+
+public class YoutubeTrail extends Activity {
+    String html = "<iframe width=\"560\" height=\"315\" src=\"http://www.youtube.com/watch?v=cRFnsOUoHmM\" frameborder=\"0\" allowfullscreen></iframe>\"";
+    String url = "<iframe src='https://www.youtube.com/watch?v=cRFnsOUoHmM?fs=0' width='100%' height='100%' style='border: none;'></iframe>";
+    int prevPausePos, currPausePos, pauseFlag, secondsCompleted, answerFlag;
+    Button watchAgain, answerQuestions;
+    String link;
+    private VideoView vv;
+    Runnable stopPlayerTask = new Runnable() {
+        @Override
+        public void run() {
+            vv.pause();
+            currPausePos = vv.getCurrentPosition();
+            answerQuestions.setEnabled(true);
+//          startActivity(new Intent(YoutubeTrail.this,SubmitAnswer.class));
+//            showQuestions();
+        }
+    };
+
+
+    private void showQuestions() {
+        new AlertDialog.Builder(this)
+                .setTitle("Answer the question")
+                .setMessage("Q1.xxxxx?")
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setPositiveButton("ans", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        answerFlag = 1;
+                        vv.seekTo(currPausePos);
+                        vv.start();
+                        autoPauseVideo();
+                    }
+                }).show();
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_paly_video);
+        vv = (VideoView) findViewById(R.id.video_view);
+        watchAgain = findViewById(R.id.watch_again);
+        answerQuestions = findViewById(R.id.answer_questions);
+        watchAgain.setEnabled(false);
+        answerQuestions.setEnabled(false);
+        try {
+            link = "http://stage1.optipacetech.com/badminton/videos/counting.mp4";
+            MediaController mediaController = new MediaController(this);
+            mediaController.setAnchorView(vv);
+            Uri video = Uri.parse(link);
+            vv.setMediaController(null);
+            vv.setVideoURI(video);
+            vv.start();
+            autoPauseVideo();
+
+
+        } catch (Exception e) {
+            // TODO: handle exception
+            Toast.makeText(this, "Error connecting", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void autoPauseVideo() {
+        Handler handler = new Handler();
+        handler.postDelayed(stopPlayerTask, 12000 /*+ (secondsCompleted+1000)*/);//pauses at 9 secs
+        watchAgain.setEnabled(true);
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void palyVideo(View view) throws InterruptedException {
+        if (pauseFlag == 1) {
+//            currPausePos = vv.getCurrentPosition();
+            vv.seekTo(currPausePos);
+            vv.start();
+            Instant ends = Instant.now();
+            Instant starts = Instant.now();
+            Thread.sleep(10);
+
+            Log.e("instant ", " " + Duration.between(starts, ends));
+            autoPauseVideo();
+        } else {
+            watchAgain.setEnabled(false);
+        }
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void pauseVideo(View view) throws InterruptedException {
+        vv.pause();
+        pauseFlag = 1;
+        currPausePos = vv.getCurrentPosition();
+
+
+
+       /* Stopwatch stopwatch = Stopwatch.createStarted();
+        doSomething();
+        stopwatch.stop(); // optional
+
+        long millis = stopwatch.elapsed(TimeUnit.MILLISECONDS);
+
+        log.info("that took: " + stopwatch); // formatted string like "12.3 ms"*/
+
+    }
+
+    public void answerQuestions(View view) {
+        Toast.makeText(this, "Redirect to class!!!", Toast.LENGTH_SHORT).show();
+        showQuestions();
+     /*   vv.seekTo(currPausePos);
+        vv.start();
+        autoPauseVideo();*/
+    }
+
+    public void watchAgain(View view) {
+        if (answerFlag == 1) {
+            vv.seekTo(currPausePos);
+        } else {
+            
+            vv.seekTo(prevPausePos);
+        }
+        vv.start();
+        autoPauseVideo();
+
+
+    }
+}
+
+
+07/01/2020
+1. disable answer/watch button till the video stops automatically--- done
+2. cant play the video. for android version 9 and above
+ added *****android:usesCleartextTraffic="true" in manifest****** and worked
+
+below is the clarification from android doc
+___________________________________________________________________________________________________________________________________________________________
+Indicates whether the app intends to use cleartext network traffic, such as cleartext HTTP. The default value for apps that target API level 27 or lower is "true". Apps that target API level 28 or higher default to "false".
+
+When the attribute is set to "false", platform components (for example, HTTP and FTP stacks, DownloadManager, and MediaPlayer) will refuse the app's requests to use cleartext traffic. Third-party libraries are strongly encouraged to honor this setting as well. The key reason for avoiding cleartext traffic is the lack of confidentiality, authenticity, and protections against tampering; a network attacker can eavesdrop on transmitted data and also modify it without being detected.
+___________________________________________________________________________________________________________________________________________________________
+
+08/01/2020
+
+wifi manager is added..
+
+13/01/2020
+pager2 with tab layout pending..
+
+14/01/2020
+
+preserve the value when switching from frame to frame
+___________________________________________________________________________________________________________________________________________________________
+16/01/2020
+1.make fragmnet to get displayed
+Bundle b = new Bundle();
+b.putString("Key", "YourValue");
+b.putInt("YourKey", 1);
+
+2. make frgmnet available in an activity
+FragmentB fragB = new FragmentB();
+3.get the pauses from db onItemClick listener in the listofviews
+fragB.setArguments(b); 
+getFragmentManager().beginTransaction().replace(R.id.your_container, fragB);
+
+Fragment B:
+
+Bundle b = this.getArguments();
+if(b != null){
+   int i = b.getInt("YourKey");
+   String s =b.getString("Key");
+}
+
+STOP THE VIDEO AT GIVEN TIME:
+ if (mVideoView.getCurrentPosition() >= 12000) {
+                            mVideoView.stopPlayback();
+                            mShouldStop = true;
+                        }
+
+3.
+thread is used to to stop at desired time.. which is not acting on views.. 
+before adding the pauses:
+package com.example.my_badminton;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.MediaController;
+import android.widget.Toast;
+import android.widget.VideoView;
+
+import java.io.IOException;
+
+public class YoutubeTrail extends Activity {
+    String html = "<iframe width=\"560\" height=\"315\" src=\"http://www.youtube.com/watch?v=cRFnsOUoHmM\" frameborder=\"0\" allowfullscreen></iframe>\"";
+    String url = "<iframe src='https://www.youtube.com/watch?v=cRFnsOUoHmM?fs=0' width='100%' height='100%' style='border: none;'></iframe>";
+
+    int initPos, currPos, watchAgainCount;
+    Button watchAgain, answerQuestions;
+    String link;
+    MediaController mediaController;
+    Handler handler;
+    Intent intent;
+    int REQUEST_ANSWER = 1;
+    private boolean isReceiverRegistered = false;
+
+    private VideoView vv;
+    Runnable stopPlayerTask = new Runnable() {
+        @Override
+        public void run() {
+            vv.pause();
+            currPos = vv.getCurrentPosition();
+//            watchAgain.setEnabled(true);
+//            answerQuestions.setEnabled(true);
+            buttonEnable();
+            watchAgainCount = 0;
+
+        }
+    };
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            NetworkInfo info = getNetworkInfo(context);
+            if (info != null && info.isConnected()) {
+                //Todo code to execute if wifi connected
+            } else {                  //Todo code to execute if wifi disconnected
+            }
+        }
+    };
+    private String shotLoc, shotType;
+    private boolean shdStop=false;
+
+    private void buttonEnable() {
+        watchAgain.setVisibility(View.VISIBLE);
+        answerQuestions.setVisibility(View.VISIBLE);
+    }
+
+    private void showQuestions() {
+        intent = new Intent(this, SubmitAnswer.class);
+
+        new AlertDialog.Builder(this)
+                .setTitle("Answer the question")
+                .setMessage("Q1.xxxxx?")
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setPositiveButton("ans", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivityForResult(intent, REQUEST_ANSWER);
+                       /* initPos = currPos;
+                        vv.seekTo(initPos);
+                        vv.start();
+                        buttonDisable();
+//                        answerQuestions.setEnabled(false);
+                        autoPauseVideo();*/
+                    }
+                }).show();
+    }
+
+    private void buttonDisable() {
+        watchAgain.setVisibility(View.GONE);
+        answerQuestions.setVisibility(View.GONE);
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_paly_video);
+        vv = (VideoView) findViewById(R.id.video_view);
+        watchAgain = findViewById(R.id.watch_again);
+        answerQuestions = findViewById(R.id.answer_questions);
+        link = "http://stage1.optipacetech.com/badminton/videos/counting.mp4";
+        handler = new Handler();
+/*        if (isConnectingToInternet(this)) {
+//            onStart();
+            try {
+                mediaController = new MediaController(this);
+                mediaController.setAnchorView(vv);
+                Uri video = Uri.parse(link);
+                vv.setMediaController(null);
+                vv.setVideoURI(video);
+                vv.start();
+                autoPauseVideo();
+
+
+            } catch (Exception e) {
+                // TODO: handle exception
+                Toast.makeText(this, "Error connecting", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+//            enableWifi();
+
+        }*/
+
+
+//        watchAgain.setEnabled(false);
+//        answerQuestions.setEnabled(false);
+
+
+    }
+
+    private void autoPauseVideo() {
+//        handler.postDelayed(stopPlayerTask, 12000 /*+ (secondsCompleted+1000)*/);//pauses at 9 secs
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(!shdStop)
+                if (vv.getCurrentPosition() >= 12000) {
+                    vv.stopPlayback();
+                    shdStop=true;
+                }
+            }
+        }).start();
+    }
+
+    public void answerQuestions(View view) {
+        showQuestions();
+    }
+
+    public void watchAgain(View view) {
+//        if (answerFlag == 0)
+        if (watchAgainCount == 0) {
+            watchAgainCount++;
+
+            vv.seekTo(initPos);
+//        else
+//        vv.seekTo(currPos);
+
+            vv.start();
+//            answerQuestions.setEnabled(false);
+            buttonDisable();
+            autoPauseVideo();
+        } else {
+            Toast.makeText(this, "please wait!!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean isConnectingToInternet(Context applicationContext) {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process mIpAddrProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int mExitValue = mIpAddrProcess.waitFor();
+            System.out.println(" mExitValue " + mExitValue);
+            if (mExitValue == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (InterruptedException ignore) {
+            ignore.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+        if (isConnectingToInternet(this))
+            try {
+                mediaController = new MediaController(this);
+                mediaController.setAnchorView(vv);
+                Uri video = Uri.parse(link);
+                vv.setMediaController(null);
+                vv.setVideoURI(video);
+                vv.seekTo(initPos);
+                vv.start();
+                buttonDisable();
+                autoPauseVideo();
+
+
+            } catch (Exception e) {
+                // TODO: handle exception
+                Toast.makeText(this, "Error connecting", Toast.LENGTH_SHORT).show();
+            }
+        else {
+            Toast.makeText(this, "No Network", Toast.LENGTH_SHORT).show();
+//            registerReceiver(receiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+
+            enableWifi();
+        }
+    }
+
+    private void enableWifi() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                this);
+        alertDialog.setTitle("Confirm...");
+        alertDialog.setMessage("Do you want to go to wifi settings?");
+        alertDialog.setPositiveButton("yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                    }
+                });
+        alertDialog.setNegativeButton("no",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        alertDialog.show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        buttonDisable();
+        handler.removeCallbacks(stopPlayerTask);
+        if (isReceiverRegistered) {
+            isReceiverRegistered = false;
+
+            unregisterReceiver(receiver);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        registerReceiver(receiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+        if (!isReceiverRegistered) {
+            isReceiverRegistered = true;
+            registerReceiver(receiver, new IntentFilter("android.net.wifi.STATE_CHANGE"));
+            vv.resume();
+        }
+    }
+
+    private NetworkInfo getNetworkInfo(Context context) {
+        ConnectivityManager connManager = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_ANSWER) {
+            if (resultCode == Activity.RESULT_OK) {
+                Bundle bundle = data.getExtras();
+                shotLoc = (String) bundle.get("shot_location");
+                shotType = (String) bundle.get("shot_type");
+                Log.e("type and loc", "onActivityResult: " + shotLoc + "\n" + shotType);
+                    /*Intent intent;
+                    intent = new Intent(SwipeCard.this, OnlineTransActivity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);*/
+                initPos = currPos;
+                vv.seekTo(initPos);
+                vv.start();
+                buttonDisable();
+                autoPauseVideo();
+
+
+            } else {
+                Toast.makeText(getApplicationContext(), "Answer is not submitted", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
+
+
+}
+___________________________________________________________________________________________________________________________________________________________
+17/01/2019
+1.place hint buttons on next to buttons.
+2.ask karthik if long press buttons are ok?
+3.display the result.
+___________________________________________________________________________________________________________________________________________________________
+20/01/2020
+1.
+image inside dialog
+Dialog settingsDialog = new Dialog(this);
+settingsDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+settingsDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout
+        , null));
+settingsDialog.show();
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <ImageView android:layout_width="wrap_content" 
+        android:layout_height="wrap_content" android:src="YOUR IMAGE"/>
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="OK" android:onClick="dismissListener"/>
+</LinearLayout>
+
+2.add listview in scroll view..
+
+___________________________________________________________________________________________________________________________________________________________
+21/01/2020
+1. add customized array
+22/01/2020
+1. create answers(model) and add setter and getters. and add this object in array adapter.
+/data/data/com.example.my_badminton
+
+___________________________________________________________________________________________________________________________________________________________
+28/01/2020
+provider:
+
+package com.example.my_badminton;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.MediaPlayer;
+import android.media.PlaybackParams;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.MediaController;
+import android.widget.Toast;
+import android.widget.VideoView;
+
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.android.youtube.player.YouTubePlayer.Provider;
+
+
+import java.io.IOException;
+
+@SuppressLint("Registered")
+public class YoutubeTrail extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
+    private static final int RECOVERY_REQUEST = 1;
+    YouTubePlayerView youTubePlayerView;
+    YouTubePlayer.OnInitializedListener onInitializedListener;
+    private MyPlayerStateChangeListener playerStateChangeListener;
+    private MyPlaybackEventListener playbackEventListener;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_youtube);
+        playerStateChangeListener = new MyPlayerStateChangeListener();
+        playbackEventListener = new MyPlaybackEventListener();
+        youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player_view);
+
+        /*onInitializedListener = new YouTubePlayer.OnInitializedListener() {
+
+            @Override
+            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+
+            }
+
+            @Override
+            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+            }
+        };*/
+        youTubePlayerView.initialize(PlayerConfig.API_KEY, onInitializedListener);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RECOVERY_REQUEST) {
+            // Retry initialization if user performed a recovery action
+            getYouTubePlayerProvider().initialize(PlayerConfig.API_KEY, this);
+        }
+    }
+
+    protected Provider getYouTubePlayerProvider() {
+        return youTubePlayerView;
+    }
+
+    private void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onInitializationSuccess(Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+        youTubePlayer.loadVideo("-72P_EFphSc");/*15qGHhFaWao*/
+        youTubePlayer.play();
+    }
+
+    @Override
+    public void onInitializationFailure(Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+    }
+
+    private final class MyPlaybackEventListener implements YouTubePlayer.PlaybackEventListener {
+
+        @Override
+        public void onPlaying() {
+            // Called when playback starts, either due to user action or call to play().
+            showMessage("Playing");
+        }
+
+        @Override
+        public void onPaused() {
+            // Called when playback is paused, either due to user action or call to pause().
+            showMessage("Paused");
+        }
+
+        @Override
+        public void onStopped() {
+            // Called when playback stops for a reason other than being paused.
+            showMessage("Stopped");
+        }
+
+        @Override
+        public void onBuffering(boolean b) {
+            // Called when buffering starts or ends.
+        }
+
+        @Override
+        public void onSeekTo(int i) {
+            // Called when a jump in playback position occurs, either
+            // due to user scrubbing or call to seekRelativeMillis() or seekToMillis()
+        }
+    }
+
+    private final class MyPlayerStateChangeListener implements YouTubePlayer.PlayerStateChangeListener {
+
+        @Override
+        public void onLoading() {
+            // Called when the player is loading a video
+            // At this point, it's not ready to accept commands affecting playback such as play() or pause()
+        }
+
+        @Override
+        public void onLoaded(String s) {
+            // Called when a video is done loading.
+            // Playback methods such as play(), pause() or seekToMillis(int) may be called after this callback.
+        }
+
+        @Override
+        public void onAdStarted() {
+            // Called when playback of an advertisement starts.
+        }
+
+        @Override
+        public void onVideoStarted() {
+            // Called when playback of the video starts.
+        }
+
+        @Override
+        public void onVideoEnded() {
+            // Called when the video reaches its end.
+        }
+
+        @Override
+        public void onError(YouTubePlayer.ErrorReason errorReason) {
+            // Called when an error occurs.
+        }
+    }
+}
+_______________________________________________________________________________________________________________________________________
+before adding pause==vv.getCurrantPos
+
+package com.example.my_badminton;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.MediaPlayer;
+import android.media.PlaybackParams;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.MediaController;
+import android.widget.Toast;
+import android.widget.VideoView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.IOException;
+
+public class PlayVideo extends AppCompatActivity {
+    static MediaPlayer mediaPlayer;
+    String html = "<iframe width=\"560\" height=\"315\" src=\"http://www.youtube.com/watch?v=cRFnsOUoHmM\" frameborder=\"0\" allowfullscreen></iframe>\"";
+    String url = "<iframe src='https://www.youtube.com/watch?v=cRFnsOUoHmM?fs=0' width='100%' height='100%' style='border: none;'></iframe>";
+    int initPos, currPos, watchAgainCount, pauseAt = 0;
+    Button watchAgain, answerQuestions;
+    String link;
+    MediaController mediaController;
+    //    AnswersModel answersModel;
+    Handler handler;
+    Intent intent;
+    int REQUEST_ANSWER = 1;
+    //    DBHandler db;
+    int pauses[] = {5, 6, 7};//9,19,29
+    private boolean isReceiverRegistered = false;
+    private VideoView vv;
+    Runnable stopPlayerTask = new Runnable() {
+        @Override
+        public void run() {
+            vv.pause();
+            currPos = (vv.getCurrentPosition());/*(pauses[pauseAt])/11; vv.getCurrentPosition();*/
+            Log.e("run: ", "stopped at sec " + vv.getCurrentPosition() + " currpos is " + currPos);
+            buttonEnable();
+            watchAgainCount = 0;
+
+
+        }
+    };
+    final MediaPlayer.OnInfoListener onInfoToPlayStateListener = new MediaPlayer.OnInfoListener() {
+
+        @Override
+        public boolean onInfo(MediaPlayer mp, int what, int extra) {
+            switch (what) {
+                case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START: {
+                    Log.e("info", "MEDIA_INFO_VIDEO_RENDERING_START");
+                    vv.seekTo(initPos);
+                    vv.start();
+                    buttonDisable();
+                    autoPauseVideo(pauses[pauseAt], pauseAt);
+                    return true;
+                }
+                case MediaPlayer.MEDIA_INFO_BUFFERING_START: {
+                    Log.e("info", "MEDIA_INFO_BUFFERING_START");
+
+                    return true;
+                }
+                case MediaPlayer.MEDIA_INFO_BUFFERING_END: {
+                    Log.e("info", "MEDIA_INFO_BUFFERING_END");
+
+
+                    return true;
+                }
+            }
+            return false;
+        }
+    };
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            NetworkInfo info = getNetworkInfo(context);
+            if (info != null && info.isConnected()) {
+                //Todo code to execute if wifi connected
+            } else {                  //Todo code to execute if wifi disconnected
+            }
+        }
+    };
+    private String shotLoc, shotType;
+    private boolean shdStop = false;
+
+    private void buttonEnable() {
+        watchAgain.setVisibility(View.VISIBLE);
+        answerQuestions.setVisibility(View.VISIBLE);
+    }
+
+    private void showQuestions() {
+        intent = new Intent(this, SubmitAnswer.class);
+
+        new AlertDialog.Builder(this)
+                .setTitle("Answer the question")
+                .setMessage("Q1.xxxxx?")
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setPositiveButton("ans", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivityForResult(intent, REQUEST_ANSWER);
+                       /* initPos = currPos;
+                        vv.seekTo(initPos);
+                        vv.start();
+                        buttonDisable();
+//                        answerQuestions.setEnabled(false);
+                        autoPauseVideo();*/
+                    }
+                }).show();
+    }
+
+    private void buttonDisable() {
+        watchAgain.setVisibility(View.GONE);
+        answerQuestions.setVisibility(View.GONE);
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_paly_video);
+        vv = (VideoView) findViewById(R.id.video_view);
+//        db=new DBHandler(this);
+        watchAgain = findViewById(R.id.watch_again);
+        answerQuestions = findViewById(R.id.answer_questions);
+        link = "http://stage1.optipacetech.com/badminton/videos/counting.mp4";
+        handler = new Handler();
+
+/*        if (isConnectingToInternet(this)) {
+//            onStart();
+            try {
+                mediaController = new MediaController(this);
+                mediaController.setAnchorView(vv);
+                Uri video = Uri.parse(link);
+                vv.setMediaController(null);
+                vv.setVideoURI(video);
+                vv.start();
+                autoPauseVideo();
+
+
+            } catch (Exception e) {
+                // TODO: handle exception
+                Toast.makeText(this, "Error connecting", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+//            enableWifi();
+
+        }*/
+
+
+//        watchAgain.setEnabled(false);
+//        answerQuestions.setEnabled(false);
+
+
+    }
+
+    private void autoPauseVideo(final int pauseAt, int nonTimer) {
+        //to stop on media player
+/*while(vv.getCurrentPosition()==pauseAt)
+            Toast.makeText(this, "stopHere!!!", Toast.LENGTH_SHORT).show();
+            vv.pause();
+            currPos = vv.getCurrentPosition();
+            buttonEnable();
+            watchAgainCount = 0;
+        }*/
+        Log.e("autoPauseVideo:", " timer " + pauseAt + "\n video time " + nonTimer);
+        handler.postDelayed(stopPlayerTask, pauseAt /*+ (secondsCompleted+1000)*/);//pauses at 9 secs
+       /* new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(!shdStop)
+                if (vv.getCurrentPosition() >= pauseAt) {
+                    vv.stopPlayback();
+                    shdStop=true;
+                    currPos = vv.getCurrentPosition();
+//                    buttonEnable();
+                    watchAgainCount = 0;
+                }
+            }
+        }).start();*/
+    }
+
+    public void answerQuestions(View view) {
+        showQuestions();
+    }
+
+    public void watchAgain(View view) {
+//        if (answerFlag == 0)
+        if (watchAgainCount == 0) {
+            watchAgainCount++;
+
+            vv.seekTo(initPos);
+//        else
+//        vv.seekTo(currPos);
+
+            vv.start();
+//            answerQuestions.setEnabled(false);
+            buttonDisable();
+            autoPauseVideo(pauses[pauseAt], pauseAt);
+        } else {
+            Toast.makeText(this, "please wait!!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean isConnectingToInternet(Context applicationContext) {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process mIpAddrProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int mExitValue = mIpAddrProcess.waitFor();
+            System.out.println(" mExitValue " + mExitValue);
+            if (mExitValue == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (InterruptedException ignore) {
+            ignore.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+        if (isConnectingToInternet(this))
+            try {
+                mediaController = new MediaController(this);
+                mediaController.setAnchorView(vv);
+                Uri video = Uri.parse(link);
+                vv.setMediaController(mediaController);
+
+                vv.setVideoURI(video);
+                Log.e("onPrepared11: ", "pauses[pauseAt] " + pauses[pauseAt] + " pauseAt " + pauseAt + "initpos" + initPos);
+                vv.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        PlaybackParams myPlayBackParams = null;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                            myPlayBackParams = new PlaybackParams();
+                            myPlayBackParams.setSpeed(0.2f); //you can set speed here
+                            mp.setPlaybackParams(myPlayBackParams);
+                            vv.setOnInfoListener(onInfoToPlayStateListener);
+                            /*if (vv.requestFocus()) {
+                                vv.seekTo(initPos);
+                                vv.start();
+                                buttonDisable();
+                                autoPauseVideo(pauses[pauseAt], pauseAt);
+
+                            }*/
+                            //mp.seekTo(initPos);
+                        }
+
+
+                        Log.e("onPrepared22: ", "pauses[pauseAt] " + pauses[pauseAt] + " pauseAt " + pauseAt + "initpos" + initPos);
+
+                    }
+                });
+
+                //vv.seekTo(initPos);
+                //vv.start();
+                //buttonDisable();
+
+
+            } catch (Exception e) {
+                // TODO: handle exception
+                Toast.makeText(this, "Error connecting", Toast.LENGTH_SHORT).show();
+            }
+        else {
+            Toast.makeText(this, "No Network", Toast.LENGTH_SHORT).show();
+//            registerReceiver(receiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+
+            enableWifi();
+        }
+    }
+
+    private void enableWifi() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                this);
+        alertDialog.setTitle("Confirm...");
+        alertDialog.setMessage("Do you want to go to wifi settings?");
+        alertDialog.setPositiveButton("yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                    }
+                });
+        alertDialog.setNegativeButton("no",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        alertDialog.show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        buttonDisable();
+        handler.removeCallbacks(stopPlayerTask);
+        if (isReceiverRegistered) {
+            isReceiverRegistered = false;
+            unregisterReceiver(receiver);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        registerReceiver(receiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+        if (!isReceiverRegistered) {
+            isReceiverRegistered = true;
+            registerReceiver(receiver, new IntentFilter("android.net.wifi.STATE_CHANGE"));
+            vv.resume();
+        }
+    }
+
+    private NetworkInfo getNetworkInfo(Context context) {
+        ConnectivityManager connManager = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_ANSWER) {
+            if (resultCode == Activity.RESULT_OK) {
+                final Bundle bundle = data.getExtras();
+                shotLoc = (String) bundle.get("shot_location");
+                shotType = (String) bundle.get("shot_type");
+//                db.saveAnswers(shotLoc,shotType);
+                Log.e("type and loc", "onActivityResult: " + shotLoc + "\n" + shotType);
+
+                /*answersModel.setShotLocation((String) bundle.get("shot_location"));
+                answersModel.setShotType((String) bundle.get("shot_type"));*/
+
+
+                    /*Intent intent;
+                    intent = new Intent(SwipeCard.this, OnlineTransActivity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);*/
+                Log.e("onActivityResult0", "curr pos " + currPos + "\n init pos " + initPos);
+
+                if (!(pauseAt > pauses.length)) {
+                    Log.e("onActivityResult1", "curr pos " + currPos + "\n init pos " + initPos);
+                    initPos = currPos;
+                    pauseAt = pauseAt + 1;
+                    Log.e("onActivityResult2", "curr pos " + currPos + "\n init pos " + initPos);
+
+
+                    // below code is useless coz after activity result it goes to onstart() which has below code.
+
+                   /* vv.seekTo(initPos);
+//                    vv.start();
+                    buttonDisable();
+                    try {
+                        autoPauseVideo(pauses[pauseAt++]);
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        e.printStackTrace();
+                    }*/
+                }
+
+                vv.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        Log.e("redirecting", "to view answer");
+                        startActivity(new Intent(getApplication(), ViewAnswers.class).putExtras(bundle));
+
+                    }
+                });
+
+            }
+
+
+        } else {
+            Toast.makeText(getApplicationContext(), "Answer is not submitted", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+}
+___________________________________________________________________________________________________________________________________________________
+29/01/2020
+try this for progress bar position
+@Override
+public void run() {
+    // TODO Auto-generated method stub
+
+    try {
+        while (mp != null) {
+            int currentPosition = mp.getCurrentPosition();
+            Message msg = new Message();
+            msg.what = currentPosition;
+            threadHandler.sendMessage(msg);
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                System.out.println("interrupt exeption" + e);
+            }
+        }
+    }
+
+    catch (Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+        System.out.println("My exeption" + e);
+    } 
+}
+
+
+when handlerTime = handlerTime + 10 
+the values are 
+E/run:: current pos 0
+E/info: MEDIA_INFO_VIDEO_RENDERING_START
+E/run:: current pos 26
+E/run:: current pos 33
+E/run:: current pos 41
+E/run:: current pos 51
+E/run:: current pos 63
+E/run:: current pos 78
+I/zygote64: Do partial code cache collection, code=61KB, data=46KB
+I/zygote64: After code cache collection, code=61KB, data=46KB
+    Increasing code cache capacity to 256KB
+E/run:: current pos 94
+E/run:: current pos 113
+E/run:: current pos 133
+E/run:: current pos 156
+E/run:: current pos 180
+E/run:: current pos 209
+E/run:: current pos 238
+E/run:: current pos 287
+E/run:: current pos 320
+W/Adreno-ES20: <core_glFinish:34>: glFinish skipped: 0
+W/Adreno-ES20: <core_glFinish:34>: glFinish skipped: 0
+E/run:: current pos 354
+E/run:: current pos 391
+E/run:: current pos 429
+E/run:: current pos 470
+E/run:: current pos 512
+E/run:: current pos 557
+E/run:: current pos 603
+E/run:: current pos 652
+I/zygote64: Do full code cache collection, code=124KB, data=94KB
+I/zygote64: After code cache collection, code=96KB, data=65KB
+E/run:: current pos 703
+E/run:: current pos 755
+E/run:: current pos 810
+E/run:: current pos 866
+E/run:: current pos 924
+E/run:: current pos 985
+E/run:: current pos 1047
+E/run:: current pos 1125
+E/run:: current pos 1191
+E/run:: current pos 1260
+E/run:: current pos 1330
+E/run:: current pos 1403
+E/run:: current pos 1477
+E/run:: current pos 1553
+E/run:: current pos 1632
+E/run:: current pos 1712
+E/run:: current pos 1795
+E/run:: current pos 1854
+E/run:: current pos 1941
+E/run:: current pos 2030
+E/run:: current pos 2120
+E/run:: current pos 2213
+E/run:: current pos 2307
+E/run:: current pos 2419
+E/run:: current pos 2518
+E/run:: current pos 2618
+W/Adreno-EGL: <qeglDrvAPI_eglGetConfigAttrib:612>: EGL_BAD_ATTRIBUTE
+D/vndksupport: Loading /vendor/lib64/hw/gralloc.msm8937.so from current namespace instead of sphal namespace.
+E/run:: current pos 2721
+I/zygote64: Do partial code cache collection, code=123KB, data=89KB
+    After code cache collection, code=123KB, data=89KB
+    Increasing code cache capacity to 512KB
+E/run:: current pos 2825
+E/run:: current pos 2932
+E/run:: current pos 3041
+E/run:: current pos 3152
+W/Adreno-ES20: <core_glFinish:34>: glFinish skipped: 0
+W/Adreno-ES20: <core_glFinish:34>: glFinish skipped: 0
+E/run:: current pos 3247
+E/run:: current pos 3362
+E/run:: current pos 3466
+E/run:: current pos 3585
+E/run:: current pos 3705
+E/run:: current pos 3828
+E/run:: current pos 3974
+E/run:: current pos 4100
+E/run:: current pos 4216
+I/zygote64: Compiler allocated 6MB to compile void android.view.ViewRootImpl.performTraversals()
+E/run:: current pos 4346
+E/run:: current pos 4479
+E/run:: current pos 4613
+E/run:: current pos 4736
+E/run:: current pos 4875
+E/run:: current pos 5017
+E/run:: current pos 5159
+E/run:: current pos 5319
+E/run:: current pos 5465
+E/run:: current pos 5603
+E/run:: current pos 5754
+E/run:: current pos 5906
+E/run:: current pos 6042
+E/run:: current pos 6199
+E/run:: current pos 6346
+E/run:: current pos 6507
+E/run:: current pos 6703
+E/run:: current pos 6867
+E/run:: current pos 7034
+E/run:: current pos 7183
+E/run:: current pos 7354
+E/run:: current pos 7527
+E/run:: current pos 7702
+E/run:: current pos 7867
+E/run:: current pos 8045
+E/run:: current pos 8212
+E/run:: current pos 8399
+_________________________________
+when handlerTime = handlerTime + 100
+E/run:: current pos 0
+W/MediaPlayerNative: info/warning (3, 0)
+E/info: MEDIA_INFO_VIDEO_RENDERING_START
+E/run:: current pos 51
+E/run:: current pos 112
+E/run:: current pos 192
+E/run:: current pos 302
+I/zygote64: Do partial code cache collection, code=58KB, data=47KB
+I/zygote64: After code cache collection, code=58KB, data=47KB
+    Increasing code cache capacity to 256KB
+E/run:: current pos 422
+E/run:: current pos 563
+W/Adreno-ES20: <core_glFinish:34>: glFinish skipped: 0
+W/Adreno-ES20: <core_glFinish:34>: glFinish skipped: 0
+E/run:: current pos 723
+E/run:: current pos 904
+E/run:: current pos 1091
+E/run:: current pos 1312
+E/run:: current pos 1540
+E/run:: current pos 1801
+E/run:: current pos 2101
+E/run:: current pos 2386
+E/run:: current pos 2707
+E/run:: current pos 3048
+E/run:: current pos 3392
+E/run:: current pos 3795
+E/run:: current pos 4195
+E/run:: current pos 4594
+E/run:: current pos 5048
+E/run:: current pos 5508
+I/zygote64: Do full code cache collection, code=123KB, data=88KB
+I/zygote64: After code cache collection, code=97KB, data=64KB
+E/run:: current pos 5970
+E/run:: current pos 6480
+____________________________________________
+when handlerTime = handlerTime + 1
+E/run:: current pos 0
+E/run:: current pos 89
+E/run:: current pos 100
+E/run:: current pos 107
+E/run:: current pos 114
+E/run:: current pos 126
+W/MediaPlayerNative: info/warning (3, 0)
+E/run:: current pos 147
+E/info: MEDIA_INFO_VIDEO_RENDERING_START
+E/run:: current pos 156
+I/zygote64: Do partial code cache collection, code=60KB, data=46KB
+I/zygote64: After code cache collection, code=60KB, data=46KB
+    Increasing code cache capacity to 256KB
+E/run:: current pos 170
+E/run:: current pos 178
+E/run:: current pos 183
+E/run:: current pos 195
+E/run:: current pos 205
+E/run:: current pos 213
+E/run:: current pos 218
+E/run:: current pos 224
+E/run:: current pos 231
+E/run:: current pos 238
+E/run:: current pos 246
+E/run:: current pos 254
+E/run:: current pos 265
+E/run:: current pos 279
+E/run:: current pos 289
+E/run:: current pos 301
+E/run:: current pos 307
+I/zygote64: Do full code cache collection, code=124KB, data=94KB
+I/zygote64: After code cache collection, code=92KB, data=62KB
+E/run:: current pos 313
+E/run:: current pos 320
+E/run:: current pos 327
+E/run:: current pos 333
+E/run:: current pos 340
+E/run:: current pos 290
+E/run:: current pos 297
+E/run:: current pos 304
+E/run:: current pos 311
+E/run:: current pos 320
+E/run:: current pos 328
+E/run:: current pos 337
+E/run:: current pos 345
+E/run:: current pos 353
+E/run:: current pos 362
+E/run:: current pos 372
+E/run:: current pos 381
+E/run:: current pos 390
+E/run:: current pos 399
+E/run:: current pos 409
+if want to pause, increase the remaining time by counting the time paused and add.
+______________________________________________________________________________________________________________________________________________
+30/01/2020
+ the pauses are{
+0.16692996423721312(),0.7987609985694886
+1.7136649866485596, 2.1010930276565554
+3.4260490295639037,4.04645494802475
+5.262332974250794,5.753871975681305
+7.0304789957084655,7.969838037670136
+8.617399953269958,9.336854976158142
+10.425100980926514,10.86966297329712
+_________________________________________________________________________________________________________________________________________________
+vv.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        int current, tempCurr, duration;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+
+                            myPlayBackParams.setSpeed(0.2f); //you can set speed here
+                            mp.setPlaybackParams(myPlayBackParams);
+                            vv.setOnInfoListener(onInfoToPlayStateListener);
+                            handler.postDelayed(stopPlayerTask, handlerTime);
+
+                        }
+                    }
+                });
+
+_________________________________________________________________________________________________________________________________________________
+31/01/2020
+1.fine pausing at first 	
+2.mp.setPlayback play the video automatically..
+test codes are written in new download file
+__________________________________________________________________________________________________________________________________________________
+03/02/2020
+perfectly working(pausing )
+package com.example.my_badminton;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.MediaPlayer;
+import android.media.PlaybackParams;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Parcelable;
+import android.os.PersistableBundle;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.MediaController;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.VideoView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.IOException;
+
+@RequiresApi(api = Build.VERSION_CODES.O)
+public class PlayVideo extends AppCompatActivity {
+    static MediaPlayer mediaPlayer;
+    final MediaPlayer.OnInfoListener onInfoToPlayStateListener = new MediaPlayer.OnInfoListener() {
+
+        @Override
+        public boolean onInfo(MediaPlayer mp, int what, int extra) {
+            switch (what) {
+                case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START: {
+                    Log.e("info", "MEDIA_INFO_VIDEO_RENDERING_START");
+                    /*vv.seekTo(initPos);
+                    vv.start();
+                    buttonDisable();
+                    autoPauseVideo(pauses[pauseAt], pauseAt);*/
+                    return true;
+                }
+                case MediaPlayer.MEDIA_INFO_BUFFERING_START: {
+                    Log.e("info", "MEDIA_INFO_BUFFERING_START");
+
+                    return true;
+                }
+                case MediaPlayer.MEDIA_INFO_BUFFERING_END: {
+                    Log.e("info", "MEDIA_INFO_BUFFERING_END");
+
+
+                    return true;
+                }
+            }
+            return false;
+        }
+    };
+    String html = "<iframe width=\"560\" height=\"315\" src=\"http://www.youtube.com/watch?v=cRFnsOUoHmM\" frameborder=\"0\" allowfullscreen></iframe>\"";
+    String url = "<iframe src='https://www.youtube.com/watch?v=cRFnsOUoHmM?fs=0' width='100%' height='100%' style='border: none;'></iframe>";
+    int initPos, currPos, watchAgainCount, pauseAt, REQUEST_ANSWER = 1, answerCount;
+    Button watchAgain, answerQuestions;
+    String link;
+    MediaController mediaController;
+    Bundle bundle = new Bundle();
+    TextView ctv;
+    //    AnswersModel answersModel;
+    Handler handler;
+    Intent intent;
+    //    DBHandler db;\
+    int[] pauses = {166, 798, 1713, 2101, 3426, 4046, 5262, 5753, 7030, 7969, 8617, 9336, 10425, 10869};
+    //    String[] pauses = {"0166", "0798","1713", "2101", "3426", "4046", "5262", "5753", "7030", "7969", "8617", "9336", "10425", "10869"};
+    int handlerTime = 0, remainingTime = 500000;
+    String sCurrPos = "";
+    private boolean isReceiverRegistered = false;
+    private VideoView vv;
+    Runnable stopPlayerTask = new Runnable() {
+        @Override
+        public void run() {
+            remainingTime = remainingTime - handlerTime;
+            sCurrPos = String.valueOf(currPos = (vv.getCurrentPosition()));/*(pauses[pauseAt])/11; vv.getCurrentPosition();*/
+            /*if (sCurrPos.length() == 3) { // assuming that the first pause will be after 100th sec so ==3
+                sCurrPos = "0" + sCurrPos;// append 0 so that it matches with given pause time
+                Log.e("run: ", "String current pos subString " + sCurrPos.substring(0, 3) + " pause[] value " + pauses[pauseAt].substring(0, 3));
+            }*/
+            if (pauses[pauseAt] <= currPos)/*sCurrPos.length() >= 4 && sCurrPos.substring(0, 3).equals(pauses[pauseAt].substring(0, 3))*/ {
+                Log.e("run: ", "String current pos subString " + sCurrPos + " pause[] value " + pauses[pauseAt] + "media Player " + mediaPlayer);
+                mediaPlayer.pause();
+//                vv.pause();
+                buttonEnable();
+                watchAgainCount = 0;
+            }
+
+            ctv.setText(sCurrPos);
+
+            if (remainingTime > 0 && vv.isPlaying()) {
+                handler.postDelayed(stopPlayerTask, handlerTime = handlerTime + 1);
+            }
+
+        }
+    };
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            NetworkInfo info = getNetworkInfo(context);
+            if (info != null && info.isConnected()) {
+                //Todo code to execute if wifi connected
+            } else {                  //Todo code to execute if wifi disconnected
+            }
+        }
+    };
+    private String shotLoc, shotType;
+    private boolean shdStop = false;
+
+    private void buttonEnable() {
+        watchAgain.setVisibility(View.VISIBLE);
+        answerQuestions.setVisibility(View.VISIBLE);
+    }
+
+    private void showQuestions() {
+        intent = new Intent(this, SubmitAnswer.class);
+
+        new AlertDialog.Builder(this)
+                .setTitle("Answer the question")
+                .setMessage("Q1.xxxxx?")
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setPositiveButton("ans", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivityForResult(intent, REQUEST_ANSWER);
+                    }
+                }).show();
+    }
+
+    private void buttonDisable() {
+        watchAgain.setVisibility(View.GONE);
+        answerQuestions.setVisibility(View.GONE);
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_paly_video);
+        vv = (VideoView) findViewById(R.id.video_view);
+        ctv = findViewById(R.id.count_down);
+//        db=new DBHandler(this);
+        watchAgain = findViewById(R.id.watch_again);
+        answerQuestions = findViewById(R.id.answer_questions);
+        link = "http://stage1.optipacetech.com/badminton/videos/training.mp4";
+//        link = "android.resource://" + getPackageName() + "/" + R.raw.training;
+        handler = new Handler();
+
+        if (isConnectingToInternet(this))
+            try {
+                if (mediaController == null) {
+                    mediaController = new MediaController(this);
+                }
+                mediaController.setAnchorView(vv);
+                Uri video = Uri.parse(link);
+                vv.setMediaController(null);
+
+                vv.setVideoURI(video);
+//                vv.seekTo(initPos);
+//                vv.start();
+                buttonDisable();
+//                while (vv.getCurrentPosition() == pauses[pauseAt] * 1000) {
+//                autoPauseVideo(pauses[pauseAt], pauseAt);
+//                }
+
+                Log.e("onPrepared11: ", "pauses[pauseAt] " + pauses[pauseAt] + " pauseAt " + pauseAt + "initpos" + initPos + "answercount");
+                vv.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        mediaPlayer = mp;
+                        int current, tempCurr, duration;
+                        PlaybackParams myPlayBackParams = null;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                            myPlayBackParams = new PlaybackParams();
+                            myPlayBackParams.setSpeed(0.2f); //you can set speed here
+
+//                            if (answerCount == 0) {
+                            mp.setPlaybackParams(myPlayBackParams);
+//                            }
+                            mp.seekTo(initPos, MediaPlayer.SEEK_CLOSEST);
+                            mp.start();
+                            vv.setOnInfoListener(onInfoToPlayStateListener);
+                            handler.postDelayed(stopPlayerTask, handlerTime);
+                            /*vv.seekTo(initPos);
+                            vv.start();*/
+                            buttonDisable();
+
+                        }
+                        Log.e("onPrepared22: ", "pauses[pauseAt] " + pauses[pauseAt] + " pauseAt " + pauseAt + "initpos" + initPos);
+                    }
+                });
+            } catch (Exception e) {
+                // TODO: handle exception
+                Toast.makeText(this, "Error connecting", Toast.LENGTH_SHORT).show();
+            }
+        else {
+            Toast.makeText(this, "No Network", Toast.LENGTH_SHORT).show();
+//            registerReceiver(receiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+
+            enableWifi();
+        }
+    }
+
+    private void autoPauseVideo(final int pauseAt, int nonTimer) {
+        //to stop on media player
+/*while(vv.getCurrentPosition()==pauseAt)
+            Toast.makeText(this, "stopHere!!!", Toast.LENGTH_SHORT).show();*/
+        vv.pause();
+        currPos = vv.getCurrentPosition();
+        buttonEnable();
+        watchAgainCount = 0;
+
+        Log.e("autoPauseVideo:", " timer " + pauseAt + "\n video time " + nonTimer);
+//        handler.postDelayed(stopPlayerTask, vv.getCurrentPosition()/*+ (secondsCompleted+1000)*/);//pauses at 9 secs
+//        handler.post(stopPlayerTask);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putInt("Position", pauses[pauseAt]);// coz this is where we want the video to get paused.
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        currPos = savedInstanceState.getInt("Position");
+        vv.seekTo(currPos);
+    }
+
+    @Override
+    public void onRestoreInstanceState(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onRestoreInstanceState(savedInstanceState, persistentState);
+        currPos = savedInstanceState.getInt("Position");
+        vv.seekTo(currPos);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void answerQuestions(View view) {
+        // testing.. this view is acted as play button
+        /*if (!(pauseAt > pauses.length)) {
+            initPos = currPos;
+            pauseAt = pauseAt + 1;
+            Log.e("answerButton pressed", " init pos is " + initPos);
+            vv.requestFocus();
+//            mediaPlayer.start();
+            mediaPlayer.seekTo(initPos,MediaPlayer.SEEK_CLOSEST);
+            mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+                @Override
+                public void onSeekComplete(MediaPlayer mp) {
+                    mediaPlayer.start();
+                }
+            });
+*//*
+            vv.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+                        @Override
+                        public void onSeekComplete(MediaPlayer mp) {
+                            vv.seekTo(initPos);
+                            vv.start();
+                            Log.e("answerButton pressed", " onprepared " + initPos);
+
+                        }
+                    });
+
+
+
+                }
+            });
+*//*
+            buttonDisable();
+            handler.postDelayed(stopPlayerTask, handlerTime);
+
+        }*/
+        showQuestions();
+    }
+
+    public void watchAgain(View view) {
+//        if (answerFlag == 0)
+        if (watchAgainCount == 0) {
+            watchAgainCount++;
+
+            mediaPlayer.seekTo(initPos, MediaPlayer.SEEK_CLOSEST);
+            vv.seekTo(initPos);
+//        else
+//        vv.seekTo(currPos);
+
+            vv.start();
+//            answerQuestions.setEnabled(false);
+            buttonDisable();
+//            autoPauseVideo(pauses[pauseAt], pauseAt);
+        } else {
+            Toast.makeText(this, "please wait!!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean isConnectingToInternet(Context applicationContext) {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process mIpAddrProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int mExitValue = mIpAddrProcess.waitFor();
+            System.out.println(" mExitValue " + mExitValue);
+            if (mExitValue == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (InterruptedException ignore) {
+            ignore.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+
+    }
+
+    private void enableWifi() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                this);
+        alertDialog.setTitle("Confirm...");
+        alertDialog.setMessage("Do you want to go to wifi settings?");
+        alertDialog.setPositiveButton("yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                    }
+                });
+        alertDialog.setNegativeButton("no",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        alertDialog.show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        buttonDisable();
+        handler.removeCallbacks(stopPlayerTask);
+        if (isReceiverRegistered) {
+            isReceiverRegistered = false;
+            unregisterReceiver(receiver);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        registerReceiver(receiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+        if (!isReceiverRegistered) {
+            isReceiverRegistered = true;
+            registerReceiver(receiver, new IntentFilter("android.net.wifi.STATE_CHANGE"));
+            vv.resume();
+        }
+    }
+
+    private NetworkInfo getNetworkInfo(Context context) {
+        ConnectivityManager connManager = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_ANSWER) {
+            if (resultCode == Activity.RESULT_OK) {
+                final Bundle bundle = data.getExtras();
+                shotLoc = (String) bundle.get("shot_location");
+                shotType = (String) bundle.get("shot_type");
+//                db.saveAnswers(shotLoc,shotType);
+                Log.e("type and loc", "onActivityResult: " + shotLoc + "\n" + shotType);
+
+                /*answersModel.setShotLocation((String) bundle.get("shot_location"));
+                answersModel.setShotType((String) bundle.get("shot_type"));*/
+
+
+                    /*Intent intent;
+                    intent = new Intent(SwipeCard.this, OnlineTransActivity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);*/
+                Log.e("onActivityResult0", "curr pos " + currPos + "\n init pos " + initPos);
+
+                if (!(pauseAt > pauses.length)) {
+                    Log.e("onActivityResult1", "curr pos " + currPos + "\n init pos " + initPos);
+                    initPos = currPos;
+                    pauseAt = pauseAt + 1;
+                    answerCount++;
+                    Log.e("onActivityResult2", "curr pos " + currPos + "\n init pos " + initPos);
+
+
+                    // below code is useless coz after activity result it goes to onstart() which has below code.
+
+                   /* vv.seekTo(initPos);
+//                    vv.start();
+                    buttonDisable();
+                    try {
+                        autoPauseVideo(pauses[pauseAt++]);
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        e.printStackTrace();
+                    }*/
+                }
+
+                vv.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        Log.e("redirecting", "to view answer");
+                        startActivity(new Intent(getApplication(), ViewAnswers.class).putExtras(bundle));
+
+                    }
+                });
+
+            }
+
+
+        } else {
+            Toast.makeText(getApplicationContext(), "Answer is not submitted", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+}
+
+2. on finish of video (one session) send the answer to the server.
+3.POINTS TO BE NOTED is saved in mail
+4. ListOfAnswers to be done..
+
+07/02/2020
+1.left out modules
+a.total time to answer the questions.
+b.total score.
+
+10/02/2020
+1. change the button style..
+2. after adding progress bar, sometimes the video starts from first.(testing)--resolved, but again the handler is called..
+3. add progress bar in the onInfoToPlayStateListener().---not helping
+
+tested styles
+1. Widget.AppCompat.Button.Colored
+
+button style and background theme
+
+
+17/02/2020
+
+1.download_answer.php pending
+2. answer validation.pending
+3.upload answer and score.pending
+4. cant play this video when server is not reachable.handle this.
+5. try mvc architecture.
+
+
+19/02/2020
+1. the data is not getting posting. 404 error.
+
+20/02/2020
+1.fetch pauses from playvideo.
+
+
+25/02/2020
+1.time calculation per question-done.
+2.button on court- partially done.
+3. Total score calculation -pending
+4 Total duration taken to answer -done
+5.onClickListener of custom adapter shd show the video clip-- pending
+
+26/02/2020
+1. set text in view answers for total answers.
+
+02/03/2020
+
+SELECT PAUSES  FROM PAUSES_TABLE WHERE PID IN(2,3)
+1. 	review the video fot the slot.-done
+2. stop at last pause---- pending(if non related video part, then clip the video by admin)  
+3. mp throws exception illegal state exception--pending
+4. review for 0th item crashing-- done
+5. if crashes then  the listview is not shown, save the answers in db.	-- done
+6. display myanswers in a dialog.--done
+
+
+04/03/2020
+1. set flag after game was completed.---pending
+2. able CORRECT_ANSWER has no column named PAUSES --done
+CREATE TABLE IF NOT EXISTS CORRECT_ANSWER(AID INTEGER PRIMARY KEY,SHOT_TYPE TEXT,SHOT_LOCTION TEXT,PAUSES NUMBER,SERVER_TIME NUMBER)----done
+3. correct asnwer stores the value everytime the app is launched (checking if table is empty)--done
+check whether the table is emplty, if yes then add the data into table----done
+4.score validation in geanswerImpl-done
+
+6/03/2020
+5. doesnt play video when network is off, after turning on also doesnt play, write networkListener --pending
+6. correct answer values are storeed in the database with a space-- make changes in pause.php---pending
+
+09/03/2020
+1.score calculation for type, loc,time each 1 point
+2. sync to server-- pending
+3. formed the xml in db handler. access the return value
+
+example
+{
+    "name": "sample",
+    "def": [
+        {
+            "setId": 1,
+            "setDef": [
+                {
+                    "name": "ABC",
+                    "type": "STRING"
+                },
+                {
+                    "name": "XYZ",
+                    "type": "STRING"
+                }
+            ]
+        },
+        {
+            "setId": 2,
+            "setDef": [
+                {
+                    "name": "abc",
+                    "type": "STRING"
+                },
+                {
+                    "name": "xyz",
+                    "type": "STRING"
+                }
+            ]
+        }
+    ]
+}
+
+JSONObject object = new JSONObject();
+object.put("name", "sample");
+JSONArray array = new JSONArray();
+
+JSONObject arrayElementOne = new JSONObject();
+arrayElementOne.put("setId", 1);
+JSONArray arrayElementOneArray = new JSONArray();
+
+JSONObject arrayElementOneArrayElementOne = new JSONObject();
+arrayElementOneArrayElementOne.put("name", "ABC");
+arrayElementOneArrayElementOne.put("type", "STRING");
+
+JSONObject arrayElementOneArrayElementTwo = new JSONObject();
+arrayElementOneArrayElementTwo.put("name", "XYZ");
+arrayElementOneArrayElementTwo.put("type", "STRING");
+
+arrayElementOneArray.put(arrayElementOneArrayElementOne);
+arrayElementOneArray.put(arrayElementOneArrayElementTwo);
+
+arrayElementOne.put("setDef", arrayElementOneArray);
+array.put(arrayElementOne);
+object.put("def", array);
+
+10/03/2020
+1. while fetching the answer get the video name also to stream the video----pending
+2.php for uploading the player data..
+
+11/03/2020
+1. download correct answer result ---
+	678:Top Middle:Push:240:10,678:Middle middle:Drive:602:12 ----------- server result 
+	1:678:Top Middle:0:240:10:,2:678:Middle middle:0:602:12:, ----------app result
+2. xml formed and sent to server 
+
+<player_record>
+<selection>
+<shot_type>Push</shot_type>
+<shot_location>Top middle</shot_location>
+<time>14</time>
+<score>2</score>
+<vid>678</vid></selection>
+
+<selection>
+<shot_type>Drive</shot_type>
+<shot_location>Middle middle</shot_location>
+<time>13</time>	
+<score>2</score>
+<vid>678</vid></selection>
+
+<selection>
+<shot_type>Drive</shot_type>
+<shot_location>Top middle</shot_location>
+<time>7</time>
+<score>1</score>
+<vid>678</vid></selection>
+
+<selection>
+<shot_type>Drive</shot_type>
+<shot_location>Middle middle</shot_location>
+<time>9</time>
+<score>3</score>
+<vid>678</vid></selection>
+
+<selection>
+<shot_type>Push</shot_type>
+<shot_location>Top middle</shot_location>
+<time>10</time>
+<score>3</score>
+<vid>678</vid></selection>
+
+<selection>
+<shot_type>Drive</shot_type>
+<shot_location>Middle middle</shot_location>
+<time>11</time>
+<score>3</score>
+<vid>678</vid></selection>
+
+<selection>
+<shot_type>Push</shot_type>
+<shot_location>Top middle</shot_location>
+<time>19</time>
+<score>2</score>
+<vid>678</vid></selection>
+
+<selection>
+<shot_type>Drive</shot_type>
+<shot_location>Middle middle</shot_location>
+<time>11</time>
+<score>3</score>
+<vid>678</vid></selection>
+
+<total_time>94</total_time>
+<total_score>19</total_score>
+<pid>047</pid>
+</player_record>
+
+
+null1:Push:Top Middle:240:10:678:,2:Drive:Middle middle:602:12:678:,
+
+2. clear the sqlite soon after syncing to serve-- pending
+
+java.lang.RuntimeException: Failure delivering result ResultInfo{who=null, request=1, result=-1, data=Intent { (has extras) }} to activity {com.example.my_badminton/com.example.my_badminton.PlayVideo}: java.lang.NullPointerException: Attempt to invoke virtual method 'boolean java.lang.String.equalsIgnoreCase(java.lang.String)' on a null object reference
+
+3.
+
+
+
+<selection%d>
+<shot_type>%s</shot_type>
+<shot_location>%s</shot_location>
+<time>%s</time>
+<score>%s</score>
+</selection%s>
+
+12/03/2020
+1. pid in xml is hardcoded, shd be fetched from db or server.
+2. to get the video id by sending the u_id
+to get the vid which are not viewed by the u_id--->SELECT DISTINCT `V_ID` FROM `ANSWERS` WHERE `V_ID` NOT IN(select `V_ID` from USER_LOG WHERE U_ID=1) order by RAND() limit 1 
+to get the pauses for the above query---->SELECT * FROM `ANSWERS` WHERE `V_ID` = (SELECT DISTINCT `V_ID` FROM `ANSWERS` WHERE `V_ID` NOT IN(select `V_ID` from USER_LOG WHERE U_ID=1) order by RAND() limit 1)
+3. get the video id and pauses for it ----done
+4. implement the watch nextvideo()---- done
+
+
+13/03/2020
+1. get the videos wen next video button is pressed
+2. in between of the video if player comes out of the game then starts from beginning.
+	soln: get the last pause from local db and assign it to answerCount---------------least priority----pending
+problem : after resuming, oncreate the videoName is fetched from server and played(video name is random, need not be the same video which was paused )
+soln: store the videoname in db, on resuming the video, fetch the video name from the dblite----done
+	
+to test
+1. fetch video from server
+2. delete tables once game is over
+3. sync data to server in table player_answer_info and player_pause_answers.
+4. update in server table user log. 
+
+
+download_player_answers.php response:
+2:bottom:net:2000:,2:bottom:Drop:2000:,videos/video2.mp4
+
+correctAnswers = {String[3]@5759}(split by ,)
+ 0 = "2:bottom:net:2000:" 
+answerContents = {String[4]@5849} (split by :
+ 0 = "2"
+ 1 = "bottom"
+ 2 = "net"
+ 3 = "2000"
+ 1 = "2:bottom:Drop:2000:"
+ 2 = "videos/video2.mp4"
+
+
+3:top right:net:2000:12,3:top right:Drive:2000:15,videos/video3.mp4
+
+
+
+<player_record>
+<selection>
+<shot_type>Push</shot_type>
+<shot_location>Top middle</shot_location>
+<time>6</time>
+<score>1</score>
+<vid>2</vid></selection>
+
+<total_time>6</total_time>
+<total_score>1</total_score>
+<pid>047</pid>
+</player_record>
+
+1.if (correctShotType[answerCount].equalsIgnoreCase(shotType)) { in play video class this line code crashing
+2.insert into user_log watch_flag field is default set to 0 
+	
+
+16/03/2020
+1.680:Middle Middle:Drive:234:15,videos/video1.mp4
+2. next video is playing the same video....pending, wen it comes back to play video starts playin the same video so added onResume and onPostResume(), but not helping---Done
+3. delete the db after sync to server ---done
+4. check my answers review --- done
+5. delete db after pressing next video. ----done	
+
+things to ask praveen
+2. automation of level for player after playing all the videos with threashold score.
+3.get the videos on the basis of level assigned to it when initially getting the answer/pauses
+
+
+2020-03-16 18:02:20.656 13269-13269/com.example.my_badminton E/AndroidRuntime: FATAL EXCEPTION: main
+    Process: com.example.my_badminton, PID: 13269
+    java.lang.IllegalArgumentException: reportSizeConfigurations: ActivityRecord not found for: Token{1437f44 ActivityRecord{2104857 u0 com.example.my_badminton/.ViewAnswers t-1 f}}
+        at android.os.Parcel.readException(Parcel.java:2020)
+        at android.os.Parcel.readException(Parcel.java:1962)
+        at android.app.IActivityManager$Stub$Proxy.reportSizeConfigurations(IActivityManager.java:9312)
+        at android.app.ActivityThread.reportSizeConfigurations(ActivityThread.java:2956)
+        at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2899)
+        at android.app.ActivityThread.-wrap11(Unknown Source:0)
+        at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1616)
+        at android.os.Handler.dispatchMessage(Handler.java:106)
+        at android.os.Looper.loop(Looper.java:176)
+        at android.app.ActivityThread.main(ActivityThread.java:6651)
+        at java.lang.reflect.Method.invoke(Native Method)
+        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:547)
+        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:824)
+2020-03-16 18:02:20.750 13269-13995/com.example.my_badminton D/Response fro
+
+
+18/03/2020
+1. sync to server xml data
+
+<player_record>
+<selection>
+<shot_type>Push</shot_type>
+<shot_location>Middle middle</shot_location>
+<time>14</time>
+<score>0</score>
+<vid>2</vid></selection>
+
+<selection>
+<shot_type>Drive</shot_type>
+<shot_location>Middle middle</shot_location>
+<time>15</time>
+<score>0</score>
+<vid>2</vid></selection>
+
+<total_time>29</total_time>
+<total_score>0</total_score>
+<pid>047</pid>
+</player_record>
+
+2. pooja pending module
+1. password reset
+2. database connectivity for admin and coach
+
+3. merge my code in her code --- pending
+4. check video_upload.php ---- done
+5. convert one of the project to library
+
+19/03/2020
+
+things to tell pooja
+1.web service  in MyDbAdapter
+2. to add saved preferances 
+
+20/03/2020
+activities
+1. /home/megha/Desktop/badminton/pooja/My_Badminton_megha(before cleanup) is my code before cleaning up
+2
+
+
+pooja's code
+
+the code containing SQLiteOpenHelper
+1.MyDbAdapter -- 
+2. ScoreStorageAdapter--
+3.
+
+things to do
+3.background color change
+4. font
+5. merge
+6. start game button background
+
+
+
+
+
+1.clean up my code--- done
+2. test cleaned up code.----pending
+3.merge with poojas code.-pending
+4. test after merging---pending
+5.change the path to uploads from videos in code(videos are beeing taken from videos folder in php)
+
+
+
+xml files
+list_of_answers
+fragment_shot_location
+activity_paly_video--- 
+activity_submit_answer
+fragment_shot_type
+activity_view_answer
+cutom_lisview_row
+
+
+22/03/2020
+1.change the app bg-- pending
+2. completed all the levels shd be shown in some activity.
+
+
+23/03/2020
+1. no logout in playvideo.
+2. pin generation
+3. reggistration pin is 1234.
+4. pin reset 
+5. after initial play reset the pin 
+		enter new pin
+		reset the pin
+		confirm.
+		parents mailid
+forgot password below signup
+6. change the font style and size
+7. menu item “Add kid” menu item
+
+
+
+24/03/2020
+1. line#175,189,202 skipped
+
+
+26/03/2020
+1.all the 4 modules server -megha. app-pooja.
+2. performance graphs.
+3. login server side -megha.
+4. score(performance) server side-megha
+5. coach and mentor.
+
+6. skip button in score entry when no training , use the previous scores
+7. karthiksaid hell send code to send mail
+
+
+username=Karthik acharya&password=karthik
+http://stage1.optipacetech.com/badminton/login.php 
+
+
+30/03/2020
+cd /var/www/html/badminton/megha/
+
+
+26/03/2020
+• Login check for score level entry should be removed.
+
+dmat nsc
+_____________________________________________________________________________________________________________________________
+request xml while registerning.
+_____________________________________________________________________________________________________________________________
+<user_details>
+    <userName>Achyuth</userName>
+    <password>megha</password>
+    <userType>Player</userType>
+    <uAge>0</uAge>
+    <uDob> 2020-2-10
+    </uDob>
+    <usex>Male</usex>
+    <ueducation>School</ueducation>
+    <umailid>aeghm02@gmail.com</umailid>
+    <utraining>xyz Traning</utraining>
+     <uothers>no Center</uothers>
+    <ustateRanking>1</ustateRanking>
+    <unationalRank>2</unationalRank>
+    <uphoto>/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB
+    AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEB
+    AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCACiAHkDASIA
+    AhEBAxEB/8QAHwAAAgIDAQEBAQEAAAAAAAAACAkGBwAFCgQDAgEL/8QASRAAAgIBAwMDAgIFBwgH
+    CQAAAgMBBAUGERIHEyEACBQiMRVBCRYjMlFCVFVhltTVFxhDgZSV1tckJVZXkZPSJlJTWGSXoqXT
+    /8QAHAEAAgMAAwEAAAAAAAAAAAAABQYDBAcBAggA/8QAPREAAgIBAwIEBAIHBwMFAAAAAQIDEQQS
+    ITEABRMiQVEGMmFxFIEjQnKRobGzBzNSc7LB0TQ18SQ2Q2Lw/9oADAMBAAIRAxEAPwDnu6r9YM/q
+    rPazzeUyNrIZrN6jt5O5b2dZs2m5KTVbBcvc5nZcjunXSbBdBpWkGEK+LBxfnMg2yxkX7TK9xrF2
+    TpyUS+u14V1M7bYWoTr/ABqkAl6uPZpvKCUTZZ68/UD5VHJ2IOLBNJ7kO7imDYCwXbm3WaG/dq2j
+    LgUE1SilY7xsELgINhbV3vyIi1/aaE9qLErFgCMB27DoCRVYCPrCJ5RECUiwwPssCdowsfHjx1xo
+    lSKKONI0RRSRBNOlFAAoJt7kXe/XQST+GxaaZHchn0MVBcijaggVqJ3NkAe/Vn4q/fVZa2q4ooWo
+    rCJGkiVY7flVtyZKISaZ24VHPMhTckYOYWgW3VkMiWNyyvx4rbcdqOi5ZQ8/k2nNyqu3kVrtEqtN
+    n8Oza71xKYEQU0BB9Xlae6vV+Gr0X4xNpRNpZCtcF0WpDjC+0BSXzEsjsvqMsLFtglpY2u5gPlNr
+    huVoahzSM3iKNivXALlHsXiqq4mt1Sq+sZ1ab0NIjPHMqwUSaj/FadS5mcrevXL9Smt0SGCON3JT
+    QVRivChQAWUirsA1VULPB4DtNPLKsUZew/mcE6jtYGx3F/4v3iq60uQbmsTWxgMswXFANVkPky6I
+    qCLMF8S3biQQLl28WhXCYVHbVTiFsC2ELlzbYzfwiGUqzQradzmHfRssZAVmVsNdrMvK+JdrNnJY
+    7IsTfxplaFJ5KktbamRqS/H2YdhXlZvVKT653MaEIh0W4lYlFyy6zbW+00UzDUHBGy44Tg0IM4j4
+    xKk5llMMzF5U2qgHKQuuqLEEwi2ayLBCuGFIy6zYVVVbgTtwVi22QXC2Q5dNMyAFlVR4ci8sACoH
+    A3skg1RGwsH0rq4yTtGqkyFw2l71DVYUl63A1eornniuvIWJ+LZll6yw2tx91owbHNGtclaF25MC
+    TJQyENsRTMxKAtwcgbQQY+rh6add8104ILemsg/F3sDlMTUw7az3gL30M3pDVSKhzYXZD/opaYyw
+    1eSUsCbtzuvYT3JimbNhzyxK8mIwykqWDIOAhfXt2LOSGsMlv9fybEAtkjZUS1g09xfJxj04uMbi
+    qqSX8gsjdy1xW/Fb7nGKdAklO5P5WXFBLCCAYSUvkhaJDwgx38MKVDarUgAkgEFtXPNcXyfe+oiJ
+    FDeJRUAiibIJCjje624HoN/Xo4uo3u11bnaWnMzhtRZM6Rad1h0+zXds17RIyORqqt47u2KmHxKZ
+    Xi7OF0Jq/A102HW6+ewGRyzzTk77om0dE+6rKYTWV7PllggMnlI1HmcPabYpDcytbGamdbam6tOJ
+    ygBjqN7HZReBr5BVTNZPC4uraNL6YYSyBlOlSZhMhiK7UHUDIxeRWeVtWPTbbiUYxFliSeC5alFx
+    a60nK+1YhfF7NjAI5kUX61zAfh5QqXKx9kM68hSFCtvFJSSAaxfD5yNq65rXWJFdgmRXrGICV8Fl
+    o1tyDW4NDgg7bGvqNvcdVWxwiaRZ1b2zWfSgQascVe4Jvc307joX7mi1Hq3SmSSKK3/XWj7rWJvP
+    s4ixksvq5OZN1XHjTrsTjE0cdpnGXab7GYydzJ6VvZ5uVB18aaegn2Q+5axp7I6lmvlnMymkszWx
+    DKuoc5XanXGgsgnE4+jb3ZM2cPlNJX8avT1aMvct2chXrX3EzH08DXwOE4zuiWulaBxlm5wdYy+D
+    uRYxWKi7W+IOSLIrUuElValj5BUZxbG1bLIai3VZTnxL2nP0V6yakTqbUOZ0mViyy5FqrWr5pchU
+    o0sbqUc/hPxB0EtCE5k4kM+xp4+zdqKZXZaPIPple6mKKZfCkr9LqArYgiyukg2rXupFUfX064jl
+    kgLOitWONbajasAUVlCjbTpfdTZqzew67m8v76umdV2KxuOr5DLahyqbl5WnFDiyyM4jHkitkcjx
+    rZe1AqoZTIYjH2a9ka90JyQOKsK69kl+nBe4jpxq3OV9RK1Xo/B2BW6sGN1NbymHyVCVtFLhl+Rp
+    u06M2DqKKSxuUhTFjVK5C7aOFfnH0t1VzeJ0PU676WwbNY5rSOo1YfPaB1Ndyra+a0vmKmBtfh7r
+    Festsrya5jGzqVuUc61qW3WyNoAyA42awA+9S17h9J6rxfVpdLL6K0brath6trCdNNcakpHhLOHC
+    7Q1Ni6uoq+Sg7JVDxS72KyefwjqLsPn1diu63ic+2jknf17hg50mDNmExArPjtMJHpAaR1ZJYnWR
+    CGQtr02rEobtdY+H8bF7h29MnDi0yyq0GQWINl9IkgKkMCCNLghAdBHnBOnruNu9Y+jCBDUGpNed
+    O8ezExNahmMRrvA5G+88q6ok8PTqYm6zL5KcreVjx/V9VPIBlr9XGlFO1dp0JX5P84L28f8AeGP/
+    AJWs/wC4+uLzpw3XGoMDpzHFqC2rT+sH1fwzXGf13ftXLF3DXsblkNuZTJ6GuWcFma+Xo1b6c1pz
+    IveC6q+zgca6zmtNYu4f87X39/8Ay69Lf7bdSP8ABvQle+ZPyzY3b8tkOnxsjH8WRvlO/wCljC7V
+    /iYitTevRCT4SiRgWnyoy9ER496UAKij4iyNqJs1YAsUACQONvq7ly1PrnP56V49QZrL5K4ujj0X
+    OxSFt5zF/FYxjwZXrqMay2WZbeEE8jbabsS/zobSwXblUbZts/to7IpGXtLmZg41VrFkK0juUk3v
+    i4nKA+1MsI+EOyhDXyhVqzlNc6Dlr4OQX2xaKu7JGRcJkQ5kHKRg5X3C5EbDt/pvpv5+QUKxc99j
+    tpUVgyWTRYS5fWrK7axJJBtP7Qo5DARBNWQOjQMOWLt8MDFiEijRSCKoKqqAAD9LI39ST0gSY8uT
+    MIwrF52JZ2OmyxvgGgSTwL/+oo9WAvSDcbaRkMe23VLeAUupEgD2Sl096DqKDjbFxCCjpxYsSpH7
+    TlIjam4+mnRXL53IJcVJymE2bUzWxVexzdJfIBK0gD61Wd0FAIfjG1WfIXJ1gQk4ZfHS7o8vKtSp
+    8EbxgIiQEYriPGVkCeKxhH0yUn2VjERJDBs7X1MF6d9JaGBimVNHftp4HLhk1rrjAQniIAc7zIzO
+    xsk3lBHETwkRET3T4ljlkEWNIdJtaRr3IU6vRQFs8G7B3PIYO1fCkiBZJ1GoAVqUa
+2020-04-03 14:10:14.544 5858-9244/com.example.myapp_badminton D/Response from Server:  200
+2020-04-03 14:10:14.558 5858-5858/com.example.myapp_badminton E/ViewUserDetail out: Upload status<script src="//code.jquery.com/jquery-1.10.2.js"></script><script>function sendMail(name,email){	alert (name);	window.location='megha/mail.php?fullname='+name+'&email='+email;}</script><script type='text/javascript'>sendMail('Achyuth', 'aeghm02@gmail.com');</script>Registered Successfully
+
+_____________________________________________________________________________________________________________________________
+
+to be discussed with digit id-whether device is 2 sim slot, 5.1
+
+
+important links regarding hardware id 
+1. to read androif device id(without sim):
+ https://stackoverflow.com/questions/2785485/is-there-a-unique-android-device-id
+
+2. How to retrieve an Unique ID to identify Android devices ?
+https://medium.com/@ssaurel/how-to-retrieve-an-unique-id-to-identify-android-devices-6f99fd5369eb
+
+3. code written from 
+https://stackoverflow.com/questions/14517338/android-check-whether-the-phone-is-dual-sim/17499889#17499889
+____________________________________________________________________________________________________________________________
+08/04/2020
+mysqli_query($con,$qry) ---> executes the query
+mysqli_query(con,qry)
+
+
+
+http://stage1.optipacetech.com/badminton/megha/forgot_password.php
+
+http://stage1.optipacetech.com/badminton/megha/forgot_password.php?mail_id=aeghm02@gmail.com
+http://stage1.optipacetech.com/badminton/megha/forgot_pin.php?mail_id=aeghm02@gmail.com
+
+
+10/04/2020
+mail is sent to the CC ppl even when ther is not TO address is not there
+
+
+13/04/2020
+ select  OTP from PLAYER_OTP where id=(SELECT max(id) from PLAYER_OTP) 1664
+select  OTP from PLAYER_OTP where MAIL_ID='aeghm02@gmail.com'
+
+SELECT OTP FROM PLAYER_OTP WHERE id=(SELECT max(id) from PLAYER_OTP)and MAIL_ID='aeghm02@gmail.com'
+
+select  OTP from PLAYER_OTP where MAIL_ID='aeghm02@gmail.com' and id=(SELECT max(id) from PLAYER_OTP) --->correct
+
+
+
+diary
+1. downloaded poojas code named 07/04/2020.
+2. need to merge in app.
+3. there is a backup named MyApp_Badminton(backup) under C:\Users\Neeraj\Desktop\megha\optipace\pooja which is the code before merging poojas code.
+4. working on file sent on 08/04/2020.
+5. scoreEntry_fragment.java is already added
+
+validate($email){
+filter_var()
+}
+
+Remark if any Megha
+
+
+"API:
+http://stage1.optipacetech.com/badminton/megha/password_reset.php
+Request: mail_id=""""&new_password=""""
+Responses:
+00 - Invalid parameters
+01 - Database connectivity error
+02 - Database execution error
+0 successful
+"
+
+"API: http://stage1.optipacetech.com/badminton/megha/pin_reset.php
+Request: mail_id=""""&new_pin=""""
+Responses:
+00: Invalid parameters
+01 - Database connectivity error
+02 - Invalid session
+0 -successful"
+
+
+API:
+http://stage1.optipacetech.com/badminton/megha/password_reset.php
+Request: mail_id=""&new_password=""
+Responses:
+00 - Invalid parameters
+01 - Database connectivity error
+02 - Database execution error
+0 successful
+
+API: http://stage1.optipacetech.com/badminton/megha/pin_reset.php
+Request: mail_id=""&new_pin=""
+Responses:
+00: Invalid parameters
+01 - Database connectivity error
+02 - Invalid session
+0 -successful
+
+
+sowmyanagraj@19
+
+https://stackoverflow.com/questions/12872594/php-email-verification----->VRFY command is disabled on almost all smtp servers because of spammers.
+
+public function check($email) { 
+        $result = FALSE; 
+
+        if (!self::validate($email)) { 
+            $this->set_error("{$email} incorrect e-mail"); 
+            $this->edebug($this->ErrorInfo); 
+            if ($this->exceptions) { 
+                throw new verifyEmailException($this->ErrorInfo); 
+            } 
+            return FALSE; 
+        } 
+        $this->error_count = 0; // Reset errors 
+        $this->stream = FALSE; 
+
+        $mxs = $this->getMXrecords(self::parse_email($email)); 
+        $timeout = ceil($this->max_connection_timeout / count($mxs)); 
+        foreach ($mxs as $host) { 
+            /** 
+             * suppress error output from stream socket client... 
+             * Thanks Michael. 
+             */ 
+            $this->stream = @stream_socket_client("tcp://" . $host . ":" . $this->port, $errno, $errstr, $timeout); 
+            if ($this->stream === FALSE) { 
+                if ($errno == 0) { 
+                    $this->set_error("Problem initializing the socket"); 
+                    $this->edebug($this->ErrorInfo); 
+                    if ($this->exceptions) { 
+                        throw new verifyEmailException($this->ErrorInfo); 
+                    } 
+                    return FALSE; 
+                } else { 
+                    $this->edebug($host . ":" . $errstr); 
+                } 
+            } else { 
+                stream_set_timeout($this->stream, $this->stream_timeout); 
+                stream_set_blocking($this->stream, 1); 
+
+                if ($this->_streamCode($this->_streamResponse()) == '220') { 
+                    $this->edebug("Connection success {$host}"); 
+                    break; 
+                } else { 
+                    fclose($this->stream); 
+                    $this->stream = FALSE; 
+                } 
+            } 
+        } 
+
+        if ($this->stream === FALSE) { 
+            $this->set_error("All connection fails"); 
+            $this->edebug($this->ErrorInfo); 
+            if ($this->exceptions) { 
+                throw new verifyEmailException($this->ErrorInfo); 
+            } 
+            return FALSE; 
+        } 
+
+        $this->_streamQuery("HELO " . self::parse_email($this->from)); 
+        $this->_streamResponse(); 
+        $this->_streamQuery("MAIL FROM: <{$this->from}>"); 
+        $this->_streamResponse(); 
+        $this->_streamQuery("RCPT TO: <{$email}>"); 
+        $code = $this->_streamCode($this->_streamResponse()); 
+        $this->_streamResponse(); 
+        $this->_streamQuery("RSET"); 
+        $this->_streamResponse();
+        $code2 = $this->_streamCode($this->_streamResponse()); 
+        $this->_streamQuery("QUIT"); 
+        fclose($this->stream); 
+        
+        $code = !empty($code2)?$code2:$code;
+        switch ($code) { 
+            case '250': 
+            /** 
+             * http://www.ietf.org/rfc/rfc0821.txt 
+             * 250 Requested mail action okay, completed 
+             * email address was accepted 
+             */ 
+            case '450': 
+            case '45s1': 
+            case '452': 
+                /** 
+                 * http://www.ietf.org/rfc/rfc0821.txt 
+                 * 450 Requested action not taken: the remote mail server 
+                 * does not want to accept mail from your server for 
+                 * some reason (IP address, blacklisting, etc..) 
+                 * Thanks Nicht Lieb. 
+                 * 451 Requested action aborted: local error in processing 
+                 * 452 Requested action not taken: insufficient system storage 
+                 * email address was greylisted (or some temporary error occured on the MTA) 
+                 * i believe that e-mail exists 
+                 */ 
+                return TRUE;
+            case '550':
+                return FALSE; 
+            default : 
+                return FALSE; 
+        } 
+    } 
+
+26/04/2020
+
+api to get the player dedyails.... create tables
+rename forgot_code.php to gen_otp.php ----done
+
+
+select academy_id  where academy_name="" and location=""
+
+
+30/04/2020
+not able to change the type in the server for academy Id in userdetails table frm varchar to int. ---> ask karthik(cant do if values are already stored init).
+
+selection of training type
+fething of the layer
+
+
+1.send app screen shot .doc
+2.i did for player let pooja see if she has changes in player then 
+3.in coach skip button,
+
+
+___________________________________________________________________________________________________________________________________________________
+
+sticky notes
+API for local database
+try adding multiple academy id for existing coachid.
+
+1. get_players_details.php requires add player module to be done   first to map the player and the coach.
+2. Q. whats the use of add_player when we have registration page
+A. to map coach with player. 
+instead of academy name and location, use location id
+For coach to select academy ,level and city--> what is this
+to register as coach why there is adding loction at app level,since it is happening by admin.
+
+why shd coach register? let him signin directly! since he is added already by admin, let the admin add the phone number of coach while adding(can be used as primary key)
+
+oh baby
+taskent file
+
+
+clean the inbox
+do the registration
+post method test 
+make doucment ---- done
+error code 03.
+
+to ask karthik
+1. add api and send the same modules document.
+2. whats the use of reset password? since it the part of the forgot password..  
+3. REGISTER WITH OTP SENT TO MAIL ID. 
+
+while fething the otp, fetch the recent ones
+changes made shd be shown in history sheet.. evening..
+
+
+me1. where shd the reset pin be present  in UI?
+2. during register, first send send mail, on succsessful, store in :server db.
+3.post fields in password_reset.php 
+4. server returns successful even wen there are 0 records affected(to avoid this do point 2)
+
+
+
+
+registration page stays in the same page.---later
+2.shared preferances for registration 
+3. confirm password in registration.l
+____________________________________________________________________________________________________________________________________________
+4/5/2020
+currently working on
+C:\Users\Neeraj\Desktop\megha\optipace\pooja\MyApp_Badminton
+
+
+05/05/2020
+populate the spinner for locations only those academy which are mapped
+get the locations in json form from server
+______________________________________________________________
+json response:
+______________________________________________________________
+$_blind['session_id']           =  $uuid;
+$_blind['operator_name']        =  $email;
+$_blind['operator_full_name']   =  $operator_full_name[0];
+$_blind['device_id']            =  $login_qry_record[4];
+$_blind['location_id']          =  $location_id_arr[0];
+$_blind['location_name']        =  $loc_nme_info[0];
+$_blind['operator_id']          =  $operator_full_name[1];
+$_blind['device_hw_id']         =  $device_hwid;
+$_blind['server_time_stamp']    =  $server_time_stamp;
+//$_blind['transaction_counter']  =  ($login_qry_record[5] ) % 1000;
+//$_blind['tariff_arr_size']      =  $count;
+//$_blind['tariff_arr']           =  $tariff_details_arr;
+//$_blind['monthly_pass_arr_size']=  $pass_count;
+//$_blind['monthly_pass_arr']     =  $monthly_pass_arr;
+
+$mysqli->close();
+
+$response = json_encode($_blind);
+print_r($response);
+______________________________________________________________
+
+String response:
+______________________________________________________________
+$result = $mysqli->query($qry);
+
+if(!$result) {
+   $error = $mysqli->error;
+   $mysqli->close();
+   printf("02");
+   exit();
+}elseif ($result->num_rows < 1) {
+  printf("03");
+  $mysqli->close();
+  exit();
+}
+$res=$result->fetch_assoc();
+$qry ="SELECT * FROM `ANSWERS` WHERE `V_ID`='".$res["V_ID"]."' order by PAUSES * 1";
+$result = $mysqli->query($qry);
+while($row=mysqli_fetch_array($result)){
+        $pause=$row["PAUSES"]*1000;
+        echo $row["V_ID"].":"
+                .$row["SHOT_LOCATION"].":"
+                .$row["SHOT_TYPE"].":"
+                .(int)$pause.":"
+                .$row["MAX_TIME"].",";
+}
+
+________________________________________________________________
+xml response
+________________________________________________________________
+get data in XML
+$i = 0;
+$sql="SELECT * FROM `DEVICE_INFO` WHERE 1";
+$result=$conn->query($sql);
+$cnt=$result->num_rows;
+echo "<deviceDetails>\n";
+        echo "<totCount>".$cnt."</totCount>\n";
+     // output data of each row
+     while($row = $result->fetch_assoc()) {
+                echo "<detail".$i.">\n";
+                //echo "<detail>\n";
+                echo "<DEVICE_NAME>".$row['DEVICE_NAME']."</DEVICE_NAME>\n";
+                echo "<DEVICE_ID>".$row['DEVICE_ID']."</DEVICE_ID>\n";
+                echo "<MAC_ID>".$row['MAC_ADDRESS']."</MAC_ID>\n";
+                echo "<STATUS>". $row['CONNECTION_STATUS'] ."</STATUS>\n";
+                echo "<DATE>". $row['DATE'] ."</DATE>\n";
+                echo "<TIME>". $row['TIME'] ."</TIME>\n";
+                //echo "</detail>\n";
+                echo "</detail".$i.">\n";
+                $i++;
+     }
+
+
+______________________________________________________________
+
+$i = 0;
+//echo $count;
+$sql="SELECT * FROM `DEVICE_INFO` WHERE 1";
+$result=$conn->query($sql);
+$cnt=$result->num_rows;
+echo "<deviceDetails>\n";
+//if ($count > 0) {
+        echo "<transCount>". $count . "</transCount>\n";
+        echo "<totCount>".$cnt."</totCount>\n";
+     // output data of each row
+     while($row = $result->fetch_assoc()) {
+                echo "<detail".$i.">\n";
+                //echo "<detail>\n";
+                echo "<DEVICE_NAME>".$row['DEVICE_NAME']."</DEVICE_NAME>\n";
+                echo "<DEVICE_ID>".$row['DEVICE_ID']."</DEVICE_ID>\n";
+                echo "<MAC_ID>".$row['MAC_ADDRESS']."</MAC_ID>\n";
+                echo "<STATUS>". $row['CONNECTION_STATUS'] ."</STATUS>\n";
+                echo "<DATE>". $row['DATE'] ."</DATE>\n";
+                echo "<TIME>". $row['TIME'] ."</TIME>\n";
+                //echo "</detail>\n";
+                echo "</detail".$i.">\n";
+                $i++;
+     }
+/*} else {
+     echo "0 results";
+}*/
+echo "</deviceDetails>";
+______________________________________________________________
+
+add the AppCompatAutoCompleteTextView
+
+_________________________________________________________________
+06/06/2020
+add academy name in xml
+
+
+08/06/2020
+{
+  "countries": [
+    {
+      "country": "Afghanistan",
+      "states": ["Badakhshan", "Badghis", "Baghlan", "Balkh", "Bamian", "Daykondi", "Farah", "Faryab", "Ghazni", "Ghowr", "Helmand", "Herat", "Jowzjan", "Kabul", "Kandahar", "Kapisa", "Khost", "Konar", "Kondoz", "Laghman", "Lowgar", "Nangarhar", "Nimruz", "Nurestan", "Oruzgan", "Paktia", "Paktika", "Panjshir", "Parvan", "Samangan", "Sar-e Pol", "Takhar", "Vardak", "Zabol"]
+    },
+    {
+      "country": "India",
+      "states": ["Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli", "Daman and Diu", "Delhi", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka", "Kerala", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Orissa", "Pondicherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Tripura", "Uttaranchal", "Uttar Pradesh", "West Bengal"]
+    },
+    {
+      "country": "Belarus",
+      "states": ["Brest", "Homyel", "Horad Minsk", "Hrodna", "Mahilyow", "Minsk", "Vitsyebsk"]
+    } 
+]
+
+}
+
+var stateObject = 
+{
+"India": { "Delhi": ["new Delhi", "North Delhi"],
+"Kerala": ["Thiruvananthapuram", "Palakkad"],
+"Goa": ["North Goa", "South Goa"],
+},
+"Australia": {
+"South Australia": ["Dunstan", "Mitchell"],
+"Victoria": ["Altona", "Euroa"]
+}, "Canada": {
+"Alberta": ["Acadia", "Bighorn"],
+"Columbia": ["Washington", ""]
+},
+}
+
+
+,<states>
+	<Karnataka>
+		<Bengaluru>
+			<Nagarabavi>ajith training center</Nagarabavi>
+			<Nagarabavi>megha training center</Nagarabavi>
+			<horamavu>megha training center</horamavu>
+			<horamavu>Karthik training center</horamavu>
+		</Bengaluru>
+		<Belagavi>
+			<MGRoad>mmyyass</MGRoad>
+		</Belagavi>
+	</Karnataka>
+	<Telangaana>
+		<Hydrabaad>
+			<paatabasti>karth coaching center</paatabasti>
+		</Hydrabaad>
+	</Telangaana>
+	<TamilNadu>
+		<chennai>
+			<MGroad>Jyothi badminton experts</MGroad>
+			<MGroad>omkar badminton experts</MGroad>
+		</chennai>
+	</TamilNadu>
+</states>
+
+14/05/2020
+
+TamilNadu,Telangaana,Karnataka-
+
+chennai;Hydrabaad;Belagavi,Bengaluru-
+
+MGroad;paatabasti;MGRoad;JpNagar,horamavu,Nagarabavi-
+
+omkar badminton experts,Jyothi badminton experts;karth coaching center;mmyyass;BadmintonExperts;Karthik training center,megha training center;megha training center,ajith training center
+
+
+
+the location is not coming!!
+
+
+Split works with ::
+
+
+
+state_Spinner = (Spinner) findViewById(R.id.state);
+        city_Spinner = (Spinner) findViewById(R.id.city);
+        location_spinner = findViewById(R.id.location);
+
+
+statesList = new ArrayList<>();
+        citiesList = new ArrayList<>();
+
+https://www.zoftino.com/android-spinner-dropdown-list
+
+https://github.com/pankajnimgade/Tutorial/blob/master/app/src/main/java/spinner/list/activities/SpinnerCountryActivity.java
+
+
+
+
+
+
+
+
+
+
+

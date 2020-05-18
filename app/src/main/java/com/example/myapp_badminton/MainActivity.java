@@ -59,8 +59,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     String imageString;
     String email_s, module;
     Parsexml parsexml;
-    String[] academyResponse, cities, locations, acaNames, Scities;
-    ArrayList stateInfo, cityInfo, locationInfo, academyNameInfo;
+    String[] academyResponse, cities, locations, acaNames, Scities, stateInfo, cityInfo, locationInfo, academyNameInfo;
+    //    List<String> ;
     //otherpart
     MyDbAdapter helper;
     // ArrayAdapter<CharSequence> adapter;
@@ -78,6 +78,18 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     TextView showDate, loginBack;
     //    Spinner academyName,state,city,location;
     private AppCompatAutoCompleteTextView autoTextState, autoTextCity, autoTextLocation, autoTextAcademyName;
+
+    private Spinner location_spinner;
+    private Spinner state_Spinner;
+    private Spinner city_Spinner;
+
+    private ArrayAdapter<Location.State> stateArrayAdapter;
+    private ArrayAdapter<Location.City> cityArrayAdapter;
+
+    private ArrayList<Location.State> statesList;
+    private ArrayList<Location.City> citiesList;
+
+
     private TextWatcher loginTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -128,20 +140,20 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         female = findViewById(R.id.rb_female);
         school = findViewById(R.id.rb_school);
         college = findViewById(R.id.rb_college);
-        autoTextState = findViewById(R.id.state);
+        /*autoTextState = findViewById(R.id.state);
         autoTextCity = findViewById(R.id.city);
         autoTextLocation = findViewById(R.id.location);
-        autoTextAcademyName = findViewById(R.id.academy_name);
+        autoTextAcademyName = findViewById(R.id.academy_name);*/
         parsexml = new Parsexml();
-        stateInfo = new ArrayList();
+       /* stateInfo = new ArrayList();
         cityInfo = new ArrayList();
         locationInfo = new ArrayList();
-        academyNameInfo = new ArrayList();
+        academyNameInfo = new ArrayList();*/
         /*player = findViewById(R.id.rb_player);
         coach = findViewById(R.id.rb_coach);
         mentor = findViewById(R.id.rb_mentor);*/
 
-
+        initializeUI();
         male.setChecked(true);
         female.setChecked(false);
 
@@ -237,6 +249,28 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         autoTextState.setThreshold(1);//will start working from first character
         autoTextState.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
 //        autoTextState.setTextColor(Color.RED);*/
+    }
+
+    private void initializeUI() {
+        state_Spinner = (Spinner) findViewById(R.id.state);
+        city_Spinner = (Spinner) findViewById(R.id.city);
+        location_spinner = findViewById(R.id.location);
+
+        statesList = new ArrayList<>();
+        citiesList = new ArrayList<>();
+        createLists();
+
+        stateArrayAdapter = new ArrayAdapter<Location.State>(getApplicationContext(), R.layout.simple_spinner_dropdown_item, states);
+        stateArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        state_Spinner.setAdapter(stateArrayAdapter);
+
+        cityArrayAdapter = new ArrayAdapter<Location.City>(getApplicationContext(), R.layout.simple_spinner_dropdown_item, cities);
+        cityArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        city_Spinner.setAdapter(cityArrayAdapter);
+
+        country_Spinner.setOnItemSelectedListener(country_listener);
+        state_Spinner.setOnItemSelectedListener(state_listener);
+        city_Spinner.setOnItemSelectedListener(city_listener);
     }
 
     private void getAcademyInfo() {
@@ -537,7 +571,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 //            parsexml.parse_xml_file(locationXml);
             parseResponse(locationXml);
         } else {
-            Toast.makeText(this, "Could not connect to server " + result, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Could " +
+                    " connect to server " + result, Toast.LENGTH_SHORT).show();
         }
 
 
@@ -547,12 +582,14 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         academyResponse = result.split("-");
         for (int i = 0; i < academyResponse.length; i++) {
             if (i == 0) {
-                stateInfo.add(academyResponse[0].split(","));
+                stateInfo = (academyResponse[0].split(","));
+//                stateInfo.add(academyResponse[0].split(","));
 //                System.out.println("stateInfo " + Collections.singletonList(stateInfo))
                 System.out.println("cityStateMap: " + Collections.singletonList(stateInfo));
 
             } else if (i == 1) {
-                cityInfo.add(academyResponse[1].split(";")); //same state cities are seperated by ;chennai;Hydrabaad;Belagavi.Bengaluru
+                cityInfo = (academyResponse[1].split(";")); //same state cities are seperated by ;chennai;Hydrabaad;Belagavi.Bengaluru
+//                cityInfo.add(academyResponse[1].split(";")); //same state cities are seperated by ;chennai;Hydrabaad;Belagavi.Bengaluru
 //                    Scities=new String[cityInfo.length];
 
                 System.out.println("cityInfo " + Collections.singletonList(cityInfo));
@@ -561,16 +598,15 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 //                        Scities[j] = cities[0];
                 System.out.println("cityInfo " + Collections.singletonList(cities));
             } else if (i == 2) {
-                locationInfo.add(academyResponse[2].split(";"));
+                locationInfo = (academyResponse[2].split(";"));
                 System.out.println("LocationInfo" + Collections.singletonList(locationInfo));
 //                    locations = locationInfo[0].split(",");
 //                    System.out.println("Locations" + Collections.singletonList(locations));
             } else if (i == 3) {
-                academyNameInfo.add(academyResponse[3].split(";"));
+                academyNameInfo = (academyResponse[3].split(";"));
                 System.out.println("academyNameInfo " + Collections.singletonList(academyNameInfo));
 //                    acaNames = academyNameInfo[0].split(",");
 //                    System.out.println("academyNameInfo " + Collections.singletonList(acaNames));
-
             }
 
         }
@@ -580,18 +616,23 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
     private void locationValidation() {
-        if (stateInfo.contains(autoTextState.getText().toString())) {
+        if (Arrays.asList(stateInfo).contains(autoTextState.getText().toString())) {
+//        if (stateInfo.contains(autoTextState.getText().toString())) {
             Toast.makeText(this, "we do not operate in this location yet!!", Toast.LENGTH_SHORT).show();
         }
 
     }
 
     private void populateTheAutoText() {
-        ArrayAdapter<List> adapter = new ArrayAdapter<List>
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (this, android.R.layout.select_dialog_item, stateInfo);
 
         autoTextState.setThreshold(2);
         autoTextState.setAdapter(adapter);
+        adapter = new ArrayAdapter<String>
+                (this, android.R.layout.select_dialog_item, cityInfo);
+        autoTextCity.setThreshold(2);
+        autoTextCity.setAdapter(adapter);
 
 
     }
