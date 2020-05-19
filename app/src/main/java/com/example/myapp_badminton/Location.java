@@ -3,7 +3,7 @@ package com.example.myapp_badminton;
 import java.util.List;
 
 public class Location {
-     class State implements Comparable<State> {
+     static class State implements Comparable<State> {
 
         private int stateID;
         private String stateName;
@@ -34,7 +34,7 @@ public class Location {
     }
 
 
-    public class City implements Comparable<City> {
+    static class City implements Comparable<City> {
 
         private int cityID;
         private State state;
@@ -70,7 +70,7 @@ public class Location {
 //            return another.getCityID() - this.cityID;//descending order
         }
     }
-    public class LocalLocation implements Comparable<LocalLocation> {
+    static class LocalLocation implements Comparable<LocalLocation> {
 
         private int locationID;
         private State state;
@@ -122,7 +122,7 @@ public class Location {
 //            return another.getCityID() - this.cityID;//descending order
         }
     }
-    private void createLists() {
+    /*private void createLists() {
         Country country0 = new Country(0, "Choose a Country");
         Country country1 = new Country(1, "Country1");
         Country country2 = new Country(2, "Country2");
@@ -152,6 +152,6 @@ public class Location {
         cities.add(new City(6, country2, state3, "City6"));
         cities.add(new City(7, country2, state4, "City7"));
         cities.add(new City(8, country1, state4, "City8"));
-    }
+    }*/
 
 }

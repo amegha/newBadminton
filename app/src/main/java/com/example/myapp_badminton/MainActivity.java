@@ -14,6 +14,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Spinner;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,7 +24,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +45,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
+
+import com.example.myapp_badminton.Location.*;
 
 import static android.os.Environment.getExternalStorageDirectory;
 
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     String imageString;
     String email_s, module;
     Parsexml parsexml;
-    String[] academyResponse, cities, locations, acaNames, Scities, stateInfo, cityInfo, locationInfo, academyNameInfo;
+    String[] academyResponse, cities, locations, acaNames, Scities, stateInfo, cityInfo, locationInfo, academyNameInfo, respectivePlaces;
     //    List<String> ;
     //otherpart
     MyDbAdapter helper;
@@ -85,9 +86,11 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     private ArrayAdapter<Location.State> stateArrayAdapter;
     private ArrayAdapter<Location.City> cityArrayAdapter;
+    private ArrayAdapter<Location.LocalLocation> locationArrayAdapter;
 
     private ArrayList<Location.State> statesList;
     private ArrayList<Location.City> citiesList;
+    private ArrayList<Location.LocalLocation> locationList;
 
 
     private TextWatcher loginTextWatcher = new TextWatcher() {
@@ -108,6 +111,105 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
         @Override
         public void afterTextChanged(Editable s) {
+
+        }
+    };
+    /*private AdapterView.OnItemSelectedListener country_listener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (position > 0) {
+                final Country country = (Country) country_Spinner.getItemAtPosition(position);
+                Log.d("SpinnerCountry", "onItemSelected: country: " + country.getCountryID());
+                ArrayList<State> tempStates = new ArrayList<>();
+
+                tempStates.add(new State(0, new Country(0, "Choose a Country"), "Choose a State"));
+
+                for (State singleState : states) {
+                    if (singleState.getCountry().getCountryID() == country.getCountryID()) {
+                        tempStates.add(singleState);
+                    }
+                }
+
+                stateArrayAdapter = new ArrayAdapter<State>(getApplicationContext(), R.layout.simple_spinner_dropdown_item, tempStates);
+                stateArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+                state_Spinner.setAdapter(stateArrayAdapter);
+            }
+
+            cityArrayAdapter = new ArrayAdapter<City>(getApplicationContext(), R.layout.simple_spinner_dropdown_item, new ArrayList<City>());
+            cityArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+            city_Spinner.setAdapter(cityArrayAdapter);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };*/
+    private AdapterView.OnItemSelectedListener state_listener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (position > -1) {
+                final State state = (State) state_Spinner.getItemAtPosition(position);
+                Log.d("SpinnerCountry", "onItemSelected: state: " + state.getStateID());
+                ArrayList<City> tempCities = new ArrayList<>();
+
+//                Country country = new Country(0, "Choose a Country");
+                State firstState = new State(-1, "Choose a State");
+                tempCities.add(new City(-1, firstState, "Choose a City"));
+
+                for (City singleCity : citiesList) {
+                    if (singleCity.getState().getStateID() == state.getStateID()) {
+                        tempCities.add(singleCity);
+                    }
+                }
+
+                cityArrayAdapter = new ArrayAdapter<City>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tempCities);
+                cityArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                city_Spinner.setAdapter(cityArrayAdapter);
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+    private AdapterView.OnItemSelectedListener city_listener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (position > -1) {
+                final City city = (City) city_Spinner.getItemAtPosition(position);
+                ArrayList<LocalLocation> tempLocations = new ArrayList<>();
+
+                State state = new State(-1, "Choose a state");
+                City firstCity = new City(-1, state, "Choose a City");
+                tempLocations.add(new LocalLocation(-1, state, firstCity, "Choose a City"));
+
+                for (LocalLocation singleLocation : locationList) {
+                    if (singleLocation.getState().getStateID() == state.getStateID()) {
+                        tempLocations.add(singleLocation);
+                    }
+                }
+
+                locationArrayAdapter = new ArrayAdapter<LocalLocation>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tempLocations);
+                locationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                location_spinner.setAdapter(locationArrayAdapter);
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+    private AdapterView.OnItemSelectedListener location_listener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
 
         }
     };
@@ -258,19 +360,30 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
         statesList = new ArrayList<>();
         citiesList = new ArrayList<>();
-        createLists();
+        locationList = new ArrayList<>();
+//        createLists();
 
-        stateArrayAdapter = new ArrayAdapter<Location.State>(getApplicationContext(), R.layout.simple_spinner_dropdown_item, states);
-        stateArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
-        state_Spinner.setAdapter(stateArrayAdapter);
 
-        cityArrayAdapter = new ArrayAdapter<Location.City>(getApplicationContext(), R.layout.simple_spinner_dropdown_item, cities);
-        cityArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
-        city_Spinner.setAdapter(cityArrayAdapter);
+    }
 
-        country_Spinner.setOnItemSelectedListener(country_listener);
-        state_Spinner.setOnItemSelectedListener(state_listener);
-        city_Spinner.setOnItemSelectedListener(city_listener);
+    private void createLists() {
+     /*   Country country0 = new Country(0, "Choose a Country");
+        Country country1 = new Country(1, "Country1");
+        Country country2 = new Country(2, "Country2");
+
+        countries.add(new Country(0, "Choose a Country"));
+        countries.add(new Country(1, "Country1"));
+        countries.add(new Country(2, "Country2"));*/
+/*
+        Location.State state0 = new Location.State(0, "Choose a Country");
+        Location.State state1 = new Location.State(1, "state1");
+        Location.State state2 = new Location.State(2, country1, "state2");
+        State state3 = new State(3, country2, "state3");
+        State state4 = new State(4, country2, "state4");
+
+        statesList.add(state0);
+        citiesList.add(new City(0, country[i], state[i], "Choose a City"));
+        locationList.add(new LocalLocation(0, state[i], city[i], "choose a locaation");*/
     }
 
     private void getAcademyInfo() {
@@ -581,37 +694,81 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     private void parseResponse(String result) {
         academyResponse = result.split("-");
         for (int i = 0; i < academyResponse.length; i++) {
+
             if (i == 0) {
                 stateInfo = (academyResponse[0].split(","));
+                for (int stateCount = 0; stateCount < stateInfo.length; stateCount++) {
+                    statesList.add(new State(stateCount, stateInfo[stateCount]));
+                }
 //                stateInfo.add(academyResponse[0].split(","));
 //                System.out.println("stateInfo " + Collections.singletonList(stateInfo))
-                System.out.println("cityStateMap: " + Collections.singletonList(stateInfo));
+                System.out.println("stateList: " + Collections.singletonList(statesList));
 
             } else if (i == 1) {
                 cityInfo = (academyResponse[1].split(";")); //same state cities are seperated by ;chennai;Hydrabaad;Belagavi.Bengaluru
-//                cityInfo.add(academyResponse[1].split(";")); //same state cities are seperated by ;chennai;Hydrabaad;Belagavi.Bengaluru
-//                    Scities=new String[cityInfo.length];
-
-                System.out.println("cityInfo " + Collections.singletonList(cityInfo));
-//                    for (int j = 0; j < cityInfo.length; j++) {
-//                    cities = cityInfo[0].split(",");
-//                        Scities[j] = cities[0];
-                System.out.println("cityInfo " + Collections.singletonList(cities));
+                for (int cityInfoCount = 0; cityInfoCount < cityInfo.length; cityInfoCount++) {
+                    System.out.println("split by dot " + cityInfo[cityInfoCount].split("@").length);
+                    if (1 < cityInfo[cityInfoCount].split("@").length) {
+                        respectivePlaces = cityInfo[cityInfoCount].split("@");
+                        for (int respectiveCitiesCount = 0; respectiveCitiesCount < respectivePlaces.length; respectiveCitiesCount++) {
+                            citiesList.add(new City(cityInfoCount, statesList.get(cityInfoCount), respectivePlaces[respectiveCitiesCount]));
+                            System.out.println(cityInfoCount + "\n" +
+                                    statesList.get(cityInfoCount) + "\n" +
+                                    respectivePlaces[respectiveCitiesCount]);
+                        }
+                    } else {
+                        citiesList.add(new City(cityInfoCount, statesList.get(cityInfoCount), cityInfo[cityInfoCount]));
+                    }
+                }
             } else if (i == 2) {
-                locationInfo = (academyResponse[2].split(";"));
-                System.out.println("LocationInfo" + Collections.singletonList(locationInfo));
-//                    locations = locationInfo[0].split(",");
-//                    System.out.println("Locations" + Collections.singletonList(locations));
+//                locationInfo = (academyResponse[2].split(";"));
+//                System.out.println("LocationInfo" + Collections.singletonList(locationInfo));
+                locationInfo = (academyResponse[2].split(";")); //same state cities are seperated by ;chennai;Hydrabaad;Belagavi.Bengaluru
+                for (int locationInfoCount = 0; locationInfoCount < locationInfo.length; locationInfoCount++) {
+                    System.out.println("split by dot " + locationInfo[locationInfoCount].split("@").length);
+                    if (1 < locationInfo[locationInfoCount].split("@").length) {
+                        respectivePlaces = locationInfo[locationInfoCount].split("@");
+                        for (int respectiveCitiesCount = 0; respectiveCitiesCount < respectivePlaces.length; respectiveCitiesCount++) {
+                            locationList.add(new LocalLocation(locationInfoCount, statesList.get(locationInfoCount),citiesList.get(locationInfoCount), respectivePlaces[respectiveCitiesCount]));
+                            /*System.out.println(cityInfoCount + "\n" +
+                                    statesList.get(cityInfoCount) + "\n" +
+                                    respectivePlaces[respectiveCitiesCount]);*/
+                        }
+                    } else {
+                        locationList.add(new LocalLocation(locationInfoCount, statesList.get(locationInfoCount),citiesList.get(locationInfoCount),  locationInfo[locationInfoCount]));
+                    }
+                }
+
             } else if (i == 3) {
                 academyNameInfo = (academyResponse[3].split(";"));
                 System.out.println("academyNameInfo " + Collections.singletonList(academyNameInfo));
-//                    acaNames = academyNameInfo[0].split(",");
-//                    System.out.println("academyNameInfo " + Collections.singletonList(acaNames));
             }
 
         }
-        populateTheAutoText();
-        locationValidation();
+//        populateTheAutoText();
+//        locationValidation();
+        populateSpinner();
+
+    }
+
+    private void populateSpinner() {
+        stateArrayAdapter = new ArrayAdapter<State>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, statesList);
+        stateArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        state_Spinner.setAdapter(stateArrayAdapter);
+
+        cityArrayAdapter = new ArrayAdapter<City>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, citiesList);
+        cityArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        city_Spinner.setAdapter(cityArrayAdapter);
+
+
+        locationArrayAdapter = new ArrayAdapter<LocalLocation>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, locationList);
+        locationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        location_spinner.setAdapter(locationArrayAdapter);
+
+//        location_spinner.setOnItemSelectedListener(country_listener);
+        state_Spinner.setOnItemSelectedListener(state_listener);
+        city_Spinner.setOnItemSelectedListener(city_listener);
+        location_spinner.setOnItemSelectedListener(location_listener);
 
     }
 
