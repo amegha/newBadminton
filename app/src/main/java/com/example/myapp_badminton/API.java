@@ -10,7 +10,7 @@ public class API {
     public static String USER_LOGIN = "login.php";
     public static String USER_REGISTER = "user_details.php";
     public static String GENERATE_OTP = "megha/gen_otp.php";
-    public static String GET_ACADEMY_INFO= "megha/get_academy.php";
+    public static String GET_ACADEMY_INFO= "megha/get_academy_simple.php";
 
 
 }

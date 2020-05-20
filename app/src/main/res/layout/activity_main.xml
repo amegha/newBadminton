@@ -176,37 +176,33 @@
 
                 </RadioGroup>-->
 
-                 <Spinner
-                     android:id="@+id/state"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:background="@drawable/edit_text_middle"
-                     android:entries="@array/state"
-                     android:padding="15dp" />
+                <Spinner
+                    android:id="@+id/state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_middle"
+                    android:padding="15dp" />
 
-                 <Spinner
-                     android:id="@+id/city"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:background="@drawable/edit_text_middle"
-                     android:entries="@array/city"
-                     android:padding="15dp" />
+                <Spinner
+                    android:id="@+id/city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_middle"
+                    android:padding="15dp" />
 
-                 <Spinner
-                     android:id="@+id/location"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:background="@drawable/edit_text_middle"
-                     android:entries="@array/location"
-                     android:padding="15dp" />
+                <Spinner
+                    android:id="@+id/location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_middle"
+                    android:padding="15dp" />
 
-                 <Spinner
-                     android:id="@+id/academy_name"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:background="@drawable/edit_text_middle"
-                     android:entries="@array/training_center"
-                     android:padding="15dp" />
+                <Spinner
+                    android:id="@+id/academy_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_middle"
+                    android:padding="15dp" />
 
                 <!--<androidx.appcompat.widget.AppCompatAutoCompleteTextView
                     android:id="@+id/state"

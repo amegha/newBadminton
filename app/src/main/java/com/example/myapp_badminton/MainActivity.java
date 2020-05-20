@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     public static String result;
     final ArrayList<String> state_options = new ArrayList<String>();
     final ArrayList<String> city_options = new ArrayList<String>();
+    DBHandler db;
     String imageString;
     String email_s, module;
     Parsexml parsexml;
@@ -83,10 +84,16 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     private Spinner location_spinner;
     private Spinner state_Spinner;
     private Spinner city_Spinner;
+    private Spinner academy_spinner;
 
-    private ArrayAdapter<Location.State> stateArrayAdapter;
+    private ArrayAdapter<String> stateArrayAdapter;
+    private ArrayAdapter<String> cityArrayAdapter;
+    private ArrayAdapter<String> locationArrayAdapter;
+    private ArrayAdapter<String> academyArrayAdapter;
+
+    /*private ArrayAdapter<Location.State> stateArrayAdapter;
     private ArrayAdapter<Location.City> cityArrayAdapter;
-    private ArrayAdapter<Location.LocalLocation> locationArrayAdapter;
+    private ArrayAdapter<Location.LocalLocation> locationArrayAdapter;*/
 
     private ArrayList<Location.State> statesList;
     private ArrayList<Location.City> citiesList;
@@ -111,6 +118,58 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
         @Override
         public void afterTextChanged(Editable s) {
+
+        }
+    };
+    private AdapterView.OnItemSelectedListener location_listener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (position > -1) {
+                String locationName = (String) location_spinner.getItemAtPosition(position);
+                String cityName = (String) city_Spinner.getItemAtPosition(position);
+/*
+
+                cityArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, db.getCities(stateName));
+                cityArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                city_Spinner.setAdapter(cityArrayAdapter);
+*/
+
+                academyArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, db.getAcademy(cityName, locationName));
+                academyArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                academy_spinner.setAdapter(academyArrayAdapter);
+
+//                location_spinner.setOnItemSelectedListener(location_listener);
+            }
+
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+    private AdapterView.OnItemSelectedListener city_listener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (position > -1) {
+                String cityName = (String) city_Spinner.getItemAtPosition(position);
+/*
+
+                cityArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, db.getCities(stateName));
+                cityArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                city_Spinner.setAdapter(cityArrayAdapter);
+*/
+
+                locationArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, db.getLocations(cityName));
+                locationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                location_spinner.setAdapter(locationArrayAdapter);
+
+                location_spinner.setOnItemSelectedListener(location_listener);
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
 
         }
     };
@@ -149,23 +208,15 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (position > -1) {
-                final State state = (State) state_Spinner.getItemAtPosition(position);
-                Log.d("SpinnerCountry", "onItemSelected: state: " + state.getStateID());
-                ArrayList<City> tempCities = new ArrayList<>();
+                String stateName = (String) state_Spinner.getItemAtPosition(position);
+                Log.d("SpinnerCountry", "onItemSelected: state: ");
 
-//                Country country = new Country(0, "Choose a Country");
-                State firstState = new State(-1, "Choose a State");
-                tempCities.add(new City(-1, firstState, "Choose a City"));
-
-                for (City singleCity : citiesList) {
-                    if (singleCity.getState().getStateID() == state.getStateID()) {
-                        tempCities.add(singleCity);
-                    }
-                }
-
-                cityArrayAdapter = new ArrayAdapter<City>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tempCities);
+                cityArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, db.getCities(stateName));
                 cityArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 city_Spinner.setAdapter(cityArrayAdapter);
+
+                city_Spinner.setOnItemSelectedListener(city_listener);
+
             }
         }
 
@@ -174,45 +225,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
         }
     };
-    private AdapterView.OnItemSelectedListener city_listener = new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            if (position > -1) {
-                final City city = (City) city_Spinner.getItemAtPosition(position);
-                ArrayList<LocalLocation> tempLocations = new ArrayList<>();
-
-                State state = new State(-1, "Choose a state");
-                City firstCity = new City(-1, state, "Choose a City");
-                tempLocations.add(new LocalLocation(-1, state, firstCity, "Choose a City"));
-
-                for (LocalLocation singleLocation : locationList) {
-                    if (singleLocation.getState().getStateID() == state.getStateID()) {
-                        tempLocations.add(singleLocation);
-                    }
-                }
-
-                locationArrayAdapter = new ArrayAdapter<LocalLocation>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tempLocations);
-                locationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                location_spinner.setAdapter(locationArrayAdapter);
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    };
-    private AdapterView.OnItemSelectedListener location_listener = new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    };
+    private int nextState = 0, nextCity = 0;
+    private int tempNextState = 0, tempNextCity = 0;
 
     public static String md5(String input) {
         try {
@@ -233,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        db = new DBHandler(this);
         image_name = findViewById(R.id.image_name);
         dob = findViewById(R.id.tv_Dob);
         click = findViewById(R.id.click);
@@ -357,6 +371,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         state_Spinner = (Spinner) findViewById(R.id.state);
         city_Spinner = (Spinner) findViewById(R.id.city);
         location_spinner = findViewById(R.id.location);
+        academy_spinner = findViewById(R.id.academy_name);
 
         statesList = new ArrayList<>();
         citiesList = new ArrayList<>();
@@ -682,12 +697,85 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         } else if (arrRes[0].equals("academy")) {
             locationXml = arrRes[1];
 //            parsexml.parse_xml_file(locationXml);
-            parseResponse(locationXml);
+//            parseResponse(locationXml);
+//            parseResponseNew(locationXml);
+            parseResponseSimple(locationXml);
         } else {
             Toast.makeText(this, "Could " +
                     " connect to server " + result, Toast.LENGTH_SHORT).show();
         }
 
+
+    }
+
+    private void parseResponseSimple(String locationXml) {
+        academyResponse = locationXml.split(";");
+        for (int i = 0; i < academyResponse.length; i++) {
+            db.storeLocationInfo(academyResponse[i]);
+        }
+        populateSpinner();
+    }
+
+    private void parseResponseNew(String result) {
+        academyResponse = result.split("-");
+        stateInfo = (academyResponse[0].split(","));
+        for (int stateCount = 0; stateCount < stateInfo.length; stateCount++) {
+            nextState = 0;
+            statesList.add(new State(stateCount, stateInfo[stateCount]));
+            System.out.println("stateList: " + Collections.singletonList(statesList));
+            cityInfo = (academyResponse[1].split(";")); //same state cities are seperated by ;chennai;Hydrabaad;Belagavi.Bengaluru
+
+            for (int cityInfoCount = tempNextState; cityInfoCount < cityInfo.length; cityInfoCount++) {
+                nextCity = 0;
+                if (tempNextState > 0)
+                    break;
+                System.out.println("split by dot " + cityInfo[cityInfoCount].split("@").length);
+                if (1 < cityInfo[cityInfoCount].split("@").length) { //if more cities are the
+                    respectivePlaces = cityInfo[cityInfoCount].split("@");
+                    for (int respectiveCitiesCount = 0; respectiveCitiesCount < respectivePlaces.length; respectiveCitiesCount++) {
+                        citiesList.add(new City(cityInfoCount, statesList.get(stateCount), respectivePlaces[respectiveCitiesCount]));
+                        Log.e("loc ", "---->" + cityInfoCount + "\n" +
+                                statesList.get(stateCount) + "\n" +
+                                respectivePlaces[respectiveCitiesCount]);
+                    }
+                } else {
+                    citiesList.add(new City(cityInfoCount, statesList.get(stateCount), cityInfo[cityInfoCount]));
+                    tempNextState = nextState + 1;
+                    Log.e("loc 1 ", "---->" + cityInfoCount + "\n" +
+                            statesList.get(stateCount) + "\n" +
+                            cityInfo[cityInfoCount]);
+
+                }
+//                locationInfo = (academyResponse[2].split(";"));
+//                System.out.println("LocationInfo" + Collections.singletonList(locationInfo));
+                locationInfo = (academyResponse[2].split(";")); //same state cities are seperated by ;chennai;Hydrabaad;Belagavi.Bengaluru
+                for (int locationInfoCount = tempNextCity; locationInfoCount < locationInfo.length; locationInfoCount++) {
+                    if (nextCity > 0)
+                        break;
+                    if (1 < locationInfo[locationInfoCount].split("@").length) {
+                        respectivePlaces = locationInfo[locationInfoCount].split("@");
+                        for (int respectiveCitiesCount = 0; respectiveCitiesCount < respectivePlaces.length; respectiveCitiesCount++) {
+                            locationList.add(new LocalLocation(locationInfoCount, statesList.get(stateCount), citiesList.get(cityInfoCount), respectivePlaces[respectiveCitiesCount]));
+                            /*System.out.println(cityInfoCount + "\n" +
+                                    statesList.get(cityInfoCount) + "\n" +
+                                    respectivePlaces[respectiveCitiesCount]);*/
+                        }
+                    } else {
+                        locationList.add(new LocalLocation(locationInfoCount, statesList.get(stateCount), citiesList.get(cityInfoCount), locationInfo[locationInfoCount]));
+                        tempNextCity = nextCity + 1;
+                    }
+                }
+
+                academyNameInfo = (academyResponse[3].split(";"));
+                System.out.println("academyNameInfo " + Collections.singletonList(statesList));
+                System.out.println("academyNameInfo " + Collections.singletonList(citiesList));
+                System.out.println("academyNameInfo " + Collections.singletonList(locationList));
+            }
+        }
+
+//        populateTheAutoText();
+//        locationValidation();
+        populateSpinner();
 
     }
 
@@ -723,19 +811,23 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             } else if (i == 2) {
 //                locationInfo = (academyResponse[2].split(";"));
 //                System.out.println("LocationInfo" + Collections.singletonList(locationInfo));
-                locationInfo = (academyResponse[2].split(";")); //same state cities are seperated by ;chennai;Hydrabaad;Belagavi.Bengaluru
-                for (int locationInfoCount = 0; locationInfoCount < locationInfo.length; locationInfoCount++) {
-                    System.out.println("split by dot " + locationInfo[locationInfoCount].split("@").length);
-                    if (1 < locationInfo[locationInfoCount].split("@").length) {
-                        respectivePlaces = locationInfo[locationInfoCount].split("@");
-                        for (int respectiveCitiesCount = 0; respectiveCitiesCount < respectivePlaces.length; respectiveCitiesCount++) {
-                            locationList.add(new LocalLocation(locationInfoCount, statesList.get(locationInfoCount),citiesList.get(locationInfoCount), respectivePlaces[respectiveCitiesCount]));
+                for (int stateCount = 0; stateCount < stateInfo.length; stateCount++) {
+                    for (int cityCount = 0; cityCount < cityInfo.length; cityCount++) {
+                        locationInfo = (academyResponse[2].split(";")); //same state cities are seperated by ;chennai;Hydrabaad;Belagavi.Bengaluru
+                        for (int locationInfoCount = 0; locationInfoCount < locationInfo.length; locationInfoCount++) {
+                            System.out.println("split by dot " + locationInfo[locationInfoCount].split("@").length);
+                            if (1 < locationInfo[locationInfoCount].split("@").length) {
+                                respectivePlaces = locationInfo[locationInfoCount].split("@");
+                                for (int respectiveCitiesCount = 0; respectiveCitiesCount < respectivePlaces.length; respectiveCitiesCount++) {
+                                    locationList.add(new LocalLocation(locationInfoCount, statesList.get(locationInfoCount), citiesList.get(locationInfoCount), respectivePlaces[respectiveCitiesCount]));
                             /*System.out.println(cityInfoCount + "\n" +
                                     statesList.get(cityInfoCount) + "\n" +
                                     respectivePlaces[respectiveCitiesCount]);*/
+                                }
+                            } else {
+                                locationList.add(new LocalLocation(locationInfoCount, statesList.get(locationInfoCount), citiesList.get(locationInfoCount), locationInfo[locationInfoCount]));
+                            }
                         }
-                    } else {
-                        locationList.add(new LocalLocation(locationInfoCount, statesList.get(locationInfoCount),citiesList.get(locationInfoCount),  locationInfo[locationInfoCount]));
                     }
                 }
 
@@ -747,12 +839,16 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         }
 //        populateTheAutoText();
 //        locationValidation();
-        populateSpinner();
+//        populateSpinner();
 
     }
 
     private void populateSpinner() {
-        stateArrayAdapter = new ArrayAdapter<State>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, statesList);
+        stateArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, db.getStates());
+        stateArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        state_Spinner.setAdapter(stateArrayAdapter);
+
+        /*stateArrayAdapter = new ArrayAdapter<State>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, statesList);
         stateArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         state_Spinner.setAdapter(stateArrayAdapter);
 
@@ -764,11 +860,10 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         locationArrayAdapter = new ArrayAdapter<LocalLocation>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, locationList);
         locationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         location_spinner.setAdapter(locationArrayAdapter);
-
+*/
 //        location_spinner.setOnItemSelectedListener(country_listener);
         state_Spinner.setOnItemSelectedListener(state_listener);
-        city_Spinner.setOnItemSelectedListener(city_listener);
-        location_spinner.setOnItemSelectedListener(location_listener);
+//        location_spinner.setOnItemSelectedListener(location_listener);
 
     }
 
