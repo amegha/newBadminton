@@ -47,7 +47,7 @@ public class Reset_pass extends AppCompatActivity {
         if ((cursor_name != null)) {
             cursor_name.moveToFirst();
 
-            /*the below if statement use to check or match username and password entered by user with respective username and password in database*/
+            /*the below if statement use to check or match username and phoneNumber entered by user with respective username and phoneNumber in database*/
 
             if (cursor_name.isAfterLast() == false ) {
 

@@ -79,7 +79,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     }
 
     private void validateCredentialOnline(String Username, String Password) {
-        new WebService(this).execute(API.ServerAddress + API.USER_LOGIN, "username=" + Username + "&password=" + Password);
+        new WebService(this).execute(API.ServerAddress + API.USER_LOGIN, "username=" + Username + "&phoneNumber=" + Password);
     
     }
     
@@ -114,7 +114,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
             cursor_name.moveToFirst();
             cursor_pass.moveToFirst();
 
-            /*the below if statement use to check or match username and password entered by user with respective username and password in database
+            /*the below if statement use to check or match username and phoneNumber entered by user with respective username and phoneNumber in database
              * */
             if (cursor_name.isAfterLast() == false && cursor_pass.isAfterLast() == false) {
 
@@ -124,7 +124,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
                 if ((UserName.equals(a)) && (UserPassword.equals(b))) {
 
-//                    loginInterface = new LoginImpl(new WebService(this), this, "username=" + UserName + "&password=" + UserPassword);
+//                    loginInterface = new LoginImpl(new WebService(this), this, "username=" + UserName + "&phoneNumber=" + UserPassword);
 //                    loginInterface.loginToApp();
 ////                        startActivity(new Intent(this,HomePage.class));
 //                        new WebService(this).execute(API.ServerAddress + "" + API.USER_LOGIN, UserName,UserPassword);

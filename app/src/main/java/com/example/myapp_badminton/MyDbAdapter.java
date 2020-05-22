@@ -216,7 +216,7 @@ public class MyDbAdapter {
         String selection=myDbHelper.FULL_NAME + " = ? ";
         String[] selection_args={name};
         int count=db.update(myDbHelper.TABLE_NAME,contentValues,selection,selection_args);
-        Toast.makeText(myhelper.context,"Your password is set to 1234",Toast.LENGTH_LONG).show();
+        Toast.makeText(myhelper.context,"Your phoneNumber is set to 1234",Toast.LENGTH_LONG).show();
         return count;
     }
 
@@ -303,7 +303,7 @@ public class MyDbAdapter {
         }
 
         /**
-         * used to get only password column and search for password in db
+         * used to get only phoneNumber column and search for phoneNumber in db
          */
         public Cursor search_pass(String pass, SQLiteDatabase sqLiteDatabase) {
 

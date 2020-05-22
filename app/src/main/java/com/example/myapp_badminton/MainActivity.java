@@ -2,7 +2,9 @@ package com.example.myapp_badminton;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,6 +16,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.widget.Spinner;
 import android.view.View;
 import android.widget.AdapterView;
@@ -57,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     public static String result;
     final ArrayList<String> state_options = new ArrayList<String>();
     final ArrayList<String> city_options = new ArrayList<String>();
+    AlertDialog alertDialog;
+
     DBHandler db;
     String imageString;
     String email_s, module;
@@ -69,17 +74,17 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     //for camera
     ImageView imageView;
     TextView image_name, age, dob;
-    Button click, add;
+    Button click, add, buttonConfirm;
     String image_uri;
     //radio buttons and variables
-    RadioGroup r_gender, r_edu, r_playertype;
-    RadioButton male, female, school, college, player, coach, mentor;
-    String radio_gender, radio_Education, radio_playerType, age_a;
+    RadioGroup r_gender, r_edu;
+    RadioButton male, female, school, college;
+    String radio_gender, radio_Education, age_a;
     //other data variables
-    EditText fname, email, state_rank, national_rank, password;
+    EditText fname, email, state_rank, national_rank, phoneNumber, editTextConfirmOtp;
     TextView showDate, loginBack;
     //    Spinner academyName,state,city,location;
-    private AppCompatAutoCompleteTextView autoTextState, autoTextCity, autoTextLocation, autoTextAcademyName;
+//    private AppCompatAutoCompleteTextView autoTextState, autoTextCity, autoTextLocation, autoTextAcademyName;
 
     private Spinner location_spinner;
     private Spinner state_Spinner;
@@ -288,7 +293,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
         //other data
         fname = findViewById(R.id.et_fname);
-        password = findViewById(R.id.et_phone_number);
+        phoneNumber = findViewById(R.id.et_phone_number);
         email = findViewById(R.id.et_email);
         state_rank = findViewById(R.id.et_stateRank);
         national_rank = findViewById(R.id.tv_nationalrank);
@@ -335,13 +340,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 Radio_education_selected();
 //                Radio_playerType_selected();
                 if ((male.isChecked() == true || female.isChecked() == true) && (college.isChecked() == true || school.isChecked() == true) /*&& (coach.isChecked() == true || player.isChecked() == true) || mentor.isChecked() == true*/) {
-                    if (autoTextAcademyName.getText().toString().trim().equals("--Training Center--")) {
-                        Toast.makeText(MainActivity.this, "You Have Not selected Training Center !! ",
-                                Toast.LENGTH_LONG).show();
-                    } else {
-                        addUser();
-                    }
-
+                    addUser();
                 } else {
                     Toast.makeText(MainActivity.this, "Please Select Appropriate radio fields!!", Toast.LENGTH_LONG).show();
                 }
@@ -578,47 +577,24 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         //Now insert it into your database using userGender instead of gender
     }
 
-    //Player Type Details
-    public void Radio_playerType_selected() {
-        //This variable will store whether the user was male or female
-        String playerType = "";
-
-        // Check which radio button was clicked
-        if (player.isChecked() == true) {
-            playerType = player.getText().toString();
-            radio_playerType = playerType;
-            //  Toast.makeText(this," selected Player ",Toast.LENGTH_LONG).show();
-        } else if (coach.isChecked() == true) {
-            playerType = coach.getText().toString();
-            radio_playerType = playerType;
-            //Toast.makeText(this," selected Coach ",Toast.LENGTH_LONG).show();
-        } else if (mentor.isChecked() == true) {
-            playerType = mentor.getText().toString();
-            radio_playerType = playerType;
-            //Toast.makeText(this," selected Coach ",Toast.LENGTH_LONG).show();
-        } else
-            Toast.makeText(this, " Please Select Respective Radio Fields !! ", Toast.LENGTH_LONG).show();
-
-        //Now insert it into your database using userGender instead of gender
-    }
-
     //add data
     public void addUser() {
         //name concatenating
         final String name = fname.getText().toString();
-        final String password_user = password.getText().toString();
+        final String phone_user = phoneNumber.getText().toString();
         final String mailId = email.getText().toString();
-        //to get selected item from training center list
-//        final String trainingCenter = academyName.getSelectedItem().toString();
-        final String trainingCenter = "xyz";
         final int stateRank = Integer.parseInt(state_rank.getText().toString());
         final int nationalRank = Integer.parseInt(national_rank.getText().toString());
         final String image_uri = this.image_uri;
         final String image_uri_data = imageString;
         final String age = age_a;
         final String dob = showDate.getText().toString();
-        final String enc_password = md5(password_user);
-        //timestamp makes unique name
+
+        final String stateSpinner = state_Spinner.getSelectedItem().toString();
+        final String citySpinner = city_Spinner.getSelectedItem().toString();
+        final String locationSpinner = location_spinner.getSelectedItem().toString();
+        final String academySpinner = academy_spinner.getSelectedItem().toString();
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         final String timestamp1 = sdf.format(new Date());
         String state;
@@ -632,13 +608,20 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             }
             File file = new File(Dir, "Message.xml");
         }
-        if (name.isEmpty() || mailId.isEmpty() || state_rank.getText().toString().isEmpty() || national_rank.getText().toString().isEmpty()) {
+        if (name.isEmpty()
+                || mailId.isEmpty()
+                || state_rank.getText().toString().isEmpty()
+                || national_rank.getText().toString().isEmpty()
+                || stateSpinner.isEmpty()
+                || citySpinner.isEmpty()
+                || locationSpinner.isEmpty()
+                || academySpinner.isEmpty()) {
 
             Message.message(getApplicationContext(), "Enter all Text Fields as well as select Proper Radio Fields !!");
         } else {
 
 //            long id = helper.insertData(name, password_user, enc_password, mailId, trainingCenter, stateRank, nationalRank, image_uri_data, radio_gender, radio_Education, radio_playerType, age, dob, timestamp1);
-            formXMl(name, password_user, mailId, trainingCenter, stateRank, nationalRank, image_uri, radio_gender, radio_Education, radio_playerType, age, dob, timestamp1);
+            formXMl(name, phone_user, mailId, stateSpinner, citySpinner, locationSpinner, academySpinner, stateRank, nationalRank, image_uri_data, radio_gender, radio_Education, age, dob, timestamp1);
 
 //            Message.message(getApplicationContext(), "Insertion Successful");
             // new UploadFileAsync().execute("");
@@ -654,9 +637,9 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             school.setChecked(true);
             college.setChecked(false);
 
-            player.setChecked(true);
-            coach.setChecked(false);
-            mentor.setChecked(false);
+//            player.setChecked(true);
+//            coach.setChecked(false);
+//            mentor.setChecked(false);
             this.age.setVisibility(View.GONE);
             //academyName.setOnItemSelectedListener(this);
 //            academyName.setSelection(0);
@@ -668,10 +651,26 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     }
 
-    private void formXMl(String name, String password, String mailId, String trainingCenter, int stateRank, int nationalRank, String image_uri, String radio_gender, String radio_education, String radio_playerType, String age, String dob, String timestamp1) {
+    private void formXMl(String name, String phone, String mailId, String state, String city, String location, String academy, int stateRank, int nationalRank, String image_uri, String radio_gender, String radio_education, String age, String dob, String timestamp1) {
         Log.e("getdata", "entered form xml: ");
 
-        String xml = "<user_details>\n<userName>" + name + "</userName>\n<password>" + password + "</password>\n<userType>" + radio_playerType + "</userType>\n<uAge>" + age + "</uAge>\n<uDob>" + dob + "</uDob>\n<usex>" + radio_gender + "</usex>\n<ueducation>" + radio_education + "</ueducation>\n<umailid>" + mailId + "</umailid>\n<utraining>" + trainingCenter + "</utraining>\n <uothers>no Center</uothers>\n<ustateRanking>" + stateRank + "</ustateRanking>\n<unationalRank>" + nationalRank + "</unationalRank>\n<uphoto>" + imageString + "</uphoto>\n</user_details>\n";
+        String xml = "<user_details>\n" +
+                "<userName>" + name + "</userName>\n" +
+                "<phoneNumber>" + phone + "</phoneNumber>\n" + //                "<password>" + radio_playerType + "</password>\n" +
+                "<uAge>" + age + "</uAge>\n" +
+                "<uDob>" + dob + "</uDob>\n" +
+                "<usex>" + radio_gender + "</usex>\n" +
+                "<ueducation>" + radio_education + "</ueducation>\n" +
+                "<umailid>" + mailId + "</umailid>\n" +
+                "<state>" + state + "</state>\n" +
+                "<city>" + city + "</city>\n" +
+                "<location>" + location + "</location>\n" +
+                "<academyName>" + academy + "</academyName>\n " +
+                "<uothers>no Center</uothers>\n" +
+                "<ustateRanking>" + stateRank + "</ustateRanking>\n" +
+                "<unationalRank>" + nationalRank + "</unationalRank>\n" +
+                "<uphoto>" + image_uri + "</uphoto>\n" +
+                "</user_details>\n";
         try {
             writeToTxtFile(xml);
             Log.e("getdata", "dataXml: " + xml);
@@ -682,7 +681,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
     private void sendRequest(String xml) {
-        new WebService(this).execute(API.ServerAddress + "" + API.USER_REGISTER, xml);
+        new WebService(this).execute(API.ServerAddress + "" + API.USER_PRE_REGISTER, xml);
     }
 
     @Override
@@ -692,17 +691,35 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         arrRes = result.split("/");
         String locationXml;
         Log.e("ViewUserDetails", "arrRes[0]" + arrRes[0] + " arrRes[1] " + arrRes[1]);
-        if (result.equals("Registered Successfully")) {
+        if (arrRes[1].equals("0")) {
+            if (arrRes[0].equals("pre_registration")) {//coming from pre_register
+
+
+                LayoutInflater li = LayoutInflater.from(this);
+                View confirmDialog = li.inflate(R.layout.dialog_confirm, null);
+                buttonConfirm = confirmDialog.findViewById(R.id.buttonConfirm);
+                editTextConfirmOtp = (EditText) confirmDialog.findViewById(R.id.editTextOtp);
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.setView(confirmDialog);
+                alertDialog = alert.create();
+                alertDialog.show();
+            } else if (arrRes[0].equals("register")) {
+                if (arrRes[1].equals("0")) {
+                    startActivity(new Intent(this, HomePage.class));
+                }
+            }
+
+
             Log.e("ViewUserDetails", "Upload status" + result);
-        } else if (arrRes[0].equals("academy")) {
+        } else {
+            Toast.makeText(this, "Something went wrong at server side!!", Toast.LENGTH_SHORT).show();
+        }
+        if (arrRes[0].equals("academy")) {
             locationXml = arrRes[1];
 //            parsexml.parse_xml_file(locationXml);
 //            parseResponse(locationXml);
 //            parseResponseNew(locationXml);
             parseResponseSimple(locationXml);
-        } else {
-            Toast.makeText(this, "Could " +
-                    " connect to server " + result, Toast.LENGTH_SHORT).show();
         }
 
 
@@ -847,50 +864,22 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         stateArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, db.getStates());
         stateArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         state_Spinner.setAdapter(stateArrayAdapter);
-
-        /*stateArrayAdapter = new ArrayAdapter<State>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, statesList);
-        stateArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        state_Spinner.setAdapter(stateArrayAdapter);
-
-        cityArrayAdapter = new ArrayAdapter<City>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, citiesList);
-        cityArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        city_Spinner.setAdapter(cityArrayAdapter);
-
-
-        locationArrayAdapter = new ArrayAdapter<LocalLocation>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, locationList);
-        locationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        location_spinner.setAdapter(locationArrayAdapter);
-*/
-//        location_spinner.setOnItemSelectedListener(country_listener);
         state_Spinner.setOnItemSelectedListener(state_listener);
-//        location_spinner.setOnItemSelectedListener(location_listener);
-
     }
 
-    private void locationValidation() {
-        if (Arrays.asList(stateInfo).contains(autoTextState.getText().toString())) {
-//        if (stateInfo.contains(autoTextState.getText().toString())) {
-            Toast.makeText(this, "we do not operate in this location yet!!", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    private void populateTheAutoText() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (this, android.R.layout.select_dialog_item, stateInfo);
-
-        autoTextState.setThreshold(2);
-        autoTextState.setAdapter(adapter);
-        adapter = new ArrayAdapter<String>
-                (this, android.R.layout.select_dialog_item, cityInfo);
-        autoTextCity.setThreshold(2);
-        autoTextCity.setAdapter(adapter);
-
-
-    }
 
     public void validateEmailId(View view) {
         module = "verify_mailID";
         new WebService(this).execute(API.ServerAddress + "" + API.GENERATE_OTP, "mail_id=" + email_s + "&module=" + module);
+    }
+
+    public void validateOTP(View view) {
+        alertDialog.dismiss();
+        module = "register";
+        //Displaying a progressbar
+        final ProgressDialog loading = ProgressDialog.show(MainActivity.this, "Varifying!!", "Please wait..", false, false);
+        final String otp = editTextConfirmOtp.getText().toString().trim();
+        new WebService(this).execute(API.ServerAddress + "" + API.CONFIRM_OTP, "module=" + module + "&otp=" + otp);
+
     }
 }
