@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     DBHandler db;
     String imageString;
-    String email_s, module;
+    String m_id, email_s, module;
     Parsexml parsexml;
     String[] academyResponse, cities, locations, acaNames, Scities, stateInfo, cityInfo, locationInfo, academyNameInfo, respectivePlaces;
     //    List<String> ;
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     //other data variables
     EditText fname, email, state_rank, national_rank, phoneNumber, editTextConfirmOtp;
     TextView showDate, loginBack;
+
     //    Spinner academyName,state,city,location;
 //    private AppCompatAutoCompleteTextView autoTextState, autoTextCity, autoTextLocation, autoTextAcademyName;
 
@@ -599,6 +601,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         final String timestamp1 = sdf.format(new Date());
         String state;
         state = Environment.getExternalStorageState();
+        m_id = mailId;
         if (Environment.MEDIA_MOUNTED.equals(state)) {
 
             File Root = getExternalStorageDirectory();
@@ -625,7 +628,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
 //            Message.message(getApplicationContext(), "Insertion Successful");
             // new UploadFileAsync().execute("");
-            fname.setText("");
+            /*fname.setText("");
             email.setText("");
             state_rank.setText("");
             national_rank.setText("");
@@ -643,7 +646,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             this.age.setVisibility(View.GONE);
             //academyName.setOnItemSelectedListener(this);
 //            academyName.setSelection(0);
-            imageView.setVisibility(View.GONE);
+            imageView.setVisibility(View.GONE);*/
 
 
         }
@@ -672,7 +675,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 "<uphoto>" + image_uri + "</uphoto>\n" +
                 "</user_details>\n";
         try {
-            writeToTxtFile(xml);
+            //   writeToTxtFile(xml);
             Log.e("getdata", "dataXml: " + xml);
             sendRequest(xml);
         } catch (Exception e) {
@@ -686,12 +689,13 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     @Override
     public void onTaskComplete(String result) {
+        try {
         Log.e("ontask complete", "Upload status" + result);
         String[] arrRes;
         arrRes = result.split("/");
         String locationXml;
         Log.e("ViewUserDetails", "arrRes[0]" + arrRes[0] + " arrRes[1] " + arrRes[1]);
-        if (arrRes[1].equals("0")) {
+            if (arrRes[1].equals("0 ")) { // space is added
             if (arrRes[0].equals("pre_registration")) {//coming from pre_register
 
 
@@ -703,16 +707,21 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 alert.setView(confirmDialog);
                 alertDialog = alert.create();
                 alertDialog.show();
+                    /*alert.setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });*/
+                    alertDialog.setCanceledOnTouchOutside(false);
+                }
             } else if (arrRes[0].equals("register")) {
                 if (arrRes[1].equals("0")) {
+
                     startActivity(new Intent(this, HomePage.class));
                 }
-            }
-
-
-            Log.e("ViewUserDetails", "Upload status" + result);
         } else {
-            Toast.makeText(this, "Something went wrong at server side!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "something went wrong!", Toast.LENGTH_SHORT).show();
         }
         if (arrRes[0].equals("academy")) {
             locationXml = arrRes[1];
@@ -720,6 +729,9 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 //            parseResponse(locationXml);
 //            parseResponseNew(locationXml);
             parseResponseSimple(locationXml);
+        }
+        } catch (Exception e) {
+            Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -876,10 +888,43 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     public void validateOTP(View view) {
         alertDialog.dismiss();
         module = "register";
-        //Displaying a progressbar
+        //Displaying a progressbarmail_id
         final ProgressDialog loading = ProgressDialog.show(MainActivity.this, "Varifying!!", "Please wait..", false, false);
         final String otp = editTextConfirmOtp.getText().toString().trim();
-        new WebService(this).execute(API.ServerAddress + "" + API.CONFIRM_OTP, "module=" + module + "&otp=" + otp);
+        new WebService(this).execute(API.ServerAddress + "" + API.CONFIRM_OTP, "module=" + module + "&otp=" + otp + "&mail_id=" + m_id);
 
     }
+
+    public void reEnter(View view) {
+        fname.setText("");
+        email.setText("");
+        state_rank.setText("");
+        national_rank.setText("");
+        //dob.setHint("Date of Birth");
+        this.dob.setText("");
+        male.setChecked(true);
+        female.setChecked(false);
+
+        school.setChecked(true);
+        college.setChecked(false);
+
+//            player.setChecked(true);
+//            coach.setChecked(false);
+//            mentor.setChecked(false);
+        this.age.setVisibility(View.GONE);
+        //academyName.setOnItemSelectedListener(this);
+//            academyName.setSelection(0);
+        imageView.setVisibility(View.GONE);
+
 }
+
+    /*public void bypassReg(View view) {
+        new WebService(this).execute(API.ServerAddress + "" + API.USER_PRE_REGISTER*//*, xml*//*);
+
+    }*/
+}
+
+
+
+
+
