@@ -4980,3 +4980,14 @@ https://www.zoftino.com/android-spinner-dropdown-list
 
 https://github.com/pankajnimgade/Tutorial/blob/master/app/src/main/java/spinner/list/activities/SpinnerCountryActivity.java
 
+
+
+change the <header>
+
+confirm_otp.php:		header('Location: ../user_details.php?password='.$otp.'&module='.$module);
+confirm_otp.php://	header('Location: mail.php?module='.$module.'&email='.$mail_id.'&otp='.$otp);
+gen_otp.php:	header('Location: mail.php?module='.$module.'&email='.$mail_id.'&otp='.$otp);
+pre_register.php:	header('Location: gen_otp.php?module=pre_registration&mail_id='.$umailid);
+user_details.php://	header('Location: megha/mail.php?module=user_details&fullname='.$uName.'&email='.$umailid);
+
+INSERT INTO `COACH_PLAYER`(`C_NAME`, `C_ID`, `P_NAME`, `P_ID`) VALUES ('Ashok',4,'Jyothi',1089)

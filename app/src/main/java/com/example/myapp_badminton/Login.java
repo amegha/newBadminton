@@ -67,9 +67,9 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                 Username = name.getText().toString();
                 Password = password.getText().toString();
 
-                Intent intent = new Intent(Login.this, HomePage.class);
-                startActivity(intent);
-//                validateCredentialOnline(Username, Password);
+              /*  Intent intent = new Intent(Login.this, HomePage.class);
+                startActivity(intent);*/
+                validateCredentialOnline(Username, Password);
 //                password_validate(Username, Password);
                 //sendData(Username);
 
@@ -79,7 +79,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     }
 
     private void validateCredentialOnline(String Username, String Password) {
-        new WebService(this).execute(API.ServerAddress + API.USER_LOGIN, "username=" + Username + "&phoneNumber=" + Password);
+        new WebService(this).execute(API.ServerAddress + API.USER_LOGIN, "mail_id=" + Username + "&password=" + Password);
     
     }
     
@@ -386,9 +386,9 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     public void onTaskComplete(String result) {
         Log.e(this.getPackageName(), "onTaskComplete1: " + result);
 
-        if (result.equals("Sucessfully logged in")) {
+        /*if (result.equals("Sucessfully logged in")) {
             Log.e(this.getPackageName(), "onTaskComplete: " + result);
             startActivity(new Intent(this, HomePage.class));
-        }
+        }*/
     }
 }
