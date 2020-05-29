@@ -11,7 +11,7 @@ public class API {
     public static String USER_REGISTER = "user_details.php";
     public static String USER_PRE_REGISTER = "pre_register.php";
     public static String GENERATE_OTP = "gen_otp.php";
-    public static String GET_ACADEMY_INFO = "get_academy_simple.php";
+    public static String GET_ACADEMY_INFO = "get_academy.php";
     public static String CONFIRM_OTP = "confirm_otp.php";
 
 

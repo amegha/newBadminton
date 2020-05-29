@@ -136,5 +136,19 @@ public class DBHandler extends SQLiteOpenHelper {
 
         return selection;
     }
+
+    public String[] getAllData() {
+        db = this.getReadableDatabase();
+        c = db.rawQuery("SELECT * FROM academy_info where state='Karnataka' ", null);
+        selection = new String[c.getColumnCount()];
+        c.moveToFirst();
+        for (int i = 0; i < c.getColumnCount(); i++) {
+            selection[i] = c.getString(i);
+        }
+        System.out.println("get all data " + Arrays.toString(selection));
+
+        return selection;
+    }
+
 }
 

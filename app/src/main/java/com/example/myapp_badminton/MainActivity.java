@@ -690,23 +690,23 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     @Override
     public void onTaskComplete(String result) {
         try {
-        Log.e("ontask complete", "Upload status" + result);
-        String[] arrRes;
-        arrRes = result.split("/");
-        String locationXml;
-        Log.e("ViewUserDetails", "arrRes[0]" + arrRes[0] + " arrRes[1] " + arrRes[1]);
+            Log.e("ontask complete", "Upload status" + result);
+            String[] arrRes;
+            arrRes = result.split("/");
+            String locationXml;
+            Log.e("ViewUserDetails", "arrRes[0]" + arrRes[0] + " arrRes[1] " + arrRes[1]);
             if (arrRes[1].equals("0 ")) { // space is added
-            if (arrRes[0].equals("pre_registration")) {//coming from pre_register
+                if (arrRes[0].equals("pre_registration")) {//coming from pre_register
 
 
-                LayoutInflater li = LayoutInflater.from(this);
-                View confirmDialog = li.inflate(R.layout.dialog_confirm, null);
-                buttonConfirm = confirmDialog.findViewById(R.id.buttonConfirm);
-                editTextConfirmOtp = (EditText) confirmDialog.findViewById(R.id.editTextOtp);
-                AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                alert.setView(confirmDialog);
-                alertDialog = alert.create();
-                alertDialog.show();
+                    LayoutInflater li = LayoutInflater.from(this);
+                    View confirmDialog = li.inflate(R.layout.dialog_confirm, null);
+                    buttonConfirm = confirmDialog.findViewById(R.id.buttonConfirm);
+                    editTextConfirmOtp = (EditText) confirmDialog.findViewById(R.id.editTextOtp);
+                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                    alert.setView(confirmDialog);
+                    alertDialog = alert.create();
+                    alertDialog.show();
                     /*alert.setNegativeButton("Cancel",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -720,16 +720,16 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
                     startActivity(new Intent(this, HomePage.class));
                 }
-        } else {
+            } else {
                 Toast.makeText(this, "something went wrong!", Toast.LENGTH_SHORT).show();
-        }
-        if (arrRes[0].equals("academy")) {
-            locationXml = arrRes[1];
+            }
+            if (arrRes[0].equals("academy")) {
+                locationXml = arrRes[1];
 //            parsexml.parse_xml_file(locationXml);
 //            parseResponse(locationXml);
 //            parseResponseNew(locationXml);
-            parseResponseSimple(locationXml);
-        }
+                parseResponseSimple(locationXml);
+            }
         } catch (Exception e) {
             Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show();
         }
@@ -916,7 +916,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 //            academyName.setSelection(0);
         imageView.setVisibility(View.GONE);
 
-}
+    }
 
     /*public void bypassReg(View view) {
         new WebService(this).execute(API.ServerAddress + "" + API.USER_PRE_REGISTER*//*, xml*//*);

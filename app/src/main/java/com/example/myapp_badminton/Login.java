@@ -4,11 +4,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,28 +21,29 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapp_badminton.megha.API;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class Login extends AppCompatActivity implements AsyncResponse {
     public Button btn_signIn, reset;
     public EditText name, password;
     public TextView Registration;
+    public String Username, Password, today;
     MyDbAdapter helper;
     SQLiteDatabase sqLiteDatabase;
-    private int counter = 5, x;
     LoginInterface loginInterface;
-
-    public String Username, Password, today;
-
-
     ScoreStorageAdapter sHelper;
     SQLiteDatabase db, db1;
     Cursor cursor, cursor_days_not_entered, cursor_lastDate, cursor_sec_last_login;
     String last_date, savedID, sec_lastDate, pending_day;
-
     AlertDialog.Builder alertbuilder;
+    DBHandler dbHandler;
+    ImageView imageView;
+    private int counter = 5, x;
 
     public void Register(View view) {
         Intent intent = new Intent(Login.this, MainActivity.class);
@@ -49,13 +54,13 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        dbHandler = new DBHandler(this);
         name = findViewById(R.id.username_signin);
         password = findViewById(R.id.password_signin);
         btn_signIn = findViewById(R.id.btn_signIn);
         reset = findViewById(R.id.btn_reset);
         Registration = findViewById(R.id.signUp_text);
-
+        imageView = findViewById(R.id.userImage);
 
         alertbuilder = new AlertDialog.Builder(this);
 
@@ -79,10 +84,11 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     }
 
     private void validateCredentialOnline(String Username, String Password) {
-        new WebService(this).execute(API.ServerAddress + API.USER_LOGIN, "mail_id=" + Username + "&password=" + Password);
-    
+//        new WebService(this).execute(API.ServerAddress + API.USER_LOGIN, "mail_id=" + Username + "&password=" + Password);
+        new WebService(this).execute(API.ServerAddress + "player_details.php", "academy_id=2&level=1&coach_id=22");
+
     }
-    
+
 
     public void sendData(String value) {
         Intent intent = new Intent(Login.this, SearchActivity.class).putExtra("x", value).putExtra("P", "fromLogin");
@@ -384,7 +390,16 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void onTaskComplete(String result) {
-        Log.e(this.getPackageName(), "onTaskComplete1: " + result);
+        String[] arrRes;
+        String[] arrPlayerData;
+        arrRes = result.split(";");
+        for (int i = 0; i < arrRes.length; i++) {
+            arrPlayerData = arrRes[i].split(",");
+            byte[] byteImage=Base64.decode(arrPlayerData[arrPlayerData.length - 1], Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(byteImage, 0, byteImage.length);
+            imageView.setImageBitmap(decodedByte);
+        }
+//        dbHandler.getAllData();
 
         /*if (result.equals("Sucessfully logged in")) {
             Log.e(this.getPackageName(), "onTaskComplete: " + result);
