@@ -105,6 +105,19 @@
             android:textSize="13dp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/forgot_pass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:fontFamily="sans-serif"
+            android:onClick="forgotPassword"
+            android:padding="10dp"
+            android:text="Forgot Password"
+            android:textAllCaps="true"
+            android:textColor="@color/app_text"
+            android:textSize="13dp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 </RelativeLayout>
