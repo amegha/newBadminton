@@ -2,27 +2,29 @@ package com.example.myapp_badminton;
 
 import android.util.Log;
 
-public class GetOTPImpl implements GetOTP ,AsyncResponse{
+public class GetOTPImpl implements GetOTP, AsyncResponse {
+    String TAG = "GetOTPImpl";
     private String mailId;
     private String module;
-    private String serverAddr=API.ServerAddress + API.GENERATE_OTP;
+    private String intent;
+    private String serverAddr = API.ServerAddress + API.GENERATE_OTP;
     private WebService webService;
-    String TAG="GetOTPImpl";
 
 
-    public GetOTPImpl(String mailId, WebService webService, String module) {
+    public GetOTPImpl(String mailId, WebService webService, String module, String intent) {
         this.mailId = mailId;
-        this.webService=webService;
-        this.module=module;
+        this.webService = webService;
+        this.module = module;
+        this.intent = intent;
     }
 
     @Override
     public void requestForOTP() {
-        webService.execute(serverAddr, "module="+module+"&mail_id="+mailId);
+        webService.execute(serverAddr, "module=" + module + "&mail_id=" + mailId+"&intent=" + intent);
     }
 
     @Override
     public void onTaskComplete(String result) {
-        Log.e(TAG, "onTaskComplete: "+result );
+        Log.e(TAG, "onTaskComplete: " + result);
     }
 }

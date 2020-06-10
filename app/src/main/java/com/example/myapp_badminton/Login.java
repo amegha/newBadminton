@@ -34,6 +34,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     String last_date, savedID, UserName, sec_lastDate, pending_day;
     private int counter = 5, x;
     private GetOTP getOTP;
+    private ConfirmOTP confirmOTP;
 
     //this is for first time registration
     public void Register(View view) {
@@ -97,8 +98,8 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void onTaskComplete(String result) {
-        if (result.equals("forgot_password/0 ")) {
-            createAlertDialog();
+        if (result.equals("forgot_password/0/getOTP ")) {
+            createConfirmOTPAlertDialog();
         } else {
             Log.e("here", "onTaskComplete: " + result);
             String[] arrRes;
@@ -139,6 +140,17 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
     }
 
+    private void createConfirmOTPAlertDialog() {
+        LayoutInflater li = LayoutInflater.from(this);
+        View confirmDialog = li.inflate(R.layout.dialog_confirm, null);
+        email = confirmDialog.findViewById(R.id.editTextOtp);
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setView(confirmDialog);
+        alertDialog = alert.create();
+        alertDialog.show();
+        alertDialog.setCanceledOnTouchOutside(false);
+    }
+
     public void forgotPassword(View view) {
         createAlertDialog();
 
@@ -158,8 +170,15 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     public void getOtp(View view) {
         alertDialog.dismiss();
         final String mailId = email.getText().toString().trim();
-        getOTP = new GetOTPImpl(mailId, new WebService(this), "forgot_password");
+        getOTP = new GetOTPImpl(mailId, new WebService(this), "forgot_password","getOTP");
         getOTP.requestForOTP();
 
+    }
+
+    public void validateOTP(View view) {
+        alertDialog.dismiss();
+        final String mailId = email.getText().toString().trim();
+        confirmOTP = new ConfirmOTPImpl(mailId, new WebService(this), "forgot_password&intent=confirmOTP");
+        getOTP.requestForOTP();
     }
 }
