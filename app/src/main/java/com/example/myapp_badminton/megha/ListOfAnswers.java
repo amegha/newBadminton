@@ -115,7 +115,7 @@ public class ListOfAnswers extends Activity {
         LinearLayout ll = new LinearLayout(this);
         ll.setLayoutParams(layoutParams);
         ll.addView(vv);
-        final Dialog dialog = new Dialog(this);// add here your class name
+        final Dialog dialog = new Dialog(this);// add here your class etName
         dialog.setTitle("Review video!!");
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(ll);//add your own xml with defied with and height of videoview

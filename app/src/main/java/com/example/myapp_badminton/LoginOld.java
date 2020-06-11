@@ -80,7 +80,7 @@ public class LoginOld extends AppCompatActivity implements AsyncResponse {
               /*  Intent intent = new Intent(LoginOld.this, HomePage.class);
                 startActivity(intent);*/
                 validateCredentialOnline(Username, Password);
-//                password_validate(Username, Password);
+//                password_validate(Username, password);
                 //sendData(Username);
 
             }
@@ -89,7 +89,7 @@ public class LoginOld extends AppCompatActivity implements AsyncResponse {
     }
 
     private void validateCredentialOnline(String Username, String Password) {
-        new WebService(this).execute(API.ServerAddress + API.USER_LOGIN, "mail_id=" + Username + "&password=" + Password);
+        new WebService(this).execute(API.ServerAddress + API.USER_LOGIN, "mail_id=" + Username + "&etPassword=" + Password);
 //        new WebService(this).execute(API.ServerAddress + "player_details.php", "academy_id=2&level=1&coach_id=22");
 //        new WebService(this).execute(API.ServerAddress + "get_academy.php", "module=coach&coach_id=22");
 
@@ -290,7 +290,7 @@ public class LoginOld extends AppCompatActivity implements AsyncResponse {
             } else {
                 counter--;
 
-                Toast.makeText(getApplicationContext(), "Remaining :" + String.valueOf(counter) + " attempts,please Enter Correct Username/Password", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Remaining :" + String.valueOf(counter) + " attempts,please Enter Correct Username/password", Toast.LENGTH_LONG).show();
                 if (counter == 0) {
                     btn_signIn.setEnabled(false);
                     btn_signIn.setVisibility(View.VISIBLE);

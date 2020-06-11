@@ -22,11 +22,13 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     public static final String Password_pref = "passKey";
     public static final String Email_pref = "emailKey";
     public Button btn_signIn, reset;
-    public EditText name, password, email;
+    public EditText etName, etPassword, email, etOTP, newPass, confirmNewPass;
     public TextView Registration, password_forgot;
-    public String Reg_email, Password, today, type, Id, Name, lastScoreEntryDate, Score;
+    public String regEmail, password, today, type, Id, Name, lastScoreEntryDate, Score;
     SQLiteDatabase sqLiteDatabase;
     AlertDialog alertDialog;
+    String sNewPass;
+    String sNewPassConfirm;
     //variables used for sharedpreferences
     SharedPreferences sharedpreferences;
     SQLiteDatabase db;
@@ -46,8 +48,8 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        name = findViewById(R.id.username_signin);
-        password = findViewById(R.id.password_signin);
+        etName = findViewById(R.id.username_signin);
+        etPassword = findViewById(R.id.password_signin);
         btn_signIn = findViewById(R.id.btn_signIn);
         reset = findViewById(R.id.btn_reset);
         Registration = findViewById(R.id.signUp_text);
@@ -55,17 +57,17 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
-        btn_signIn.setOnClickListener(new View.OnClickListener() {
+       /* btn_signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Reg_email = name.getText().toString();
-                Password = password.getText().toString();
+                regEmail = etName.getText().toString();
+                password = etPassword.getText().toString();
                 Save();
-                new WebService(Login.this).execute(API.ServerAddress + "" + API.USER_LOGIN, "mail_id=" + Reg_email + "&password=" + Password);
-                name.setText("");
-                password.setText("");
+                new WebService(Login.this).execute(API.ServerAddress + "" + API.USER_LOGIN, "mail_id=" + regEmail + "&etPassword=" + password);
+                etName.setText("");
+                etPassword.setText("");
             }
-        });
+        });*/
 
         /*password_forgot.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,18 +81,18 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
     //to save in xml file called "myPrefs"
     public void Save() {
-        String n = name.getText().toString();
-        String e = password.getText().toString();
+        String n = etName.getText().toString();
+        String e = etPassword.getText().toString();
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(Email_pref, n);
         editor.putString(Password_pref, e);
         editor.commit();
 
         if (sharedpreferences.contains(Email_pref)) {
-            name.setText(sharedpreferences.getString(Email_pref, ""));
+            etName.setText(sharedpreferences.getString(Email_pref, ""));
         }
         if (sharedpreferences.contains(Password_pref)) {
-            password.setText(sharedpreferences.getString(Password_pref, ""));
+            etPassword.setText(sharedpreferences.getString(Password_pref, ""));
 
         }
 
@@ -98,8 +100,14 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void onTaskComplete(String result) {
+        Log.e("here", "onTaskComplete: " + result);
         if (result.equals("forgot_password/0/getOTP ")) {
             createConfirmOTPAlertDialog();
+        } else if (result.equals("forgot_password/0/confirmOTP")) {
+            createResetPasswordAlertDialog();
+
+        } else if (result.equals("password_reset/0")) {
+            signIn(regEmail, sNewPass);
         } else {
             Log.e("here", "onTaskComplete: " + result);
             String[] arrRes;
@@ -140,10 +148,22 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
     }
 
+    private void createResetPasswordAlertDialog() {
+        LayoutInflater li = LayoutInflater.from(this);
+        View confirmDialog = li.inflate(R.layout.activity_reset_password, null);
+        newPass = confirmDialog.findViewById(R.id.pass_new);
+        confirmNewPass = confirmDialog.findViewById(R.id.pass_confirm);
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setView(confirmDialog);
+        alertDialog = alert.create();
+        alertDialog.show();
+        alertDialog.setCanceledOnTouchOutside(false);
+    }
+
     private void createConfirmOTPAlertDialog() {
         LayoutInflater li = LayoutInflater.from(this);
         View confirmDialog = li.inflate(R.layout.dialog_confirm, null);
-        email = confirmDialog.findViewById(R.id.editTextOtp);
+        etOTP = confirmDialog.findViewById(R.id.editTextOtp);
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setView(confirmDialog);
         alertDialog = alert.create();
@@ -169,16 +189,43 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
     public void getOtp(View view) {
         alertDialog.dismiss();
-        final String mailId = email.getText().toString().trim();
-        getOTP = new GetOTPImpl(mailId, new WebService(this), "forgot_password","getOTP");
+        regEmail = email.getText().toString().trim();
+//        final String mailId = email.getText().toString().trim();
+        getOTP = new GetOTPImpl(regEmail, new WebService(this), "forgot_password", "getOTP");
         getOTP.requestForOTP();
 
     }
 
     public void validateOTP(View view) {
         alertDialog.dismiss();
-        final String mailId = email.getText().toString().trim();
-        confirmOTP = new ConfirmOTPImpl(mailId, new WebService(this), "forgot_password&intent=confirmOTP");
-        getOTP.requestForOTP();
+        String OTP = etOTP.getText().toString().trim();
+        confirmOTP = new ConfirmOTPImpl(regEmail, new WebService(this), "forgot_password", "confirmOTP", OTP);
+        confirmOTP.confirmOtp();
     }
+
+    public void resetPasswordOrPin(View view) {
+//        alertDialog.dismiss();
+        sNewPass = newPass.getText().toString().trim();
+        sNewPassConfirm = confirmNewPass.getText().toString().trim();
+        if (sNewPass.equals(sNewPassConfirm)) {
+            alertDialog.dismiss();
+            new WebService(this).execute(API.ServerAddress + API.RESET_PASSWORD, "module=password_reset" + "&mail_id=" + regEmail + "&new_pin=" + sNewPass);
+
+        } else {
+            confirmNewPass.setError("password doesnt match");
+        }
+    }
+
+    public void signInButtonPressed(View view) {
+        regEmail = etName.getText().toString();
+        password = etPassword.getText().toString();
+        signIn(regEmail, password);
+
+    }
+
+    private void signIn(String regEmail, String password) {
+        new WebService(Login.this).execute(API.ServerAddress + API.USER_LOGIN, "mail_id=" + regEmail + "&password=" + password);
+
+    }
+
 }

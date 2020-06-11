@@ -74,6 +74,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/round_button"
             android:text="SIGN IN"
+            android:onClick="signInButtonPressed"
             android:textAllCaps="false"
             android:textColor="@color/app_text"
             android:textSize="17sp" />

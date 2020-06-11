@@ -6,6 +6,7 @@ package com.example.myapp_badminton;
  */
 
 public class API {
+    public static final String RESET_PASSWORD = "reset.php";
     static final String ServerAddress = "http://stage1.optipacetech.com/badminton/api/";
     public static String USER_LOGIN = "login.php";
     public static String USER_REGISTER = "user_details.php";

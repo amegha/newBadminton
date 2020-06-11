@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     ImageView imageView;
     TextView image_name, age, dob;
     Button click, add, buttonConfirm;
-    String image_uri;
+    String image_uri, sNewPass, sNewPassConfirm;
     //radio buttons and variables
     RadioGroup r_gender, r_edu;
     RadioButton male, female, school, college;
@@ -105,6 +105,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     private ArrayList<Location.State> statesList;
     private ArrayList<Location.City> citiesList;
     private ArrayList<Location.LocalLocation> locationList;
+
+    private ConfirmOTP confirmOTP;
 
 
     private TextWatcher loginTextWatcher = new TextWatcher() {
@@ -234,6 +236,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     };
     private int nextState = 0, nextCity = 0;
     private int tempNextState = 0, tempNextCity = 0;
+    private EditText newPass, confirmNewPass;
+    private EditText etOTP;
 
     public static String md5(String input) {
         try {
@@ -581,7 +585,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     //add data
     public void addUser() {
-        //name concatenating
+        //etName concatenating
         final String name = fname.getText().toString();
         final String phone_user = phoneNumber.getText().toString();
         final String mailId = email.getText().toString();
@@ -623,7 +627,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             Message.message(getApplicationContext(), "Enter all Text Fields as well as select Proper Radio Fields !!");
         } else {
 
-//            long id = helper.insertData(name, password_user, enc_password, mailId, trainingCenter, stateRank, nationalRank, image_uri_data, radio_gender, radio_Education, radio_playerType, age, dob, timestamp1);
+//            long id = helper.insertData(etName, password_user, enc_password, mailId, trainingCenter, stateRank, nationalRank, image_uri_data, radio_gender, radio_Education, radio_playerType, age, dob, timestamp1);
             formXMl(name, phone_user, mailId, stateSpinner, citySpinner, locationSpinner, academySpinner, stateRank, nationalRank, image_uri_data, radio_gender, radio_Education, age, dob, timestamp1);
 
 //            Message.message(getApplicationContext(), "Insertion Successful");
@@ -659,7 +663,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
         String xml = "<user_details>\n" +
                 "<userName>" + name + "</userName>\n" +
-                "<phoneNumber>" + phone + "</phoneNumber>\n" + //                "<password>" + radio_playerType + "</password>\n" +
+                "<phoneNumber>" + phone + "</phoneNumber>\n" + //                "<etPassword>" + radio_playerType + "</etPassword>\n" +
                 "<uAge>" + age + "</uAge>\n" +
                 "<uDob>" + dob + "</uDob>\n" +
                 "<usex>" + radio_gender + "</usex>\n" +
@@ -684,10 +688,48 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
     private void sendRequest(String xml) {
-        new WebService(this).execute(API.ServerAddress + "" + API.USER_PRE_REGISTER, xml);
+        new WebService(this).execute(API.ServerAddress + "" + API.USER_REGISTER, xml);
     }
 
     @Override
+    public void onTaskComplete(String result) {
+        Log.e("ontask complt", "response" + result);
+        if (result.equals("pre_registration/0/pre_reg ")) {
+            createConfirmOTPAlertDialog();
+        } else if (result.equals("register/0/confirmOTP")) {
+            createResetPasswordAlertDialog();
+
+        } else if (result.equals("password_reset/0")) {
+            startActivity(new Intent(this,HomePage.class));
+//            signIn(m_id, sNewPass);
+        } else {
+            String[] arrRes;
+            arrRes = result.split("/");
+            String locationXml;
+            if (arrRes[0].equals("academy")) {
+                locationXml = arrRes[1];
+                parseResponseSimple(locationXml);
+            }
+        }
+
+    }
+    /*private void signIn(String regEmail, String password) {
+        new WebService(this).execute(API.ServerAddress + API.USER_LOGIN, "mail_id=" + regEmail + "&password=" + password);
+
+    }*/
+
+    private void createConfirmOTPAlertDialog() {
+        LayoutInflater li = LayoutInflater.from(this);
+        View confirmDialog = li.inflate(R.layout.dialog_confirm, null);
+        etOTP = confirmDialog.findViewById(R.id.editTextOtp);
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setView(confirmDialog);
+        alertDialog = alert.create();
+        alertDialog.show();
+        alertDialog.setCanceledOnTouchOutside(false);
+    }
+
+    /*    @Override
     public void onTaskComplete(String result) {
         try {
             Log.e("ontask complete", "Upload status" + result);
@@ -696,7 +738,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             String locationXml;
             Log.e("ViewUserDetails", "arrRes[0]" + arrRes[0] + " arrRes[1] " + arrRes[1]);
             if (arrRes[1].equals("0 ")) { // space is added
-                if (arrRes[0].equals("pre_registration")) {//coming from pre_register
+                if (arrRes[0].equals("pre_registration")) {//coming from pre_register after sending the otp to the mailid
 
 
                     LayoutInflater li = LayoutInflater.from(this);
@@ -707,19 +749,15 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                     alert.setView(confirmDialog);
                     alertDialog = alert.create();
                     alertDialog.show();
-                    /*alert.setNegativeButton("Cancel",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                }
-                            });*/
                     alertDialog.setCanceledOnTouchOutside(false);
                 }
             } else if (arrRes[0].equals("register")) {
                 if (arrRes[1].equals("0")) {
+                    createResetPasswordAlertDialog();
 
-                    startActivity(new Intent(this, HomePage.class));
                 }
+            } else if (result.equals("password_reset/0")) {
+
             } else {
                 Toast.makeText(this, "something went wrong!", Toast.LENGTH_SHORT).show();
             }
@@ -735,6 +773,18 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         }
 
 
+    }*/
+
+    private void createResetPasswordAlertDialog() {
+        LayoutInflater li = LayoutInflater.from(this);
+        View confirmDialog = li.inflate(R.layout.activity_reset_password, null);
+        newPass = confirmDialog.findViewById(R.id.pass_new);
+        confirmNewPass = confirmDialog.findViewById(R.id.pass_confirm);
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setView(confirmDialog);
+        alertDialog = alert.create();
+        alertDialog.show();
+        alertDialog.setCanceledOnTouchOutside(false);
     }
 
     private void parseResponseSimple(String locationXml) {
@@ -890,8 +940,10 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         module = "register";
         //Displaying a progressbarmail_id
         final ProgressDialog loading = ProgressDialog.show(MainActivity.this, "Varifying!!", "Please wait..", false, false);
-        final String otp = editTextConfirmOtp.getText().toString().trim();
-        new WebService(this).execute(API.ServerAddress + "" + API.CONFIRM_OTP, "module=" + module + "&otp=" + otp + "&mail_id=" + m_id);
+        final String otp = etOTP.getText().toString().trim();
+        confirmOTP = new ConfirmOTPImpl(m_id, new WebService(this), module, "confirmOTP", otp);
+        confirmOTP.confirmOtp();
+//        new WebService(this).execute(API.ServerAddress + "" + API.CONFIRM_OTP, "module=" + module + "&otp=" + otp + "&mail_id=" + m_id+"intent");
 
     }
 
@@ -916,6 +968,18 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 //            academyName.setSelection(0);
         imageView.setVisibility(View.GONE);
 
+    }
+
+    public void resetPasswordOrPin(View view) {
+        sNewPass = newPass.getText().toString().trim();
+        sNewPassConfirm = confirmNewPass.getText().toString().trim();
+        if (sNewPass.equals(sNewPassConfirm)) {
+            alertDialog.dismiss();
+            new WebService(this).execute(API.ServerAddress + API.RESET_PASSWORD, "module=password_reset" + "&mail_id=" + m_id + "&new_pin=" + sNewPass);
+
+        } else {
+            confirmNewPass.setError("password doesnt match");
+        }
     }
 
     /*public void bypassReg(View view) {

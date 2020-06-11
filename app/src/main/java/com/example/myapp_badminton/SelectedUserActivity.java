@@ -245,7 +245,7 @@ public class SelectedUserActivity extends AppCompatActivity {
 
    //add data
         public void addUser(View view) {
-            //name concatenating
+            //etName concatenating
             long true_id;
             final String name = tvUser.getText().toString();
             final String uid=tv_userId.getText().toString();
@@ -255,7 +255,7 @@ public class SelectedUserActivity extends AppCompatActivity {
 
             final String dosubmit = DOScore.getText().toString();
             final String _score=score.getText().toString();
-            //timestamp makes unique name
+            //timestamp makes unique etName
 
 
 

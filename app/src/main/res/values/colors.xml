@@ -8,10 +8,10 @@
     <color name="colorPrimaryDark1">#489855</color>
     <color name="colorWhite">#fff</color>
     <color name="colorViolet">#D81B</color>
-<!--    <color name="main_color">#342a73</color>-->
+<!--    <color etName="main_color">#342a73</color>-->
     <color name="main_color">#ffffff</color>
     <color name="button_text_color">#342a73</color>
-<!--    <color name="list_view_text_color">#ffffff</color>-->
+<!--    <color etName="list_view_text_color">#ffffff</color>-->
     <color name="list_view_text_color">#342a73</color>
     <color name="shot_loc_button_text_color">#ccc</color>
     <color name="light_blue">#FF66A5C0</color>

@@ -255,7 +255,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         } else
             return null;
-        return s_selelction = s_selelction + c.getString(c.getColumnCount() - 1); // gets video name
+        return s_selelction = s_selelction + c.getString(c.getColumnCount() - 1); // gets video etName
 
     }
 

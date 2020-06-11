@@ -281,7 +281,7 @@ public class MyDbAdapter {
 
 
 /**
- * used to get only username column and search for name in db
+ * used to get only username column and search for etName in db
  */
 
         public Cursor search_name(String name, SQLiteDatabase sqLiteDatabase) {

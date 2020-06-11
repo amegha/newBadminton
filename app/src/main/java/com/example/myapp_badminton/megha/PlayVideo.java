@@ -563,7 +563,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
         correctShotType = new String[correctAnswers.length - 1];
         videoId = new String[correctAnswers.length - 1];
         maxTime = new int[correctAnswers.length - 1];
-        for (int i = 0; i < correctAnswers.length - 1; i++) {  //correctAnswer.length-1 coz it fetches the video name also at the end which is appended to result, seperated by ','
+        for (int i = 0; i < correctAnswers.length - 1; i++) {  //correctAnswer.length-1 coz it fetches the video etName also at the end which is appended to result, seperated by ','
             answerContents = correctAnswers[i].split(":");
 //            for (int j = 0; j < answerContents.length; j++) {
             videoId[i] = answerContents[0];

@@ -18,7 +18,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_password);
+        setContentView(R.layout.activity_reset_password);
 
         newPassword=findViewById(R.id.pass_new);
         confirmPassword=findViewById(R.id.pass_confirm);
@@ -33,11 +33,11 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 if(newPassword.getText().toString()!="" && confirmPassword.getText().toString()!="" ) {
                     if (newpass.equals(confirmpass) ) {
                         //long id=helper.insertForgotData(id,newpass);
-                        Toast.makeText(getApplicationContext(), "Password Matched..", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "password Matched..", Toast.LENGTH_LONG).show();
                         Intent i = new Intent(ForgotPasswordActivity.this, Login.class);
                         startActivity(i);
                     } else {
-                        Toast.makeText(getApplicationContext(), "Password Mis-Matched! Try again ..", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "password Mis-Matched! Try again ..", Toast.LENGTH_LONG).show();
                         newPassword.setText("");
                         confirmPassword.setText("");
                     }
