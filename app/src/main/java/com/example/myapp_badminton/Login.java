@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 public class Login extends AppCompatActivity implements AsyncResponse {
 
-    public static final String MyPREFERENCES = "myPrefs";
+    public static final String PREFS_NAME = "LoginPrefs";
     public static final String Password_pref = "passKey";
     public static final String Email_pref = "emailKey";
     public Button btn_signIn, reset;
@@ -48,6 +48,14 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        if (settings.getString("logged", "").toString().equals("logged")) {
+            Intent intent = new Intent(Login.this, HomePage.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }
         etName = findViewById(R.id.username_signin);
         etPassword = findViewById(R.id.password_signin);
         btn_signIn = findViewById(R.id.btn_signIn);
@@ -55,7 +63,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         Registration = findViewById(R.id.signUp_text);
         password_forgot = findViewById(R.id.forgot_pass);
 
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+//        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
        /* btn_signIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +122,8 @@ public class Login extends AppCompatActivity implements AsyncResponse {
             arrRes = result.split(",");
             String locationXml;
             Log.e("ViewUserDetails", " arrRes[0] " + arrRes[0] + " arrRes[1]  " + arrRes[1] + "  arrRes[2]" + arrRes[2]);
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
 
             if (arrRes.length > 4) {
                 type = arrRes[0];
@@ -121,10 +131,20 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                 Name = arrRes[2];
                 lastScoreEntryDate = arrRes[3];
                 Score = arrRes[4];
+                editor.putString("logged", "logged");
+                editor.putString("userType", type);
+                editor.putString("userId", Id);
+                editor.putString("userName", Name);
+                editor.apply();
             } else {
                 type = arrRes[0];
                 Id = arrRes[1];
                 Name = arrRes[2];
+                editor.putString("logged", "logged");
+                editor.putString("userType", type);
+                editor.putString("userId", Id);
+                editor.putString("userName", Name);
+                editor.commit();
             }
 
             if (type.equals("coach")) {
