@@ -1,11 +1,14 @@
 package com.example.myapp_badminton;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -36,7 +39,9 @@ public class HomePage extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);// get the reference of Toolbar
         SharedPreferences shared = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         String userType = shared.getString("userType", "");
+        Map<String, ?> userAll = shared.getAll();
         Log.e("HomePage", "onCreate:usertype " + userType);
+        Log.e("HomePage", "onCreate:all " + Collections.singleton(userAll));
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         setSupportActionBar(toolbar);
@@ -68,13 +73,13 @@ public class HomePage extends AppCompatActivity {
                     frag = new ForgotPasswordFragment();
                 } else if (itemId == R.id.five) {
                     startActivity(new Intent(getApplicationContext(), PlayVideo.class));
-                }
-                else if (itemId == R.id.six)//refer to about
+                } else if (itemId == R.id.six)//refer to about
                 {
                     frag = new About();
                 } else if (itemId == R.id.seven)//refer to signout
                 {
-                    frag = new Signout();
+                    showLogoutDialog();
+                    //                    frag = new Signout();
                 }
                 if (frag != null) {
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -86,5 +91,30 @@ public class HomePage extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    private void showLogoutDialog() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(HomePage.this);
+        alert.setMessage("Are you sure?")
+                .setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("logged", "not");
+                        editor.apply();
+                        logout(); // Last step. Logout function
+
+                    }
+                }).setNegativeButton("Cancel", null);
+
+        AlertDialog alert1 = alert.create();
+        alert1.show();
+        alert1.setCanceledOnTouchOutside(false);
+
+    }
+
+    private void logout() {
+        startActivity(new Intent(this, Login.class));
+        finish();
     }
 }

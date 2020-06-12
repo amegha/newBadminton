@@ -23,10 +23,9 @@ public class Signout extends Fragment {
         // Inflate the layout for this fragment
 
           View view=inflater.inflate(R.layout.fragment_signout, container, false);
-        Intent intent = new Intent(this.getActivity(), Login.class);
 
-        startActivity(intent);
-
+        /*Intent intent = new Intent(this.getActivity(), Login.class);
+        startActivity(intent);*/
         return view;
     }
 }

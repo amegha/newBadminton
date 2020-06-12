@@ -35,6 +35,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
+import androidx.core.app.ActivityCompat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -54,15 +55,22 @@ import com.example.myapp_badminton.Location.*;
 
 import static android.os.Environment.getExternalStorageDirectory;
 
+@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, AsyncResponse, AdapterView.OnItemSelectedListener {
 
     public static final int CAMERA_PERMISSION_REQUEST_CODE = 4192;
     private static final int CAMERA_REQUEST = 1888;
+    private static final int REQUEST_RUNTIME_PERMISSIONS = 1;
     public static String result;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA
+    };
+
     final ArrayList<String> state_options = new ArrayList<String>();
     final ArrayList<String> city_options = new ArrayList<String>();
     AlertDialog alertDialog;
-
     DBHandler db;
     String imageString;
     String m_id, email_s, module;
@@ -81,34 +89,28 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     RadioGroup r_gender, r_edu;
     RadioButton male, female, school, college;
     String radio_gender, radio_Education, age_a;
-    //other data variables
-    EditText fname, email, state_rank, national_rank, phoneNumber, editTextConfirmOtp;
-    TextView showDate, loginBack;
 
     //    Spinner academyName,state,city,location;
 //    private AppCompatAutoCompleteTextView autoTextState, autoTextCity, autoTextLocation, autoTextAcademyName;
-
+    //other data variables
+    EditText fname, email, state_rank, national_rank, phoneNumber, editTextConfirmOtp;
+    TextView showDate, loginBack;
     private Spinner location_spinner;
     private Spinner state_Spinner;
     private Spinner city_Spinner;
     private Spinner academy_spinner;
-
     private ArrayAdapter<String> stateArrayAdapter;
     private ArrayAdapter<String> cityArrayAdapter;
-    private ArrayAdapter<String> locationArrayAdapter;
-    private ArrayAdapter<String> academyArrayAdapter;
 
     /*private ArrayAdapter<Location.State> stateArrayAdapter;
     private ArrayAdapter<Location.City> cityArrayAdapter;
     private ArrayAdapter<Location.LocalLocation> locationArrayAdapter;*/
-
+    private ArrayAdapter<String> locationArrayAdapter;
+    private ArrayAdapter<String> academyArrayAdapter;
     private ArrayList<Location.State> statesList;
     private ArrayList<Location.City> citiesList;
     private ArrayList<Location.LocalLocation> locationList;
-
     private ConfirmOTP confirmOTP;
-
-
     private TextWatcher loginTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -254,10 +256,49 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         }
     }
 
+    public void verifyStoragePermissions(Activity activity) {
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_RUNTIME_PERMISSIONS
+            );
+        } else {
+            getAcademyInfo();
+
+        }
+    }
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_RUNTIME_PERMISSIONS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                    getAcademyInfo();
+
+                } else {
+                    Log.i("Permission", "onRequestPermissionsResult: Permission Denied");
+                }
+            }
+        }
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        verifyStoragePermissions(this);
         db = new DBHandler(this);
         image_name = findViewById(R.id.image_name);
         dob = findViewById(R.id.tv_Dob);
@@ -335,9 +376,9 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         click.setEnabled(false);
         add.setEnabled(false);
         //necessary  condition to run read or write to the file
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
-        }
+        }*/
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -360,7 +401,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 Login_screen();
             }
         });
-        getAcademyInfo();
+//        getAcademyInfo();
         /*System.out.println("from mainActivity!!" + Collections.singletonList(parsexml.stateList));
         String[] statesArr = new String[parsexml.stateList.size()];
         statesArr = (String[]) parsexml.stateList.toArray(statesArr);
@@ -470,7 +511,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         showDate.setText(date);
 
     }
-
+/*
     //Camera functions
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -485,17 +526,17 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         }
 
 
-    }
+    }*/
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void OnTakePhotoClicked(View view) {
         if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             invokeCamera();
 
-        } else {
+        } /*else {
             String[] permissionRequest = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
             requestPermissions(permissionRequest, CAMERA_PERMISSION_REQUEST_CODE);
-        }
+        }*/
 
 
     }
@@ -700,7 +741,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             createResetPasswordAlertDialog();
 
         } else if (result.equals("password_reset/0")) {
-            startActivity(new Intent(this,HomePage.class));
+            startActivity(new Intent(this, Login.class));
 //            signIn(m_id, sNewPass);
         } else {
             String[] arrRes;

@@ -188,7 +188,6 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         alert.setView(confirmDialog);
         alertDialog = alert.create();
         alertDialog.show();
-        alertDialog.setCanceledOnTouchOutside(false);
     }
 
     public void forgotPassword(View view) {
