@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Login extends AppCompatActivity implements AsyncResponse {
 
@@ -94,7 +95,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(Email_pref, n);
         editor.putString(Password_pref, e);
-        editor.commit();
+        editor.apply();
 
         if (sharedpreferences.contains(Email_pref)) {
             etName.setText(sharedpreferences.getString(Email_pref, ""));
@@ -108,7 +109,44 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void onTaskComplete(String result) {
-        Log.e("here", "onTaskComplete: " + result);
+//        try {
+        switch (result) {
+            case "00": {
+                Toast.makeText(this, "Invalid Request", Toast.LENGTH_LONG).show();
+                break;
+            }
+            case "01":
+            case "02": {
+                Toast.makeText(this, "Server Error", Toast.LENGTH_LONG).show();
+                break;
+            }
+            case "03": {
+                Toast.makeText(this, "User not found!", Toast.LENGTH_LONG).show();
+                etPassword.setError("wrong!");
+                etName.setError("wrong");
+                break;
+            }
+            case "502": {
+                Toast.makeText(this, "Try again!", Toast.LENGTH_SHORT).show();
+                break;
+            }
+            case "forgot_password/0/getOTP ": {
+                createConfirmOTPAlertDialog();
+                break;
+            }
+            case "forgot_password/0/confirmOTP": {
+                createResetPasswordAlertDialog();
+                break;
+            }
+            case "password_reset/0": {
+                signIn(regEmail, sNewPass);
+                break;
+            }
+            default:
+                prosesseSignInResponse(result);
+                break;
+        }
+        /*Log.e("here", "onTaskComplete: " + result);
         if (result.equals("forgot_password/0/getOTP ")) {
             createConfirmOTPAlertDialog();
         } else if (result.equals("forgot_password/0/confirmOTP")) {
@@ -117,55 +155,62 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         } else if (result.equals("password_reset/0")) {
             signIn(regEmail, sNewPass);
         } else {
-            Log.e("here", "onTaskComplete: " + result);
-            String[] arrRes;
-            arrRes = result.split(",");
-            String locationXml;
-            Log.e("ViewUserDetails", " arrRes[0] " + arrRes[0] + " arrRes[1]  " + arrRes[1] + "  arrRes[2]" + arrRes[2]);
-            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-            SharedPreferences.Editor editor = settings.edit();
+            prosesseSignInResponse(result);
+        }*/
+        /*}catch (Exception e){
 
-            if (arrRes.length > 4) {
-                type = arrRes[0];
-                Id = arrRes[1];
-                Name = arrRes[2];
-                lastScoreEntryDate = arrRes[3];
-                Score = arrRes[4];
-                editor.putString("logged", "logged");
-                editor.putString("userType", type);
-                editor.putString("userId", Id);
-                editor.putString("userName", Name);
-                editor.apply();
-            } else {
-                type = arrRes[0];
-                Id = arrRes[1];
-                Name = arrRes[2];
-                editor.putString("logged", "logged");
-                editor.putString("userType", type);
-                editor.putString("userId", Id);
-                editor.putString("userName", Name);
-                editor.commit();
-            }
+        }*/
 
-            if (type.equals("coach")) {
-                Bundle bcoach = new Bundle();
-                bcoach.putString("type", type);
-                bcoach.putString("Name", Name);
-                bcoach.putString("Id", Id);
-                Intent intent = new Intent(Login.this, HomePage.class).putExtras(bcoach);
-                startActivity(intent);
-            } else if (type.equals("player")) {
-                Bundle bplayer = new Bundle();
-                bplayer.putString("type", type);
-                bplayer.putString("Name", Name);
-                bplayer.putString("Id", Id);
-                bplayer.putString("DateLastScore", lastScoreEntryDate);
-                bplayer.putString("lastScore", Score);
-                Intent intent = new Intent(Login.this, HomePage.class).putExtras(bplayer);
-                startActivity(intent);
-            }
+    }
+
+    private void prosesseSignInResponse(String result) {
+        Log.e("here", "onTaskComplete: " + result);
+        String[] arrRes;
+        arrRes = result.split(",");
+        String locationXml;
+        Log.e("ViewUserDetails", " arrRes[0] " + arrRes[0] + " arrRes[1]  " + arrRes[1] + "  arrRes[2]" + arrRes[2]);
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+
+        if (arrRes.length > 4) {
+            type = arrRes[0];
+            Id = arrRes[1];
+            Name = arrRes[2];
+            lastScoreEntryDate = arrRes[3];
+            Score = arrRes[4];
+            editor.putString("logged", "logged");
+            editor.putString("userType", type);
+            editor.putString("userId", Id);
+            editor.putString("userName", Name);
+            editor.apply();
+        } else {
+            type = arrRes[0];
+            Id = arrRes[1];
+            Name = arrRes[2];
+            editor.putString("logged", "logged");
+            editor.putString("userType", type);
+            editor.putString("userId", Id);
+            editor.putString("userName", Name);
+            editor.commit();
         }
 
+        if (type.equals("coach")) {
+            Bundle bcoach = new Bundle();
+            bcoach.putString("type", type);
+            bcoach.putString("Name", Name);
+            bcoach.putString("Id", Id);
+            Intent intent = new Intent(Login.this, HomePage.class).putExtras(bcoach);
+            startActivity(intent);
+        } else if (type.equals("player")) {
+            Bundle bplayer = new Bundle();
+            bplayer.putString("type", type);
+            bplayer.putString("Name", Name);
+            bplayer.putString("Id", Id);
+            bplayer.putString("DateLastScore", lastScoreEntryDate);
+            bplayer.putString("lastScore", Score);
+            Intent intent = new Intent(Login.this, HomePage.class).putExtras(bplayer);
+            startActivity(intent);
+        }
     }
 
     private void createResetPasswordAlertDialog() {
