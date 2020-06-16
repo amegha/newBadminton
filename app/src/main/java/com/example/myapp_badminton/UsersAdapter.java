@@ -25,7 +25,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersAdapter
     private SelectedUser selectedUser;
     @NonNull
     @Override
-    public UsersAdapter.UsersAdapterVh onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public UsersAdapterVh onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context=parent.getContext();
 
         return new UsersAdapterVh(LayoutInflater.from(context).inflate(R.layout.row_layout,null));
@@ -38,7 +38,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersAdapter
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UsersAdapter.UsersAdapterVh holder, int position) {
+    public void onBindViewHolder(@NonNull UsersAdapterVh holder, int position) {
         UserModel userModel=userModelList.get(position);
 
         String username=userModel.getUserName();

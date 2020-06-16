@@ -25,7 +25,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     public Button btn_signIn, reset;
     public EditText etName, etPassword, email, etOTP, newPass, confirmNewPass;
     public TextView Registration, password_forgot;
-    public String regEmail, password, today, type, Id, Name, lastScoreEntryDate, Score;
+    public String regEmail, password, today, type, Id, Name, lastScoreEntryDate, Score, image;
     SQLiteDatabase sqLiteDatabase;
     AlertDialog alertDialog;
     String sNewPass;
@@ -168,7 +168,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         String[] arrRes;
         arrRes = result.split(",");
         String locationXml;
-        Log.e("ViewUserDetails", " arrRes[0] " + arrRes[0] + " arrRes[1]  " + arrRes[1] + "  arrRes[2]" + arrRes[2]);
+//        Log.e("ViewUserDetails", " arrRes[0] " + arrRes[0] + " arrRes[1]  " + arrRes[1] + "  arrRes[2]" + arrRes[2]);
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
 
@@ -178,23 +178,33 @@ public class Login extends AppCompatActivity implements AsyncResponse {
             Name = arrRes[2];
             lastScoreEntryDate = arrRes[3];
             Score = arrRes[4];
+            image = arrRes[5];
+            //player
             editor.putString("logged", "logged");
-            editor.putString("userType", type);
-            editor.putString("userId", Id);
-            editor.putString("userName", Name);
+            editor.putString("type", type);
+            editor.putString("Id", Id);
+            editor.putString("Name", Name);
+            editor.putString("Image", image);
+            editor.putString("DateLastScore", image);
+            editor.putString("lastScore", image);
             editor.apply();
+            startActivity(new Intent(this, HomePage.class));
+
         } else {
+            //coach
             type = arrRes[0];
             Id = arrRes[1];
             Name = arrRes[2];
+
             editor.putString("logged", "logged");
-            editor.putString("userType", type);
-            editor.putString("userId", Id);
-            editor.putString("userName", Name);
-            editor.commit();
+            editor.putString("type", type);
+            editor.putString("Id", Id);
+            editor.putString("Name", Name);
+            editor.apply();
+            startActivity(new Intent(this, HomePage.class));
         }
 
-        if (type.equals("coach")) {
+       /* if (type.equals("coach")) {
             Bundle bcoach = new Bundle();
             bcoach.putString("type", type);
             bcoach.putString("Name", Name);
@@ -210,7 +220,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
             bplayer.putString("lastScore", Score);
             Intent intent = new Intent(Login.this, HomePage.class).putExtras(bplayer);
             startActivity(intent);
-        }
+        }*/
     }
 
     private void createResetPasswordAlertDialog() {

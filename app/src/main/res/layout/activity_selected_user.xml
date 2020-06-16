@@ -1,30 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SelectedUserActivity">
-
-    <androidx.appcompat.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:background="@color/main_color"
+        android:background="#342a73"
         android:layout_height="?attr/actionBarSize">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Traing Details Are"
+            android:text="Player Training Details Are"
             android:layout_centerInParent="true"
             android:textStyle="bold"
-            android:textColor="@color/app_text"
+            android:textColor="#FFFFFF"
             android:textSize="20sp" />
 
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
         android:layout_marginTop="15dp"
-        android:layout_below="@id/toolbar"
+        android:layout_marginLeft="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/layoutlinear"
+        android:layout_below="@+id/toolbar"
+        android:gravity="center">
+
+        <ImageView android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/ic_launcher"
+            android:id="@+id/playerPic"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/layoutlinear"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -32,6 +48,7 @@
         android:paddingBottom="20dp"
         android:id="@+id/linearLayout1"
         >
+
         <TextView
             android:id="@+id/title_userId"
             android:layout_width="wrap_content"
@@ -40,16 +57,16 @@
             android:text="User ID :"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
-            android:textColor="@color/app_text"
+            android:textColor="#342a73"
             android:textSize="15sp" />
         <TextView
             android:id="@+id/display_userId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:hint="User ID"
+            android:text="1"
             android:layout_marginTop="10dp"
-            android:textColor="@color/app_text"
+            android:textColor="#342a73"
             android:textSize="15sp" />
     </LinearLayout>
 
@@ -71,7 +88,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:text="User Name :"
-            android:textColor="@color/app_text"
+            android:textColor="#342a73"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -81,37 +98,13 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:hint="User Name"
+            android:text="Richard"
             android:maxLines="2"
-            android:textColor="@color/app_text"
+            android:textColor="#342a73"
 
             android:textSize="15sp" />
     </LinearLayout>
 
-   <!-- <LinearLayout
-        android:layout_below="@id/linearLayout5"
-        android:layout_toRightOf="@id/linearLayout2"
-        android:layout_marginTop="5dp"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_centerInParent="true"
-        android:paddingBottom="20dp"
-        android:id="@+id/linearLayout6"
-        >
-        <TextView
-            android:text="Select Previous Date :"
-            android:textColor="@color/app_text"
-            android:layout_marginTop="10dp"
-            android:id="@+id/title_DateOfPreviousScoreSubmit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            />
-
-
-    </LinearLayout>-->
     <LinearLayout
         android:layout_marginTop="15dp"
         android:layout_below="@id/linearLayout2"
@@ -130,19 +123,20 @@
             android:layout_height="wrap_content"
             android:id="@+id/title_mainCat"
             android:text="Main Category :"
-            android:textColor="@color/app_text"
+            android:textColor="#342a73"
             android:textSize="15sp"
             android:textStyle="bold"
             />
+
         <TextView
             android:id="@+id/display_mainCat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:hint="Main Category"
+            android:text="Fitness"
             android:maxLines="2"
-            android:textColor="@color/app_text"
+            android:textColor="#342a73"
 
             android:textSize="15sp" />
     </LinearLayout>
@@ -163,7 +157,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sub  Category :"
-            android:textColor="@color/app_text"
+            android:textColor="#342a73"
             android:textSize="15sp"
             android:textStyle="bold"
             />
@@ -172,14 +166,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="Selected Sub-Category"
+            android:text="Agility(Indoor)"
             android:maxLines="2"
-            android:textColor="@color/app_text"
+            android:textColor="#342a73"
             android:textSize="15sp" />
     </LinearLayout>
     <LinearLayout
         android:layout_below="@+id/toolbar"
-    android:layout_toRightOf="@id/linearLayout1"
+        android:layout_toRightOf="@id/linearLayout1"
         android:layout_marginTop="15dp"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
@@ -190,7 +184,7 @@
         >
         <TextView
             android:text="Date :"
-            android:textColor="@color/app_text"
+            android:textColor="#342a73"
             android:layout_marginTop="10dp"
             android:id="@+id/title_DateOfScoreSubmit"
             android:layout_width="wrap_content"
@@ -203,27 +197,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="Current Date"
-            android:textColor="@color/app_text"
+            android:hint="select Date"
+            android:textColor="#342a73"
             android:textSize="15sp" />
+
 
 
     </LinearLayout>
 
 
+  <!--  <Button
+        android:id="@+id/selection_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linearLayout5"
+        android:layout_marginLeft="230dp"
+        android:background="#342a73"
+        android:text="Ok"
+        android:onClick="SkipDate"
+        android:textColor="#FFFFFF" />-->
 
-        <EditText
-            android:layout_below="@id/linearLayout4"
-            android:id="@+id/score_training"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="20dp"
-            android:hint="Enter Score E.g 5.6"
-            android:inputType="numberDecimal"
-            android:maxLength="3"
-            android:singleLine="true"
-            />
+    <EditText
+        android:layout_below="@id/linearLayout4"
+        android:id="@+id/score_training"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:hint="e.g 7.2"
+        android:inputType="numberDecimal"
+        android:maxLength="3"
+        android:singleLine="true"
+        />
 
 
 
@@ -233,24 +238,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/btn_scoretoday"
         android:layout_centerHorizontal="true"
-        android:onClick="addUser"
         android:text="OK"
-        android:background="@drawable/round_button"
-        android:textColor="@color/app_text"
-        android:layout_marginTop="60dp"/>
-
-  <!--<Button
-
-        android:layout_below="@id/btn_scoretoday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_scorePrev"
-        android:layout_centerHorizontal="true"
-        android:text="Previous Score Entry"
-        android:background="@color/app_text"
-        android:textColor="@color/colorWhite"
-        android:layout_marginTop="60dp"
-
-      />-->
+        android:background="#342a73"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="20dp"
+        android:onClick="addUser"/>
 
 </RelativeLayout>

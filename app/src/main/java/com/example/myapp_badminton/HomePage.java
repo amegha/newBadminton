@@ -29,8 +29,9 @@ import java.util.Map;
 public class HomePage extends AppCompatActivity {
     public static final String PREFS_NAME = "LoginPrefs";
     DrawerLayout dLayout;
-    String date, uname;
+    String date, uname, id, utype, lastScoreDate, Score, playerImage;
 
+    //    String uname,id,utype,lastScoreDate,Score;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,36 @@ public class HomePage extends AppCompatActivity {
                 dLayout.openDrawer(Gravity.LEFT);
             }
         });
+        Bundle bcoach = intent.getExtras();
+
+      /*  utype = bcoach.getString("type");
+        if (utype.equals("coach")) {
+            uname = bcoach.getString("Name");
+            id = bcoach.getString("Id");
+        } else {
+            Intent intentp = getIntent();
+            Bundle bplayer = intentp.getExtras();
+
+            uname = bplayer.getString("Name");
+            id = bplayer.getString("Id");
+            lastScoreDate = bplayer.getString("DateLastScore");
+            Score = bplayer.getString("lastScore");
+            playerImage = bplayer.getString("Image");
+        }*/
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        utype = settings.getString("type", "");
+        if (utype.equals("coach")) {
+            uname = settings.getString("Name", "");
+            id = settings.getString("Id", "");
+        } else {
+            uname = settings.getString("Name", "");
+            id = settings.getString("Id", "");
+            Score = settings.getString("lastScore", "");
+            lastScoreDate = settings.getString("DateLastScore", "");
+            playerImage = settings.getString("image", "");
+        }
+
         setNavigationDrawer();
     }
 
@@ -64,11 +95,24 @@ public class HomePage extends AppCompatActivity {
                 Fragment frag = null; // create a Fragment Object
                 int itemId = menuItem.getItemId(); // get selected menu item's id
                 if (itemId == R.id.first) {
-                    frag = new ScoreEntry_fragment(uname);
+                    if (utype.equals("coach")) {
+                        frag = new ScoreEntry_fragment(uname, id, utype);
+                    } else {
+                        frag = new ScoreEntry_fragment(uname, id, utype, lastScoreDate, Score, playerImage);
+                    }
                 } else if (itemId == R.id.second) {
-                    frag = new Performance_fragment(uname);
+                    if (utype.equalsIgnoreCase("Player")) {
+                        frag = new Performance_fragment(uname, id, utype, lastScoreDate, Score);
+                    } else {
+                        frag = new Performance_fragment(uname, id, utype);
+                    }
+
                 } else if (itemId == R.id.third) {
-                    frag = new ScoreObtained_fragment(uname);
+                    if (utype.equalsIgnoreCase("Player")) {
+                        frag = new ScoreObtained_fragment(uname, id, utype, lastScoreDate, Score);
+                    } else {
+                        frag = new ScoreObtained_fragment(uname, id, utype);
+                    }
                 } else if (itemId == R.id.four) {
                     frag = new ForgotPasswordFragment();
                 } else if (itemId == R.id.five) {

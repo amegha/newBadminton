@@ -6,7 +6,6 @@ package com.example.myapp_badminton;
  */
 
 import android.content.Context;
-
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -92,6 +91,67 @@ public class DatabaseAccess {
     public String[] getFitness() {
         List<String> list = new ArrayList<>();
         Cursor cursor = database.rawQuery("SELECT * FROM Fitness ", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            list.add(cursor.getString(1));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        String[] itemsArray = new String[list.size()];
+        itemsArray = list.toArray(itemsArray);
+        return itemsArray;
+    }
+    //to get all cities 21-04-2020
+    public String[] getCities() {
+        List<String> list = new ArrayList<>();
+        Cursor cursor = database.rawQuery("SELECT City_name FROM City ", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            list.add(cursor.getString(0));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        String[] itemsArray = new String[list.size()];
+        itemsArray = list.toArray(itemsArray);
+        return itemsArray;
+    }
+
+
+    //to get academy according to city selected 21-04-2020
+    public String[] getAcademy() {
+        List<String> list = new ArrayList<>();
+        Cursor cursor = database.rawQuery("SELECT Academy_Name FROM City_Academy ", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            list.add(cursor.getString(0));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        String[] itemsArray = new String[list.size()];
+        itemsArray = list.toArray(itemsArray);
+        return itemsArray;
+    }
+    //to get playing levels to select 21-04-2020
+    public String[] getLevels() {
+        List<String> list = new ArrayList<>();
+        Cursor cursor = database.rawQuery("SELECT Level_Selected  FROM Level", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            list.add(cursor.getString(0));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        String[] itemsArray = new String[list.size()];
+        itemsArray = list.toArray(itemsArray);
+        return itemsArray;
+    }
+
+
+    //to get playing levels to select 21-04-2020
+    public String[] getPlayers(String Academy_name ) {
+        List<String> list = new ArrayList<>();
+        //SELECT PlayerName FROM PlayerDetaiils where AcademyName="ABC academy";
+        Cursor cursor = database.rawQuery("SELECT PlayerName  FROM PlayerDetails where AcademyName="+Academy_name, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             list.add(cursor.getString(1));
