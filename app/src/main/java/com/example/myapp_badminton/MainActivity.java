@@ -296,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_main);
         verifyStoragePermissions(this);
         db = new DBHandler(this);

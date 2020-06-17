@@ -42,8 +42,9 @@ public class Score_From extends AppCompatActivity {
     @SuppressLint("WrongThread")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_score__from);
+
         fitness = findViewById(R.id.cat1);
         grip = findViewById(R.id.cat2);
         oncourt_skill = findViewById(R.id.cat3);
@@ -123,9 +124,11 @@ public class Score_From extends AppCompatActivity {
         if(type.equalsIgnoreCase("Player")) {
             Intent i = new Intent(Score_From.this, HomePage.class);
             //used to or helps in display particular activity
-            i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-
+//            i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
+            finish();
+//            startActivity(i);
         }
         else{
             Intent i = new Intent(Score_From.this,DisplayPlayer.class);

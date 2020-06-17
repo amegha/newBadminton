@@ -9,6 +9,7 @@ public class API {
     public static final String RESET_PASSWORD = "reset.php";
     static final String ServerAddress = "http://stage1.optipacetech.com/badminton/api/";
     public static String USER_LOGIN = "login.php";
+    public static String AFTER_LOGIN = "afterLogin.php";
     public static String USER_REGISTER = "user_details.php";
     public static String USER_PRE_REGISTER = "pre_register.php";
     public static String GENERATE_OTP = "gen_otp.php";

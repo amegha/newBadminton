@@ -54,7 +54,7 @@ public class SearchActivity extends AppCompatActivity implements UsersAdapter.Se
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_search);
 
         recyclerView = findViewById(R.id.recyclerview);

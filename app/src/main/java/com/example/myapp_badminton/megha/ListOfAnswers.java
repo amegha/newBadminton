@@ -20,6 +20,7 @@ import android.widget.VideoView;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.example.myapp_badminton.ActivityTracker;
 import com.example.myapp_badminton.R;
 
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public class ListOfAnswers extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         db = new DBHandler(this);
         setContentView(R.layout.list_of_answers);
         listView = (ListView) findViewById(R.id.list);

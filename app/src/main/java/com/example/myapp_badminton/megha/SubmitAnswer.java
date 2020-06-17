@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.myapp_badminton.ActivityTracker;
 import com.example.myapp_badminton.R;
 import com.google.android.material.tabs.TabLayout;
 
@@ -31,6 +32,7 @@ public class SubmitAnswer extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_submit_answer);
         viewPager = (ViewPager) findViewById(R.id.pager);
         answerType = null;

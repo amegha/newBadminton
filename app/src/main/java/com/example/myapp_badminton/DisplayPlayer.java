@@ -45,7 +45,7 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
     databaseConnectionAdapter datahelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_display_player);
         datahelper = new databaseConnectionAdapter(getApplicationContext());
         db=datahelper.allDataHelper.getReadableDatabase();

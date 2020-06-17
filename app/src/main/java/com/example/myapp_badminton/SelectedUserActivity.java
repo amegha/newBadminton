@@ -85,7 +85,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_selected_user);
         tvUser = findViewById(R.id.display_userName);
         tv_userId = findViewById(R.id.display_userId);

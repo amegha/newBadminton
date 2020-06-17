@@ -1,9 +1,6 @@
 package com.example.myapp_badminton;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -17,6 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class Login extends AppCompatActivity implements AsyncResponse {
 
     public static final String PREFS_NAME = "LoginPrefs";
@@ -28,8 +27,8 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     public String regEmail, password, today, type, Id, Name, lastScoreEntryDate, Score, image;
     SQLiteDatabase sqLiteDatabase;
     AlertDialog alertDialog;
-    String sNewPass;
-    String sNewPassConfirm;
+    String sNewPass, sNewPassConfirm;
+
     //variables used for sharedpreferences
     SharedPreferences sharedpreferences;
     SQLiteDatabase db;
@@ -48,10 +47,11 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_login);
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        if (settings.getString("logged", "").toString().equals("logged")) {
+        if (settings.getString("logged", "").equals("logged")) {
             Intent intent = new Intent(Login.this, HomePage.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -187,6 +187,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
             editor.putString("Image", image);
             editor.putString("DateLastScore", image);
             editor.putString("lastScore", image);
+            editor.putString("mail_id", regEmail);
             editor.apply();
             startActivity(new Intent(this, HomePage.class));
 
@@ -200,6 +201,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
             editor.putString("type", type);
             editor.putString("Id", Id);
             editor.putString("Name", Name);
+            editor.putString("mail_id", regEmail);
             editor.apply();
             startActivity(new Intent(this, HomePage.class));
         }

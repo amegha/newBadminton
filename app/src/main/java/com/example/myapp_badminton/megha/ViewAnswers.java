@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.example.myapp_badminton.ActivityTracker;
 import com.example.myapp_badminton.R;
 
 public class ViewAnswers extends Activity implements AsyncResponse {
@@ -28,6 +29,7 @@ public class ViewAnswers extends Activity implements AsyncResponse {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_view_answer);
         bundle = getIntent().getExtras();
         bundle.getParcelable("answerModel");

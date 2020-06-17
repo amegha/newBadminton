@@ -57,7 +57,7 @@ public class LoginOld extends AppCompatActivity implements AsyncResponse {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_login);
         dbHandler = new DBHandler(this);
         name = findViewById(R.id.username_signin);

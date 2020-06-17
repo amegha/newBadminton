@@ -34,6 +34,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.myapp_badminton.ActivityTracker;
 import com.example.myapp_badminton.R;
 
 import java.io.IOException;
@@ -243,6 +244,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_paly_video);
         vv = (VideoView) findViewById(R.id.video_view);
         ctv = findViewById(R.id.count_down);

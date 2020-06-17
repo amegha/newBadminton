@@ -18,7 +18,7 @@ public class Reset_pass extends AppCompatActivity {
     SQLiteDatabase sqLiteDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_reset_pass);
         uname=findViewById(R.id.pass_username);
         reset=findViewById(R.id.btn_reset);

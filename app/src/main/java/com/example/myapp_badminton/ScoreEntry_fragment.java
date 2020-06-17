@@ -93,6 +93,8 @@ public class ScoreEntry_fragment extends Fragment {
             bundle1.putString("Module","ScoreEntry");
             Intent intent = new Intent(this.getActivity(), Coach.class).putExtras(bundle1);
             startActivity(intent);
+            getActivity().getFragmentManager().popBackStack();
+
         }
         else if(usertype.equalsIgnoreCase("Player")){
             Bundle bundle1=new Bundle();

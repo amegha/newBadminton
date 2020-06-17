@@ -17,7 +17,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     MyDbAdapter helper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_reset_password);
 
         newPassword=findViewById(R.id.pass_new);

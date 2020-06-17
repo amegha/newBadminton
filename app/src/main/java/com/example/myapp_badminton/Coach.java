@@ -41,7 +41,7 @@ public class Coach extends AppCompatActivity implements AsyncResponse{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_coach);
 
         datahelper = new databaseConnectionAdapter(getApplicationContext());

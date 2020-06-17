@@ -17,7 +17,7 @@
         android:layout_marginTop="50dp"
         android:fontFamily="sans-serif"
         android:text="Choose Training Type"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/app_text"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
         android:textSize="30sp" />
@@ -35,7 +35,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="25dp"
             android:text="Fitness"
-            android:textColor="#fff"
+            android:textColor="@color/app_text"
             android:textStyle="bold"
             android:id="@+id/cat1"
             android:textSize="20sp"
@@ -46,7 +46,7 @@
 
         <RadioButton
             android:layout_below="@id/cat1"
-            android:textColor="#fff"
+            android:textColor="@color/app_text"
             android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -57,7 +57,7 @@
             />
         <RadioButton
             android:layout_below="@id/cat2"
-            android:textColor="#fff"
+            android:textColor="@color/app_text"
             android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="50dp"

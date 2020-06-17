@@ -3,6 +3,7 @@ package com.example.myapp_badminton;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,18 +31,18 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class PlayerPerformance extends AppCompatActivity implements AsyncResponse{
+public class PlayerPerformance extends AppCompatActivity implements AsyncResponse {
     LineChart lineChart;
 
     LineDataSet lineDataSet;
     ArrayList lineEntries;
     databaseConnectionAdapter helper;
     SQLiteDatabase db;
-    Cursor cursor,cursor1;
-    String uid,uidPlay,uname,cid,type,Pdate,PScore,fragment_module,Coachname;
+    Cursor cursor, cursor1;
+    String uid, uidPlay, uname, cid, type, Pdate, PScore, fragment_module, Coachname;
     String[] score_date;
-  //  EditText editTextId;
-   // Button ok;
+    //  EditText editTextId;
+    // Button ok;
 
     List<String> list1 = new ArrayList<String>();
     List<Float> list2 = new ArrayList<Float>();
@@ -61,7 +62,7 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_player_performance);
    /*     helper = new databaseConnectionAdapter(getApplicationContext());
 
@@ -69,17 +70,15 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
        /* editTextId=findViewById(R.id.PlayerId);
         ok=findViewById(R.id.btngetID);*/
 
-        lineChart=findViewById(R.id.lineChart);
+        lineChart = findViewById(R.id.lineChart);
 
 
-        Intent i=getIntent();
-        Bundle bundle=i.getExtras();
-        type=bundle.getString("type");
-        if(type.equalsIgnoreCase("player")){
+        Intent i = getIntent();
+        Bundle bundle = i.getExtras();
+        type = bundle.getString("type");
+        if (type.equalsIgnoreCase("player")) {
             Player();
-        }
-        else
-        if(type.equalsIgnoreCase("Coach")){
+        } else if (type.equalsIgnoreCase("Coach")) {
             coach();
         }
 
@@ -105,13 +104,6 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
         PScore=Bplayers.getString("ScoreLast");*/
 
 
-
-
-
-
-
-
-
     }
 
 
@@ -126,17 +118,16 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
     }
 */
 
-    private ArrayList getData()
-    {
-        ArrayList<Entry> entries=new ArrayList<>();
-        entries.add(new Entry(0f,0f));
-        entries.add(new Entry(8f,5f));
+    private ArrayList getData() {
+        ArrayList<Entry> entries = new ArrayList<>();
+        entries.add(new Entry(0f, 0f));
+        entries.add(new Entry(8f, 5f));
         return entries;
     }
-    public void callServer(String data)
-    {
+
+    public void callServer(String data) {
         //new WebService(getApplicationContext()).execute(API.ServerAddress + "get_all_score.php", "module=coach&coach_id="+score_uid+"&player_id="+pid);
-        new WebService(PlayerPerformance.this).execute("http://stage1.optipacetech.com/badminton/api/get_all_score.php","module=coach&coach_id="+cid+"&player_id="+data);
+        new WebService(PlayerPerformance.this).execute("http://stage1.optipacetech.com/badminton/api/get_all_score.php", "module=coach&coach_id=" + cid + "&player_id=" + data);
 
 
     }
@@ -153,14 +144,14 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
     public void onTaskComplete(String result) {
 
         /* if(result.equals("Success")){*/
-        Log.e("ViewUserDetails","Upload status "+result);
+        Log.e("ViewUserDetails", "Upload status " + result);
         String[] arrRes;
         arrRes = result.split(",");
         String locationXml;
 //        Log.e("ViewUserDetails", " arrRes[0] " + arrRes[0] + " arrRes[1]  " +  arrRes[1] + "  arrRes[2]" + arrRes[2]);
 
-        arrRes=result.split("/");
-        for(int i=1;i<arrRes.length;i++){
+        arrRes = result.split("/");
+        for (int i = 1; i < arrRes.length; i++) {
             getCorrected(arrRes[i]);
         }
 
@@ -178,7 +169,7 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
         System.out.println("all the Academy Ids "+ Collections.singletonList(Scores));*/
 
         //player checking
-        if(type.equalsIgnoreCase("Player")){
+        if (type.equalsIgnoreCase("Player")) {
            /* editTextId.setVisibility(View.GONE);
             ok.setVisibility(View.GONE);*/
 
@@ -199,7 +190,7 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
                             lineChart.notifyDataSetChanged();
                             lineChart.setNoDataText("No graph is available !");
                         }
-                        Toast.makeText(getApplicationContext(),"More than 2 Entries can only be Displayed!..",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "More than 2 Entries can only be Displayed!..", Toast.LENGTH_LONG).show();
                         lineChart.setVisibility(View.GONE);
                         lineChart.setNoDataText("No Chart is Available!");
                     } else {
@@ -210,7 +201,7 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
 
             }
             lineDataSet = new LineDataSet(lineEntries, "Performanace");
-            lineDataSet.setColor(ContextCompat.getColor(getApplicationContext(), R.color.main_color));
+            lineDataSet.setColor(ContextCompat.getColor(getApplicationContext(), R.color.app_text));
             lineDataSet.setValueTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
             lineChart.setVerticalScrollBarEnabled(true);
 
@@ -246,7 +237,6 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
         if (type.equalsIgnoreCase("coach")) {
 
 
-
             score_date = new String[list1.size()];
 
 
@@ -278,7 +268,7 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
 
 
             lineDataSet = new LineDataSet(lineEntries, "Performanace");
-            lineDataSet.setColor(ContextCompat.getColor(getApplicationContext(), R.color.main_color));
+            lineDataSet.setColor(ContextCompat.getColor(getApplicationContext(), R.color.app_text));
             lineDataSet.setValueTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
             lineChart.setVerticalScrollBarEnabled(true);
 
@@ -310,61 +300,65 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
         }
 
     }
+
     private void LocationInfo(String s, ArrayList<String> scoredate, ArrayList<String> score) {
         String[] locInfo = s.split(",");
         Log.d("Total Module Size", String.valueOf(locInfo.length));
         scoredate.add(locInfo[0]);
         score.add(locInfo[1]);
-        ArrayList<String> convertedDate=new ArrayList<>();
-for(int i=0;i<scoredate.size();i++) {
-    String properDate = scoredate.get(i);
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    SimpleDateFormat dateFormatOutput = new SimpleDateFormat("dd-MM-yyyy");
+        ArrayList<String> convertedDate = new ArrayList<>();
+        for (int i = 0; i < scoredate.size(); i++) {
+            String properDate = scoredate.get(i);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat dateFormatOutput = new SimpleDateFormat("dd-MM-yyyy");
 
-    try {
-        Date strDate = dateFormat.parse(properDate);
-        convertedDate.add(i,dateFormatOutput.format(strDate));
-    } catch (ParseException e) {
-        e.printStackTrace();
-    }
+            try {
+                Date strDate = dateFormat.parse(properDate);
+                convertedDate.add(i, dateFormatOutput.format(strDate));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
-}
-        list1=convertedDate;
-        float [] floatValues = new float[score.size()];
+        }
+        list1 = convertedDate;
+        float[] floatValues = new float[score.size()];
 
         for (int i = 0; i < score.size(); i++) {
             floatValues[i] = Float.parseFloat(score.get(i));
             list2.add(i, floatValues[i]);
         }
     }
-    public void getCorrected(String s){
 
-        String [] academyResponse;
-        ArrayList<String> Scores=new ArrayList();
-        ArrayList<String> ScoreDate=new ArrayList();
+    public void getCorrected(String s) {
+
+        String[] academyResponse;
+        ArrayList<String> Scores = new ArrayList();
+        ArrayList<String> ScoreDate = new ArrayList();
 
 
         academyResponse = s.split(";");
         for (int i = 0; i < academyResponse.length; i++) {
-            LocationInfo(academyResponse[i],ScoreDate,Scores);
+            LocationInfo(academyResponse[i], ScoreDate, Scores);
             Log.d("Total Entry Size", String.valueOf(academyResponse.length));
         }
-        System.out.println("all the cities "+ Collections.singletonList(ScoreDate));
-        System.out.println("all the Academy Ids "+ Collections.singletonList(Scores));
+        System.out.println("all the cities " + Collections.singletonList(ScoreDate));
+        System.out.println("all the Academy Ids " + Collections.singletonList(Scores));
     }
-    public void Player( ){
 
-        Intent iPlayer=getIntent();
-        Bundle Bplayers=iPlayer.getExtras().getBundle("From");
-        type=Bplayers.getString("type");
-        uname=Bplayers.getString("PName");
-        uidPlay=Bplayers.getString("Pid");
-        Pdate=Bplayers.getString("lastScoreDate");
-        PScore=Bplayers.getString("ScoreLast");
-        if(type.equalsIgnoreCase("Player")) {
+    public void Player() {
+
+        Intent iPlayer = getIntent();
+        Bundle Bplayers = iPlayer.getExtras().getBundle("From");
+        type = Bplayers.getString("type");
+        uname = Bplayers.getString("PName");
+        uidPlay = Bplayers.getString("Pid");
+        Pdate = Bplayers.getString("lastScoreDate");
+        PScore = Bplayers.getString("ScoreLast");
+        if (type.equalsIgnoreCase("Player")) {
             new WebService(PlayerPerformance.this).execute("http://stage1.optipacetech.com/badminton/api/get_all_score.php", "module=player&player_id=" + uidPlay);
         }
     }
+
     public void coach() {
 
         Intent intent = getIntent();
@@ -383,4 +377,4 @@ for(int i=0;i<scoredate.size();i++) {
         }
     }
 
-    }
+}
