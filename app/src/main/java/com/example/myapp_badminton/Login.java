@@ -185,8 +185,8 @@ public class Login extends AppCompatActivity implements AsyncResponse {
             editor.putString("Id", Id);
             editor.putString("Name", Name);
             editor.putString("Image", image);
-            editor.putString("DateLastScore", image);
-            editor.putString("lastScore", image);
+            editor.putString("DateLastScore", lastScoreEntryDate);
+            editor.putString("lastScore", Score);
             editor.putString("mail_id", regEmail);
             editor.apply();
             startActivity(new Intent(this, HomePage.class));

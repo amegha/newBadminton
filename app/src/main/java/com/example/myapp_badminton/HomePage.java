@@ -7,14 +7,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,6 +33,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.myapp_badminton.megha.PlayVideo;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.Collections;
+import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class HomePage extends AppCompatActivity implements AsyncResponse {
     public static final String PREFS_NAME = "LoginPrefs";
     private static final int REQUEST_RUNTIME_PERMISSIONS = 1;
@@ -39,8 +48,11 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
     DrawerLayout dLayout;
     String date, uname, id, utype, lastScoreDate, Score, playerImage;
     AlertDialog alertDialog;
+    CircleImageView profilePic;
     String sNewPass, sNewPassConfirm, regEmail;
+    TextView tvUserMainInfo, tvUserSubInfo;
     private EditText newPass, confirmNewPass;
+    private byte[] imageBytes;
 
     //    String uname,id,utype,lastScoreDate,Score;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -53,11 +65,11 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
         Toolbar toolbar = findViewById(R.id.toolbar);// get the reference of Toolbar
         SharedPreferences shared = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         verifyStoragePermissions(this);
-       /* String userType = shared.getString("userType", "");
+        String userType = shared.getString("Image", "");
         Map<String, ?> userAll = shared.getAll();
         Log.e("HomePage", "onCreate:usertype " + userType);
         Log.e("HomePage", "onCreate:all " + Collections.singleton(userAll));
-       */
+
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -95,7 +107,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
         } else {
             uname = settings.getString("Name", "");
             id = settings.getString("Id", "");
-            playerImage = settings.getString("image", "");
+            playerImage = settings.getString("Image", "");
             regEmail = settings.getString("mail_id", "");
             new WebService(HomePage.this).execute(API.ServerAddress + API.AFTER_LOGIN, "user_id=" + id);
 
@@ -120,6 +132,24 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
 
     private void setNavigationDrawer() {
         dLayout = findViewById(R.id.drawer_layout); // initiate a DrawerLayout
+        profilePic = findViewById(R.id.nav_user_image);
+        tvUserMainInfo = findViewById(R.id.nav_main_info);
+        tvUserSubInfo = findViewById(R.id.nav_sub_info);
+        Bitmap bmp = null;
+        /*try {
+            new WebService(this).execute("http://stage1.optipacetech.com/badminton/api/loadImage.php", "user_id=" + id);
+
+// URL url = new URL("http://stage1.optipacetech.com/badminton/api/loadImage.php?user_id=" + id);
+// bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+
+ /*imageBytes = Base64.decode(imageString, Base64.DEFAULT);
+ Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+ profilePic.setImageBitmap(decodedImage);*/
+// profilePic.setImageBitmap(bmp);
+
         NavigationView navView = findViewById(R.id.navigation); // initiate a Navigation View
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -252,13 +282,32 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
 
                 if (arrRes.length < 3) {
                     Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                } else {
+                } else /*if (arrRes.length == 3) */ {
                     lastScoreDate = arrRes[1];
                     Score = arrRes[2];
                     setNavigationDrawer();
-                }
+
+                    displayNavHeaderInfo();
+                } /*else {
+                    imageBytes = Base64.decode(result, Base64.DEFAULT);
+                    Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                    profilePic.setImageBitmap(decodedImage);
+
+                }*/
             }
         }
+
+
+    }
+
+    private void displayNavHeaderInfo() {
+        imageBytes = Base64.decode(playerImage, Base64.DEFAULT);
+        Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        profilePic.setImageBitmap(decodedImage);
+        profilePic.setVisibility(View.VISIBLE);
+
+        tvUserMainInfo.setText(uname);
+        tvUserSubInfo.setText(regEmail);
 
 
     }
