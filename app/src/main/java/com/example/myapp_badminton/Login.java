@@ -126,7 +126,8 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                 etName.setError("wrong");
                 break;
             }
-            case "502": {
+            case "502":
+            case "503": {
                 Toast.makeText(this, "Try again!", Toast.LENGTH_SHORT).show();
                 break;
             }

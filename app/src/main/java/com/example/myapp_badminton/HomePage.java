@@ -255,6 +255,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void onTaskComplete(String result) {
+        Log.e("onTaskComplete: ", "res " + result);
         switch (result) {
             case "00": {
                 Toast.makeText(this, "Invalid Request", Toast.LENGTH_LONG).show();
