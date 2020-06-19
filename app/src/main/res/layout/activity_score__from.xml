@@ -91,7 +91,7 @@
                     android:layout_height="50dp"
                     android:onClick="singles_select"
                     android:text="Singles"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/app_text"
                     android:textSize="20sp"
                       />
 
@@ -101,7 +101,7 @@
                     android:layout_height="50dp"
                     android:onClick="doubles_select"
                     android:text="Doubles"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/app_text"
                     android:textSize="20sp"
                       />
 
@@ -111,7 +111,7 @@
                     android:layout_height="50dp"
                     android:onClick="shadow_select"
                     android:text="Shadow / Footwork"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/app_text"
                     android:textSize="20sp"
                       />
 

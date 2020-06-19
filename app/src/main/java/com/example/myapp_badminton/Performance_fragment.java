@@ -37,7 +37,7 @@ public class Performance_fragment extends Fragment {
 
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_performance_fragment, container, false);
-        /*Intent intent1=getActivity().getIntent();
+    /*    Intent intent1=getActivity().getIntent();
         Bundle b=intent1.getExtras();
 
         //username=b.getString("x");

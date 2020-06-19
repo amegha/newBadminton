@@ -7,6 +7,7 @@
     <color name="colorPrimary1">#3d95d0</color>
     <color name="colorPrimaryDark1">#489855</color>
     <color name="colorWhite">#fff</color>
+    <color name="colorBlack">#000000</color>
     <color name="colorViolet">#D81B</color>
 <!--    <color etName="main_color">#342a73</color>-->
     <color name="main_color">#ffffff</color>

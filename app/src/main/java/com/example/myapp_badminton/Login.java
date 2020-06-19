@@ -109,6 +109,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void onTaskComplete(String result) {
+        Log.e("sign in","result "+result);
 //        try {
         switch (result) {
             case "00": {
