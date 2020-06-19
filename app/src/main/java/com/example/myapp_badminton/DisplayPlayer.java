@@ -1,12 +1,5 @@
 package com.example.myapp_badminton;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,109 +12,90 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
-    private ExampleAdapter adapter;
-    private List<ExampleItem> exampleList;
     ArrayList<String> arrayListId;
     ArrayList<String> arrayListName;
-    ArrayList<String > arrayListImage;
+    ArrayList<String> arrayListImage;
     ArrayList<String> arrayListLastdate;
     Toolbar toolbar;
     SQLiteDatabase db;
-   byte[] imagebytes;
-    String imageString,date,coach_name,playername,pid,cid,level,academy,ID,Name,type,AID,fragment_module;
+    byte[] imagebytes;
+    String imageString, date, coach_name, playername, pid, cid, level, academy, ID, Name, type, AID, fragment_module;
     Bitmap decodedImage;
-
-
-    Cursor cursor,cursor1;
+    Cursor cursor, cursor1;
     databaseConnectionAdapter datahelper;
+    private ExampleAdapter adapter;
+    private List<ExampleItem> exampleList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
+        super.onCreate(savedInstanceState);
+        ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_display_player);
         datahelper = new databaseConnectionAdapter(getApplicationContext());
-        db=datahelper.allDataHelper.getReadableDatabase();
-       //decodedImage=datahelper.allDataHelper.retreiveImageFromDB(db);
+        db = datahelper.allDataHelper.getReadableDatabase();
+        //decodedImage=datahelper.allDataHelper.retreiveImageFromDB(db);
 
 
-        Intent intent=getIntent();
-        Bundle bundle=intent.getExtras();
-        date=bundle.getString("date");
-        coach_name=bundle.getString("coachname");
-        cid=bundle.getString("coach_id");
-        level=bundle.getString("level");
-        academy=bundle.getString("Academy");
-        type=bundle.getString("type");
-        AID=bundle.getString("aid");
-        fragment_module=bundle.getString("module");
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        date = bundle.getString("date");
+        coach_name = bundle.getString("coachname");
+        cid = bundle.getString("coach_id");
+        level = bundle.getString("level");
+        academy = bundle.getString("Academy");
+        type = bundle.getString("type");
+        AID = bundle.getString("aid");
+        fragment_module = bundle.getString("module");
 
-        new WebService(DisplayPlayer.this).execute(API.ServerAddress + "player_details.php", "academy_id="+AID+"&level="+level+"&coach_id="+cid);
+        new WebService(DisplayPlayer.this).execute(API.ServerAddress + "player_details.php", "academy_id=" + AID + "&level=" + level + "&coach_id=" + cid);
 
 
     }
 
     private List<ExampleItem> fillExampleList() {
         exampleList = new ArrayList<>();
-
-       // ExampleItem exampleItem;
-
-
-
-       /* ArrayList<String> arrayListName=datahelper.allDataHelper.getDataName(cid);
-        ArrayList<String> arrayListId=datahelper.allDataHelper.getDataID(cid);
-        ArrayList<String > arrayListImage=datahelper.allDataHelper.retreiveImageFromDB(cid,db);*/
-
-
-        for(int i=0,j=0,k=0;i<arrayListName.size() && j<arrayListId.size() && k<arrayListImage.size();i++,j++,k++) {
+        for (int i = 0, j = 0, k = 0; i < arrayListName.size() && j < arrayListId.size() && k < arrayListImage.size(); i++, j++, k++) {
             Name = arrayListName.get(i);
-            ID=arrayListId.get(j);
-            imageString=arrayListImage.get(k);
-            date=arrayListLastdate.get(i);
-            imagebytes= Base64.decode(imageString, Base64.DEFAULT);
+            ID = arrayListId.get(j);
+            imageString = arrayListImage.get(k);
+            date = arrayListLastdate.get(i);
+            imagebytes = Base64.decode(imageString, Base64.DEFAULT);
             decodedImage = BitmapFactory.decodeByteArray(imagebytes, 0, imagebytes.length);
 
 
-            exampleList.add(new ExampleItem(decodedImage,Name,ID));
+            exampleList.add(new ExampleItem(decodedImage, Name, ID));
             // exampleList.add(new ExampleItem(exampleItem.getImageResource(),exampleItem.getText1(),exampleItem.getText2()));
         }
-
-/*
-Sample example to send data from db
-exampleList.add(new ExampleItem(decodedImage, "Pooja", "1"));
-   exampleList.add(new ExampleItem(decodedImage, "Sanjana", "2"));
-   exampleList.add(new ExampleItem(decodedImage, "Sachin", "3"));
-   exampleList.add(new ExampleItem(decodedImage, "Pallavi", "4"));*/
         return exampleList;
-        }
-
-       /* sample example to fetch Image from drawable folder
-       exampleList.add(new ExampleItem(R.drawable.bellpepper, "One", "Ten"));
-        exampleList.add(new ExampleItem(R.drawable.carrot, "Two", "Eleven"));
-        exampleList.add(new ExampleItem(R.drawable.cauliflower, "Three", "Twelve"));
-   */
-
+    }
 
     private void setUpRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        toolbar=findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
 
         this.setSupportActionBar(toolbar);
         this.getSupportActionBar().setTitle("");
 
-       recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-       // adapter = new ExampleAdapter(exampleList);
-        adapter=new ExampleAdapter(exampleList);
+        // adapter = new ExampleAdapter(exampleList);
+        adapter = new ExampleAdapter(exampleList);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
@@ -146,8 +120,7 @@ exampleList.add(new ExampleItem(decodedImage, "Pooja", "1"));
                     Intent intent = new Intent(DisplayPlayer.this, Score_From.class).putExtras(b);
                     intent.putExtra("Player Details", exampleList.get(position));
                     startActivity(intent);
-                }
-                else if(fragment_module.equalsIgnoreCase("LineGraph")){
+                } else if (fragment_module.equalsIgnoreCase("LineGraph")) {
                     Bundle b = new Bundle();
                     b.putString("coach_id", cid);
                     b.putString("coachname", coach_name);
@@ -159,10 +132,9 @@ exampleList.add(new ExampleItem(decodedImage, "Pooja", "1"));
                     b.putString("module", fragment_module);
                     b.putParcelable("Player Details", exampleList.get(position));
                     Intent intent = new Intent(DisplayPlayer.this, PlayerPerformance.class).putExtras(b);
-                  //  intent.putExtra("Player Details", exampleList.get(position));
+                    //  intent.putExtra("Player Details", exampleList.get(position));
                     startActivity(intent);
-                }
-                else if(fragment_module.equalsIgnoreCase("BarGraph")){
+                } else if (fragment_module.equalsIgnoreCase("BarGraph")) {
                     Bundle b = new Bundle();
                     b.putString("coach_id", cid);
                     b.putString("coachname", coach_name);
@@ -174,7 +146,7 @@ exampleList.add(new ExampleItem(decodedImage, "Pooja", "1"));
                     b.putString("module", fragment_module);
                     b.putParcelable("Player Details", exampleList.get(position));
                     Intent intent = new Intent(DisplayPlayer.this, GraphDisplay.class).putExtras(b);
-                  //  intent.putExtra("Player Details", exampleList.get(position));
+                    //  intent.putExtra("Player Details", exampleList.get(position));
                     startActivity(intent);
                 }
             }
@@ -207,12 +179,13 @@ exampleList.add(new ExampleItem(decodedImage, "Pooja", "1"));
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id=item.getItemId();
-        if(id == R.id.search_view){
+        int id = item.getItemId();
+        if (id == R.id.search_view) {
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onTaskComplete(String result) {
         /* if(result.equals("Success")){*/
@@ -220,51 +193,48 @@ exampleList.add(new ExampleItem(decodedImage, "Pooja", "1"));
         String[] arrRes;
         arrRes = result.split(",");
         String locationXml;
-        Log.e("ViewUserDetails", " arrRes[0] " + arrRes[0] + " arrRes[1]  " +  arrRes[1] + "  arrRes[2]" + arrRes[2]);
+        Log.e("ViewUserDetails", " arrRes[0] " + arrRes[0] + " arrRes[1]  " + arrRes[1] + "  arrRes[2]" + arrRes[2]);
 
-        String [] academyResponse;
-        ArrayList<String> Ids=new ArrayList();
-        ArrayList<String> name=new ArrayList();
-        ArrayList<String> image=new ArrayList<>();
-        ArrayList<String> lastdate=new ArrayList<>();
+        String[] academyResponse;
+        ArrayList<String> Ids = new ArrayList();
+        ArrayList<String> name = new ArrayList();
+        ArrayList<String> image = new ArrayList<>();
+        ArrayList<String> lastdate = new ArrayList<>();
 
         academyResponse = result.split(";");
         for (int i = 0; i < academyResponse.length; i++) {
-            ImageInfo(academyResponse[i],Ids,name,image,lastdate);
+            ImageInfo(academyResponse[i], Ids, name, image, lastdate);
             Log.d("Total display Player", String.valueOf(academyResponse.length));
         }
-        System.out.println("all the Ids "+ Collections.singletonList(Ids));
-        System.out.println("all the names " +Collections.singletonList(name));
-        System.out.println("all Images"+Collections.singleton(image));
-
+        System.out.println("all the Ids " + Collections.singletonList(Ids));
+        System.out.println("all the names " + Collections.singletonList(name));
+        System.out.println("all Images" + Collections.singleton(image));
 
 
     }
-    private void ImageInfo(String s, ArrayList<String> Ids, ArrayList<String> names,ArrayList<String> image,ArrayList<String> lastdate) {
+
+    private void ImageInfo(String s, ArrayList<String> Ids, ArrayList<String> names, ArrayList<String> image, ArrayList<String> lastdate) {
         String[] locInfo = s.split(",");
         Ids.add(locInfo[0]);
         names.add(locInfo[1]);
         image.add(locInfo[2]);
         lastdate.add(locInfo[4]);
-        arrayListId=Ids;
-        Log.e("ArrayListId ","Id ="+arrayListId);
-        arrayListName=names;
-        Log.e("ArrayListName ","Id ="+arrayListName);
-        arrayListImage=image;
-        Log.e("ArrayListImage ","Id ="+arrayListImage);
-        arrayListLastdate=lastdate;
+        arrayListId = Ids;
+        Log.e("ArrayListId ", "Id =" + arrayListId);
+        arrayListName = names;
+        Log.e("ArrayListName ", "Id =" + arrayListName);
+        arrayListImage = image;
+        Log.e("ArrayListImage ", "Id =" + arrayListImage);
+        arrayListLastdate = lastdate;
         fillExampleList();
         setUpRecyclerView();
     }
+
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
         Intent i = new Intent(DisplayPlayer.this, Coach.class);
-        //used to or helps in display particular activity
         i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-
         startActivity(i);
-        //to avoid flickering or flipped screen or activity use finish() ,which is used to kill or complete the activity
         finish();
 
     }

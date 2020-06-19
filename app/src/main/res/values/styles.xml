@@ -8,9 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlNormal">@color/colorWhite</item>
     </style>
-    <style name="ToolBar"
-        >
-        <item name="android:editTextColor">@color/colorWhite</item>
+    <style name="ToolBar">
+        <item name="android:editTextColor">@color/colorBlack</item>
     </style>
 
 </resources>

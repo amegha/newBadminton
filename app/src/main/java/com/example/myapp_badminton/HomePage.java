@@ -51,6 +51,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
     CircleImageView profilePic;
     String sNewPass, sNewPassConfirm, regEmail;
     TextView tvUserMainInfo, tvUserSubInfo;
+
     private EditText newPass, confirmNewPass;
     private byte[] imageBytes;
 
@@ -61,49 +62,19 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
         super.onCreate(savedInstanceState);
         ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_home_page);
-        Log.e("onCreate: ", "get class() " + this.getLocalClassName());
         Toolbar toolbar = findViewById(R.id.toolbar);// get the reference of Toolbar
         SharedPreferences shared = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         verifyStoragePermissions(this);
-        String userType = shared.getString("Image", "");
-        Map<String, ?> userAll = shared.getAll();
-        Log.e("HomePage", "onCreate:usertype " + userType);
-        Log.e("HomePage", "onCreate:all " + Collections.singleton(userAll));
-
-
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
         setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dLayout.openDrawer(Gravity.LEFT);
-            }
-        });
-        Bundle bcoach = intent.getExtras();
-
-
-      /*  utype = bcoach.getString("type");
-        if (utype.equals("coach")) {
-            uname = bcoach.getString("Name");
-            id = bcoach.getString("Id");
-        } else {
-            Intent intentp = getIntent();
-            Bundle bplayer = intentp.getExtras();
-
-            uname = bplayer.getString("Name");
-            id = bplayer.getString("Id");
-            lastScoreDate = bplayer.getString("DateLastScore");
-            Score = bplayer.getString("lastScore");
-            playerImage = bplayer.getString("Image");
-        }*/
-
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         utype = settings.getString("type", "");
         if (utype.equals("coach")) {
             uname = settings.getString("Name", "");
             id = settings.getString("Id", "");
             regEmail = settings.getString("mail_id", "");
+
+//            setNavigationDrawer();
+//            displayNavHeaderInfo();
         } else {
             uname = settings.getString("Name", "");
             id = settings.getString("Id", "");
@@ -112,6 +83,19 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
             new WebService(HomePage.this).execute(API.ServerAddress + API.AFTER_LOGIN, "user_id=" + id);
 
         }
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dLayout.openDrawer(Gravity.LEFT);
+                tvUserMainInfo = findViewById(R.id.nav_main_info);
+                tvUserSubInfo = findViewById(R.id.nav_sub_info);
+                tvUserMainInfo.setText(uname);
+                tvUserSubInfo.setText(regEmail);
+
+            }
+        });
+        setNavigationDrawer();
+
 
     }
 
@@ -131,25 +115,11 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
     }
 
     private void setNavigationDrawer() {
-        dLayout = findViewById(R.id.drawer_layout); // initiate a DrawerLayout
         profilePic = findViewById(R.id.nav_user_image);
         tvUserMainInfo = findViewById(R.id.nav_main_info);
         tvUserSubInfo = findViewById(R.id.nav_sub_info);
         Bitmap bmp = null;
-        /*try {
-            new WebService(this).execute("http://stage1.optipacetech.com/badminton/api/loadImage.php", "user_id=" + id);
-
-// URL url = new URL("http://stage1.optipacetech.com/badminton/api/loadImage.php?user_id=" + id);
-// bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
- /*imageBytes = Base64.decode(imageString, Base64.DEFAULT);
- Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
- profilePic.setImageBitmap(decodedImage);*/
-// profilePic.setImageBitmap(bmp);
-
+        dLayout = findViewById(R.id.drawer_layout); // initiate a DrawerLayout
         NavigationView navView = findViewById(R.id.navigation); // initiate a Navigation View
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -302,14 +272,20 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
     }
 
     private void displayNavHeaderInfo() {
-        imageBytes = Base64.decode(playerImage, Base64.DEFAULT);
-        Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-        profilePic.setImageBitmap(decodedImage);
-        profilePic.setVisibility(View.VISIBLE);
+        if (utype.equals("player")) {
+            imageBytes = Base64.decode(playerImage, Base64.DEFAULT);
+            Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+            profilePic.setImageBitmap(decodedImage);
+            profilePic.setVisibility(View.VISIBLE);
+            tvUserMainInfo.setText(uname);
+            tvUserSubInfo.setText(regEmail);
+        } else {
 
-        tvUserMainInfo.setText(uname);
-        tvUserSubInfo.setText(regEmail);
+            tvUserMainInfo.setText(uname);
+            tvUserSubInfo.setText(regEmail);
 
+
+        }
 
     }
 

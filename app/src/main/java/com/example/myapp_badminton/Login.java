@@ -73,7 +73,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                 password = etPassword.getText().toString();
                 Save();
                 new WebService(Login.this).execute(API.ServerAddress + "" + API.USER_LOGIN, "mail_id=" + regEmail + "&etPassword=" + password);
-                etName.setText("");
+                    etName.setText("");
                 etPassword.setText("");
             }
         });*/

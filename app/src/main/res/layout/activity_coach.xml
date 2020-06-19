@@ -1,127 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/main_color"
+    android:orientation="vertical"
     tools:context=".Coach">
 
 
-        <TextView
-            android:layout_marginTop="30dp"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/text_coach"
-            android:textColor="@color/colorWhite"
-            android:text="COACH SCORE ENTRY"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_gravity="center_horizontal"
-            />
+    <TextView
+        android:id="@+id/text_coach"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="COACH SCORE ENTRY"
+        android:textColor="@color/app_text"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:id="@+id/input_group_coach1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginRight="25dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-
-                    <AutoCompleteTextView
-                        android:id="@+id/academy_select_city"
+        android:orientation="vertical"
+        android:padding="20dp">
+                    <Spinner
+                        android:id="@+id/sp_city"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/edit_text_top"
-                        android:hint="Select City"
-                        android:inputType="textPersonName|textCapSentences"
+                        android:background="@drawable/edit_text_middle"
                         android:padding="15dp" />
 
-              <!--      <Button
-                        android:layout_below="@+id/input_group_coach2"
-                        android:id="@+id/btn_cityselect"
+                    <Spinner
+                        android:id="@+id/sp_academy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-android:onClick="select_city"
-                        android:background="@color/colorWhite"
-                        android:text="OK"
-                        android:textAllCaps="false"
-                        android:textColor="@color/main_color"
-                        android:textSize="17sp" />-->
-
-                    <AutoCompleteTextView
-                        android:id="@+id/academy_select_coach"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="25dp"
-                        android:background="@drawable/edit_text_top"
-                        android:hint="Select Academy"
-                        android:inputType="textPersonName|textCapSentences"
+                        android:background="@drawable/edit_text_middle"
                         android:padding="15dp" />
-                   <!-- <Button
-                        android:layout_below="@+id/input_group_coach2"
-                        android:id="@+id/btn_selectAcademy"
+
+                    <Spinner
+                        android:id="@+id/sp_level"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:background="@color/colorWhite"
-                        android:text="OK"
-android:onClick="select_academy"
-                        android:textAllCaps="false"
-                        android:textColor="@color/main_color"
-                        android:textSize="17sp" />
--->
+                        android:background="@drawable/edit_text_middle"
+                        android:padding="15dp" />
 
 
 
-                    <AutoCompleteTextView
-                        android:id="@+id/select_student_coach_level"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="25dp"
-                        android:background="@drawable/edit_text_bottom"
-                        android:hint="Select Level E.g 5"
-                        android:inputType="textAutoComplete|textCapWords|textPersonName"
-                        android:padding="15dp"
-                        />
-
-                    <!--<ListView
-                        android:id="@+id/list_view3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />-->
                     <Button
-                        android:layout_below="@+id/input_group_coach2"
                         android:id="@+id/btn_click_coach"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_below="@+id/input_group_coach2"
                         android:layout_marginTop="5dp"
-                        android:background="@color/colorWhite"
+                        android:background="@drawable/round_button"
+                        android:onClick="select_level"
                         android:text="OK"
-android:onClick="select_level"
                         android:textAllCaps="false"
-                        android:textColor="@color/main_color"
+                        android:textColor="@color/button_text_color"
                         android:textSize="17sp" />
                 </LinearLayout>
-            </RelativeLayout>
-        </ScrollView>
-    </LinearLayout>
 
 </LinearLayout>
