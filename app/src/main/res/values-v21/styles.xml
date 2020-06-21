@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ThemeOverlay.App.RadioButton" parent="Base.Widget.AppCompat.CompoundButton.RadioButton">
+
+        <item name="android:buttonTint">@color/colorPrimary</item>
+    </style>
+    <style name="DialogTheme" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+</resources>

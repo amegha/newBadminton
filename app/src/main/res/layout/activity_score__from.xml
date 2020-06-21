@@ -3,10 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_color"
+    android:background="@drawable/bg"
     android:gravity="center"
     android:orientation="vertical"
+    android:weightSum="2"
     tools:context=".Score_From">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="32dp"
+        android:layout_weight="1"
+        android:scaleType="centerInside"
+        android:src="@drawable/score_entry_image" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -14,10 +25,10 @@
         android:padding="10dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp">
 
 
             <TextView
@@ -47,33 +58,34 @@
                     android:layout_below="@+id/tv"
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="25dp"
+                    android:buttonTint="@color/colorPrimary"
                     android:onClick="fitness_select"
                     android:text="Fitness"
                     android:textColor="@color/app_text"
-                    android:textSize="20sp"
-                      />
+                    android:textSize="20sp" />
+
 
                 <RadioButton
                     android:id="@+id/cat2"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_below="@id/cat1"
+                    android:buttonTint="@color/colorPrimary"
                     android:onClick="grip_select"
                     android:text="Grip"
                     android:textColor="@color/app_text"
-                    android:textSize="20sp"
-                      />
+                    android:textSize="20sp" />
 
                 <RadioButton
                     android:id="@+id/cat3"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_below="@id/cat2"
+                    android:buttonTint="@color/colorPrimary"
                     android:onClick="oncourt_skill_select"
                     android:text="OnCourt Skills"
                     android:textColor="@color/app_text"
-                    android:textSize="20sp"
-                      />
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -89,31 +101,31 @@
                     android:id="@+id/singles"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:buttonTint="@color/colorPrimary"
                     android:onClick="singles_select"
                     android:text="Singles"
                     android:textColor="@color/app_text"
-                    android:textSize="20sp"
-                      />
+                    android:textSize="20sp" />
 
                 <RadioButton
                     android:id="@+id/doubles"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:buttonTint="@color/colorPrimary"
                     android:onClick="doubles_select"
                     android:text="Doubles"
                     android:textColor="@color/app_text"
-                    android:textSize="20sp"
-                      />
+                    android:textSize="20sp" />
 
                 <RadioButton
                     android:id="@+id/shadow_footwork"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:buttonTint="@color/colorPrimary"
                     android:onClick="shadow_select"
                     android:text="Shadow / Footwork"
                     android:textColor="@color/app_text"
-                    android:textSize="20sp"
-                      />
+                    android:textSize="20sp" />
 
 
             </LinearLayout>

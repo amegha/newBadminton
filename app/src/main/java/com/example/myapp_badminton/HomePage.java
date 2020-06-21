@@ -33,9 +33,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.myapp_badminton.megha.PlayVideo;
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.Collections;
-import java.util.Map;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomePage extends AppCompatActivity implements AsyncResponse {
@@ -195,6 +192,9 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
             } else {
                 confirmNewPass.setError("password doesnt match");
             }
+        } else {
+            newPass.setError("can't be empty");
+
         }
     }
 

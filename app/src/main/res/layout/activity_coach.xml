@@ -3,20 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_color"
+    android:background="@drawable/bg"
     android:orientation="vertical"
+    android:weightSum="2"
     tools:context=".Coach">
 
-
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="1"
+        android:scaleType="centerInside"
+        android:src="@drawable/coach_score_entry_two" />
     <TextView
         android:id="@+id/text_coach"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:text="COACH SCORE ENTRY"
-        android:textColor="@color/app_text"
+        android:textColor="@color/colorPrimary"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -24,42 +33,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_weight="1"
         android:padding="20dp">
-                    <Spinner
-                        android:id="@+id/sp_city"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edit_text_middle"
-                        android:padding="15dp" />
 
-                    <Spinner
-                        android:id="@+id/sp_academy"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edit_text_middle"
-                        android:padding="15dp" />
+        <Spinner
+            android:id="@+id/sp_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-                    <Spinner
-                        android:id="@+id/sp_level"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edit_text_middle"
-                        android:padding="15dp" />
+            android:background="@drawable/edit_text_middle"
+            android:padding="15dp" />
+
+        <Spinner
+            android:id="@+id/sp_academy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_middle"
+            android:padding="15dp" />
+
+        <Spinner
+            android:id="@+id/sp_level"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_middle"
+            android:padding="15dp" />
 
 
-
-                    <Button
-                        android:id="@+id/btn_click_coach"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/input_group_coach2"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/round_button"
-                        android:onClick="select_level"
-                        android:text="OK"
-                        android:textAllCaps="false"
-                        android:textColor="@color/button_text_color"
-                        android:textSize="17sp" />
-                </LinearLayout>
+        <Button
+            android:id="@+id/btn_click_coach"
+            style="@style/Button1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/input_group_coach2"
+            android:layout_marginTop="5dp"
+            android:text="OK" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -24,7 +24,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     public Button btn_signIn, reset;
     public EditText etName, etPassword, email, etOTP, newPass, confirmNewPass;
     public TextView Registration, password_forgot;
-    public String regEmail, password, today, type, Id, Name, lastScoreEntryDate, Score, image;
+    public String regEmail, password, today, type, Id, Name, lastScoreEntryDate, Score, image, gender;
     SQLiteDatabase sqLiteDatabase;
     AlertDialog alertDialog;
     String sNewPass, sNewPassConfirm;
@@ -48,7 +48,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login_new);
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         if (settings.getString("logged", "").equals("logged")) {
@@ -61,8 +61,8 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         etPassword = findViewById(R.id.password_signin);
         btn_signIn = findViewById(R.id.btn_signIn);
         reset = findViewById(R.id.btn_reset);
-        Registration = findViewById(R.id.signUp_text);
-        password_forgot = findViewById(R.id.forgot_pass);
+//        Registration = findViewById(R.id.signUp_text);
+//        password_forgot = findViewById(R.id.forgot_pass);
 
 //        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
@@ -109,7 +109,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void onTaskComplete(String result) {
-        Log.e("sign in","result "+result);
+        Log.e("sign in", "result " + result);
 //        try {
         switch (result) {
             case "00": {
@@ -190,6 +190,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
             editor.putString("DateLastScore", lastScoreEntryDate);
             editor.putString("lastScore", Score);
             editor.putString("mail_id", regEmail);
+//            editor.putString("gender", gender);
             editor.apply();
             startActivity(new Intent(this, HomePage.class));
 

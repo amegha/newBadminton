@@ -1,85 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg"
     tools:context=".SelectedUserActivity">
-        <androidx.appcompat.widget.Toolbar
+
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:background="#342a73"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimaryDark">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:layout_gravity="center"
             android:text="Player Training Details"
-            android:layout_centerInParent="true"
-            android:textStyle="bold"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
+        android:id="@+id/layoutlinear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/layoutlinear"
         android:layout_below="@+id/toolbar"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
         android:gravity="center">
 
-        <ImageView android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:src="@mipmap/ic_launcher"
+        <ImageView
             android:id="@+id/playerPic"
-            />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher" />
     </LinearLayout>
+
     <LinearLayout
-        android:layout_marginTop="15dp"
-        android:layout_below="@id/layoutlinear"
-        android:layout_width="230dp"
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/layoutlinear"
+        android:layout_marginTop="15dp"
         android:orientation="horizontal"
         android:paddingLeft="20dp"
         android:paddingBottom="20dp"
-        android:id="@+id/linearLayout1"
-        >
+        android:weightSum="2">
 
         <TextView
             android:id="@+id/title_userId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="User ID :"
-            android:textStyle="bold"
             android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:text="User ID :"
             android:textColor="#342a73"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/display_userId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="1"
             android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="1"
             android:textColor="#342a73"
             android:textSize="15sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="230dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/linearLayout1"
         android:layout_centerVertical="true"
         android:layout_marginTop="5dp"
         android:orientation="horizontal"
+        android:paddingLeft="20dp"
         android:paddingBottom="20dp"
-        android:paddingLeft="20dp">
+        android:weightSum="2">
 
         <TextView
             android:id="@+id/title_userName"
@@ -87,6 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
+            android:layout_weight="1"
             android:text="User Name :"
             android:textColor="#342a73"
             android:textSize="15sp"
@@ -98,35 +106,39 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="Richard"
+            android:layout_weight="1"
+            android:gravity="center"
             android:maxLines="2"
+            android:text="Richard"
             android:textColor="#342a73"
 
             android:textSize="15sp" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="15dp"
-        android:layout_below="@id/linearLayout2"
+        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_below="@id/linearLayout2"
         android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
         android:paddingLeft="20dp"
+
         android:paddingBottom="20dp"
-        android:id="@+id/linearLayout3"
-        >
+        android:weightSum="2">
+
         <TextView
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
+            android:id="@+id/title_mainCat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/title_mainCat"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
             android:text="Main Category :"
             android:textColor="#342a73"
             android:textSize="15sp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/display_mainCat"
@@ -134,64 +146,73 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="Fitness"
+            android:layout_weight="1"
+            android:gravity="center"
             android:maxLines="2"
-            android:textColor="#342a73"
+            android:text="Fitness"
 
+            android:textColor="#342a73"
             android:textSize="15sp" />
     </LinearLayout>
+
     <LinearLayout
-        android:layout_marginTop="15dp"
-        android:layout_below="@id/linearLayout3"
+        android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_below="@id/linearLayout3"
         android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
         android:paddingLeft="20dp"
         android:paddingBottom="20dp"
-        android:id="@+id/linearLayout4"
-        >
+
+        android:weightSum="2">
+
         <TextView
-            android:layout_marginTop="10dp"
             android:id="@+id/title_selectedSubCat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
             android:text="Sub  Category :"
             android:textColor="#342a73"
             android:textSize="15sp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/selectedSubCat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Agility(Indoor)"
+            android:layout_weight="1"
+            android:gravity="center"
             android:maxLines="2"
+            android:text="Agility(Indoor)"
             android:textColor="#342a73"
             android:textSize="15sp" />
     </LinearLayout>
+
     <LinearLayout
-        android:layout_below="@+id/toolbar"
-        android:layout_toRightOf="@id/linearLayout1"
-        android:layout_marginTop="15dp"
+        android:id="@+id/linearLayout5"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_below="@+id/toolbar"
         android:layout_centerInParent="true"
-        android:paddingBottom="20dp"
-        android:id="@+id/linearLayout5"
-        >
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@id/linearLayout1"
+        android:orientation="horizontal"
+        android:paddingBottom="20dp">
+
         <TextView
-            android:text="Date :"
-            android:textColor="#342a73"
-            android:layout_marginTop="10dp"
             android:id="@+id/title_DateOfScoreSubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Date :"
+            android:textColor="#342a73"
             android:textSize="15sp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/tv_DateOfScoreSubmit"
             android:layout_width="wrap_content"
@@ -202,46 +223,42 @@
             android:textSize="15sp" />
 
 
-
     </LinearLayout>
 
 
-  <!--  <Button
-        android:id="@+id/selection_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/linearLayout5"
-        android:layout_marginLeft="230dp"
-        android:background="#342a73"
-        android:text="Ok"
-        android:onClick="SkipDate"
-        android:textColor="#FFFFFF" />-->
+    <!--  <Button
+          android:id="@+id/selection_date"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/linearLayout5"
+          android:layout_marginLeft="230dp"
+          android:background="#342a73"
+          android:text="Ok"
+          android:onClick="SkipDate"
+          android:textColor="#FFFFFF" />-->
 
     <EditText
-        android:layout_below="@id/linearLayout4"
         android:id="@+id/score_training"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_below="@id/linearLayout4"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
         android:hint="e.g 7.2"
         android:inputType="numberDecimal"
         android:maxLength="3"
-        android:singleLine="true"
-        />
-
+        android:singleLine="true" />
 
 
     <Button
-        android:layout_below="@id/score_training"
+        android:id="@+id/btn_scoretoday"
+        style="@style/Button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_scoretoday"
+        android:layout_below="@id/score_training"
         android:layout_centerHorizontal="true"
-        android:text="OK"
-        android:background="#342a73"
-        android:textColor="#FFFFFF"
         android:layout_marginTop="20dp"
-        android:onClick="addUser"/>
+        android:onClick="addUser"
+        android:text="OK" />
 
 </RelativeLayout>

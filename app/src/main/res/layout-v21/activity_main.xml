@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
+    android:background="@color/colorTextInputBackground"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -289,10 +289,10 @@
                 <Button
                     android:id="@+id/click"
                     style="@style/Button1"
-                    android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_nationalrank"
+                    android:layout_marginTop="5dp"
                     android:onClick="OnTakePhotoClicked"
                     android:text="Click" />
 

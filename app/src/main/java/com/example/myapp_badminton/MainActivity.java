@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     //for camera
     ImageView imageView;
     TextView image_name, age, dob;
-    Button click, add, buttonConfirm;
+    Button click, add, buttonConfirm, loginBack;
     String image_uri, sNewPass, sNewPassConfirm;
     //radio buttons and variables
     RadioGroup r_gender, r_edu;
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 //    private AppCompatAutoCompleteTextView autoTextState, autoTextCity, autoTextLocation, autoTextAcademyName;
     //other data variables
     EditText fname, email, state_rank, national_rank, phoneNumber, editTextConfirmOtp;
-    TextView showDate, loginBack;
+    TextView showDate;
     private Spinner location_spinner;
     private Spinner state_Spinner;
     private Spinner city_Spinner;
@@ -296,7 +296,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
+        super.onCreate(savedInstanceState);
+        ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_main);
         verifyStoragePermissions(this);
         db = new DBHandler(this);
@@ -475,6 +476,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     public void Login_screen() {
         Intent intent;
         intent = new Intent(MainActivity.this, Login.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
@@ -482,6 +484,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     private void ShowDatePickerDialog() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
+                R.style.DialogTheme,
                 this,
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
@@ -1019,7 +1022,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             new WebService(this).execute(API.ServerAddress + API.RESET_PASSWORD, "module=password_reset" + "&mail_id=" + m_id + "&new_pin=" + sNewPass);
 
         } else {
-            confirmNewPass.setError("password doesnt match");
+            confirmNewPass.setError("password doesn't match");
         }
     }
 
