@@ -15,59 +15,65 @@ import java.util.List;
 public class WebService extends AsyncTask<String, String, String> {
     String res;
     String responseString;
-    private AsyncResponse mCallback;
+    NetworkAvailability networkAvailability;
     List<String> nameValuePairs = new ArrayList<String>(2);
+    private AsyncResponse mCallback;
 
 
     public WebService(Context context) {
         Context mContext = context;
         this.mCallback = (AsyncResponse) context;
+        networkAvailability = NetworkAvailability.getInstance(context);
     }
 
     @Override
     protected String doInBackground(String... arg0) {
-        try {
-            URL obj = new URL(arg0[0]);//arg0[0]=url
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            con.setRequestMethod("POST");//add request header
-            con.setConnectTimeout(7000);
-            con.setDoOutput(true);  //indicates POST request
-            con.setDoInput(true);   //indicates server returns response
-            con.setUseCaches(false);
-            Log.d("the postURL is", " " + arg0[0]);
-            Log.d("the postData is", " " + arg0[1]);
-            OutputStreamWriter os = new OutputStreamWriter(con.getOutputStream());
+//        if (networkAvailability.isConnected()) {
+            try {
+                URL obj = new URL(arg0[0]);//arg0[0]=url
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+                con.setRequestMethod("POST");//add request header
+                con.setConnectTimeout(7000);
+                con.setDoOutput(true);  //indicates POST request
+                con.setDoInput(true);   //indicates server returns response
+                con.setUseCaches(false);
+                Log.d("the postURL is", " " + arg0[0]);
+                Log.d("the postData is", " " + arg0[1]);
+                OutputStreamWriter os = new OutputStreamWriter(con.getOutputStream());
             /*if(arg0.length==3){
                 nameValuePairs.add(new BasicNameValuePair("id", "12345"));
                 nameValuePairs.add(new BasicNameValuePair("stringdata", "Hi"));
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             }else*/
-            os.write(arg0[1]);//arg0[1]=data
-            os.flush();
-            os.close();
-            Log.d("Response from Server", " " + con.getResponseCode());
-            res = String.valueOf(con.getResponseCode());
-            if (res.equals("200")) {//success
-                BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                StringBuilder sb = new StringBuilder();
-                String line;
-                while ((line = br.readLine()) != null) {
-                    sb.append(line);
-                }
-                br.close();
-                responseString = sb.toString();//result form the server
+                os.write(arg0[1]);//arg0[1]=data
+                os.flush();
+                os.close();
+                Log.d("Response from Server", " " + con.getResponseCode());
+                res = String.valueOf(con.getResponseCode());
+                if (res.equals("200")) {//success
+                    BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        sb.append(line);
+                    }
+                    br.close();
+                    responseString = sb.toString();//result form the server
 //                Log.e("Response ", "From " + arg0[2] + " " + responseString);
-            } else responseString = res;//other http errors-->server busy
+                } else responseString = res;//other http errors-->server busy
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+       /* } else {
+            responseString = "no net";
         }
-
+*/
         return responseString;
     }
 
     protected void onPostExecute(String results) {
-            mCallback.onTaskComplete(results);
+        mCallback.onTaskComplete(results);
     }
 
 

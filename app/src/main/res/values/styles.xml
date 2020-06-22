@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>-->
 
 
-        <item name="colorControlNormal">@color/colorWhite</item>
+        <item name="colorControlNormal">@color/colorAccent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -16,6 +16,11 @@
 
     <style name="ToolBar">
         <item name="android:editTextColor">@color/colorBlack</item>
+
+    </style>
+
+    <style name="searchView" parent="Widget.AppCompat.SearchView.ActionBar">
+        <item name="android:icon">@drawable/ic_search</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

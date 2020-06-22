@@ -34,6 +34,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     SQLiteDatabase db;
     Cursor cursor, cursor_name;//cursor_days_not_entered,cursor_lastDate,cursor_sec_last_login;
     String last_date, savedID, UserName, sec_lastDate, pending_day;
+    NetworkAvailability networkAvailability;
     private int counter = 5, x;
     private GetOTP getOTP;
     private ConfirmOTP confirmOTP;
@@ -57,6 +58,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
             startActivity(intent);
             finish();
         }
+//        networkAvailability = new NetworkAvailability();
         etName = findViewById(R.id.username_signin);
         etPassword = findViewById(R.id.password_signin);
         btn_signIn = findViewById(R.id.btn_signIn);
@@ -192,7 +194,10 @@ public class Login extends AppCompatActivity implements AsyncResponse {
             editor.putString("mail_id", regEmail);
 //            editor.putString("gender", gender);
             editor.apply();
-            startActivity(new Intent(this, HomePage.class));
+            Intent intent = new Intent(Login.this, HomePage.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
 
         } else {
             //coach
@@ -206,7 +211,10 @@ public class Login extends AppCompatActivity implements AsyncResponse {
             editor.putString("Name", Name);
             editor.putString("mail_id", regEmail);
             editor.apply();
-            startActivity(new Intent(this, HomePage.class));
+            Intent intent = new Intent(Login.this, HomePage.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         }
 
        /* if (type.equals("coach")) {
@@ -306,5 +314,6 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         new WebService(Login.this).execute(API.ServerAddress + API.USER_LOGIN, "mail_id=" + regEmail + "&password=" + password);
 
     }
+
 
 }

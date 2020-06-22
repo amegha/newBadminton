@@ -20,13 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|center_vertical"
-                android:text="Search"
-                android:textColor="@color/app_text"
-                android:textSize="16sp" />
         </androidx.appcompat.widget.Toolbar>
     </LinearLayout>
 <LinearLayout

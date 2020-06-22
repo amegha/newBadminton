@@ -15,7 +15,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:layout_gravity="center"
             android:text="Player Training Details"
             android:textColor="#FFFFFF"
@@ -26,18 +25,56 @@
 
     <LinearLayout
         android:id="@+id/layoutlinear"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
-        android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
-        android:gravity="center">
+        android:gravity="start"
+        android:orientation="horizontal"
+        android:weightSum="2">
 
         <ImageView
             android:id="@+id/playerPic"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:src="@mipmap/ic_launcher" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingBottom="20dp"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/title_DateOfScoreSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Date :"
+                android:textColor="#342a73"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_DateOfScoreSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:hint="select Date"
+                android:textColor="#342a73"
+                android:textSize="15sp" />
+
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -190,39 +227,6 @@
             android:text="Agility(Indoor)"
             android:textColor="#342a73"
             android:textSize="15sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="15dp"
-        android:layout_toRightOf="@id/linearLayout1"
-        android:orientation="horizontal"
-        android:paddingBottom="20dp">
-
-        <TextView
-            android:id="@+id/title_DateOfScoreSubmit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Date :"
-            android:textColor="#342a73"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_DateOfScoreSubmit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="select Date"
-            android:textColor="#342a73"
-            android:textSize="15sp" />
-
-
     </LinearLayout>
 
 
