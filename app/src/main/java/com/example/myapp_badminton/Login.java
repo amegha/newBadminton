@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -278,16 +280,27 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         alertDialog.dismiss();
         regEmail = email.getText().toString().trim();
 //        final String mailId = email.getText().toString().trim();
-        getOTP = new GetOTPImpl(regEmail, new WebService(this), "forgot_password", "getOTP");
-        getOTP.requestForOTP();
+        if (isConnected()) {
+            getOTP = new GetOTPImpl(regEmail, new WebService(this), "forgot_password", "getOTP");
+            getOTP.requestForOTP();
+        }
+        else {
+            Toast.makeText(this, "You are offlne", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
     public void validateOTP(View view) {
         alertDialog.dismiss();
         String OTP = etOTP.getText().toString().trim();
-        confirmOTP = new ConfirmOTPImpl(regEmail, new WebService(this), "forgot_password", "confirmOTP", OTP);
-        confirmOTP.confirmOtp();
+        if (isConnected()) {
+
+            confirmOTP = new ConfirmOTPImpl(regEmail, new WebService(this), "forgot_password", "confirmOTP", OTP);
+            confirmOTP.confirmOtp();
+        }
+        else {
+            Toast.makeText(this, "You are offlne", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void resetPasswordOrPin(View view) {
@@ -296,7 +309,13 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         sNewPassConfirm = confirmNewPass.getText().toString().trim();
         if (sNewPass.equals(sNewPassConfirm)) {
             alertDialog.dismiss();
-            new WebService(this).execute(API.ServerAddress + API.RESET_PASSWORD, "module=password_reset" + "&mail_id=" + regEmail + "&new_pin=" + sNewPass);
+            if (isConnected()) {
+
+                new WebService(this).execute(API.ServerAddress + API.RESET_PASSWORD, "module=password_reset" + "&mail_id=" + regEmail + "&new_pin=" + sNewPass);
+            }
+            else {
+                Toast.makeText(this, "You are offlne", Toast.LENGTH_SHORT).show();
+            }
 
         } else {
             confirmNewPass.setError("password doesnt match");
@@ -311,8 +330,27 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     }
 
     private void signIn(String regEmail, String password) {
-        new WebService(Login.this).execute(API.ServerAddress + API.USER_LOGIN, "mail_id=" + regEmail + "&password=" + password);
+        if (isConnected())
+            new WebService(Login.this).execute(API.ServerAddress + API.USER_LOGIN, "mail_id=" + regEmail + "&password=" + password);
+        else
+            Toast.makeText(this, "You are offlne", Toast.LENGTH_SHORT).show();
+    }
 
+    boolean isConnected() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
     }
 
 

@@ -3,7 +3,9 @@ package com.example.myapp_badminton;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class NetworkAvailability extends AppCompatActivity {
@@ -19,6 +21,11 @@ public class NetworkAvailability extends AppCompatActivity {
             sInstance = new NetworkAvailability(context.getApplicationContext());
         }
         return sInstance;
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     boolean isConnected() {

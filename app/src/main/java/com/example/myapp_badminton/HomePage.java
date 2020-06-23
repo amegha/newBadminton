@@ -48,6 +48,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
     CircleImageView profilePic;
     String sNewPass, sNewPassConfirm, regEmail;
     TextView tvUserMainInfo, tvUserSubInfo;
+    NetworkAvailability networkAvailability;
 
     private EditText newPass, confirmNewPass;
     private byte[] imageBytes;
@@ -59,6 +60,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
         super.onCreate(savedInstanceState);
         ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_home_page);
+        networkAvailability=networkAvailability.getInstance(this);
         Toolbar toolbar = findViewById(R.id.toolbar);// get the reference of Toolbar
         SharedPreferences shared = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         verifyStoragePermissions(this);

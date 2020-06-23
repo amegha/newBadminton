@@ -65,10 +65,9 @@ public class WebService extends AsyncTask<String, String, String> {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-       /* } else {
+      /*  } else {
             responseString = "no net";
-        }
-*/
+        }*/
         return responseString;
     }
 
