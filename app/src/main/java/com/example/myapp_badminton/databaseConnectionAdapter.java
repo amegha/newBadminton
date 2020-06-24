@@ -164,25 +164,49 @@ public class databaseConnectionAdapter {
 
 
         //to retrieve all Academies
-        public ArrayList<String> getAcademies(String city) {
+        public ArrayList<String> getAcademies(String city, String location) {
             // String all="";
             SQLiteDatabase db = getReadableDatabase();
             ArrayList<String> arrayList = new ArrayList<>();
             String[] columns = {Academy_name};
             String selection = CITY + " = ? ";
             String[] selection_args = {city};
-            Cursor cursor = db.query(true, TABLE_ACADEMY, columns, selection, selection_args, Academy_name, null, null, null);
-            //Cursor cursor = db.rawQuery("SELECT DISTINCT " + Academy_name + " from" + TABLE_ACADEMY + " where City=" + city, null);
+//            Cursor cursor = db.query(true, TABLE_ACADEMY, columns, selection, selection_args, Academy_name, null, null, null);
+            Cursor cursor = db.rawQuery("SELECT DISTINCT " + Academy_name + " from " + TABLE_ACADEMY + " where City='" + city + "' and " + AREA + "='" + location + "'", null);
 
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
 
-                arrayList.add((cursor.getString(cursor.getColumnIndex(Academy_name))));
+                arrayList.add((cursor.getString(0)));
                 cursor.moveToNext();
             }
             cursor.close();
             return arrayList;
         }
+
+        public ArrayList<String> getLocations(String city) {
+            // String all="";
+            Cursor cursor;
+            SQLiteDatabase db = getReadableDatabase();
+            ArrayList<String> arrayList = new ArrayList<>();
+           /* String[] columns = {AREA};
+            String selection = CITY + " = ? ";
+            String[] selection_args = {city};*/
+            cursor = db.rawQuery("SELECT distinct " + AREA + " FROM " + TABLE_ACADEMY + " where " + CITY + " = '" + city + "'", null);
+
+//            Cursor cursor = db.query(true, TABLE_ACADEMY, columns, selection, selection_args, Academy_name, null, null, null);
+            //Cursor cursor = db.rawQuery("SELECT DISTINCT " + Academy_name + " from" + TABLE_ACADEMY + " where City=" + city, null);
+
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+
+                arrayList.add((cursor.getString(0)));
+                cursor.moveToNext();
+            }
+            cursor.close();
+            return arrayList;
+        }
+
 
         //to retrieve all levels
         public ArrayList<String> getLevels(String academy) {
@@ -582,5 +606,30 @@ public class databaseConnectionAdapter {
 
         }
 
+        public ArrayList<String> getLevels(String cityName, String locationName, String academyName) {
+            SQLiteDatabase db = getReadableDatabase();
+            ArrayList<String> arrayList = new ArrayList<>();
+            Cursor cursor = db.rawQuery("SELECT DISTINCT " + LEVEL + " from " + TABLE_ACADEMY + " where " + CITY + "='" + cityName + "' and " + AREA + "='" + locationName + "' and " + Academy_name + " = '" + academyName + "'", null);
+
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+
+                arrayList.add((cursor.getString(0)));
+                cursor.moveToNext();
+            }
+            cursor.close();
+            return arrayList;
+        }
+
+        public String getAid(String cityName, String locationName, String academyName) {
+            SQLiteDatabase db = getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT DISTINCT " + A_id + " from " + TABLE_ACADEMY + " where " + CITY + "='" + cityName + "' and " + AREA + "='" + locationName + "' and " + Academy_name + " = '" + academyName + "'", null);
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                return (cursor.getString(0));
+            }
+            cursor.close();
+            return null;
+        }
     }
 }

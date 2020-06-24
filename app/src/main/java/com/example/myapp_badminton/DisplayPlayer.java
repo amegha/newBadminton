@@ -189,7 +189,7 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
     @Override
     public void onTaskComplete(String result) {
         /* if(result.equals("Success")){*/
-        //  Log.e("ViewUserDetails","Upload status "+result);
+          Log.e("ViewUserDetails","Upload status "+result);
         String[] arrRes;
         arrRes = result.split(",");
         String locationXml;

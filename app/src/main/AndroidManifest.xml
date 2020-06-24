@@ -75,6 +75,7 @@
             android:resizeableActivity="true"
             android:screenOrientation="landscape"
             android:supportsRtl="true"/>
+        <activity android:name=".DisplayPlayer" />
     </application>
 
 </manifest>

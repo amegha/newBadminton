@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,20 +26,24 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
     databaseConnectionAdapter datahelper;
     SQLiteDatabase db;
 
+    String cityName, academyName, locationName;
+
     ArrayAdapter<String> adapter_academy;
     ArrayAdapter<String> adapter_city;
+    ArrayAdapter<String> adapter_location;
     ArrayAdapter<String> adapter_levels;
 
-    private Spinner city_Spinner, academy_spinner, level_spinner;
-
-    private AdapterView.OnItemSelectedListener academyLister = new AdapterView.OnItemSelectedListener() {
+    private Spinner city_Spinner, academy_spinner, level_spinner, location_Spinner;
+    private AdapterView.OnItemSelectedListener getAcademyLister = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (position > -1) {
-                String academyName = (String) academy_spinner.getItemAtPosition(position);
-                adapter_levels = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, datahelper.allDataHelper.getLevels(academyName));
+                academyName = (String) academy_spinner.getItemAtPosition(position);
+                adapter_levels = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, datahelper.allDataHelper.getLevels(cityName, locationName, academyName));
                 adapter_levels.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 level_spinner.setAdapter(adapter_levels);
+                aid=datahelper.allDataHelper.getAid(cityName, locationName, academyName);
+
             }
         }
 
@@ -47,18 +52,36 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
 
         }
     };
-    private AdapterView.OnItemSelectedListener cityListerner = new AdapterView.OnItemSelectedListener() {
+    private AdapterView.OnItemSelectedListener locationListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (position > -1) {
-                String cityName = (String) city_Spinner.getItemAtPosition(position);
-                Log.d("SpinnerCountry", "onItemSelected: state: ");
-
-                adapter_academy = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, datahelper.allDataHelper.getAcademies(cityName));
+                locationName = (String) location_Spinner.getItemAtPosition(position);
+                adapter_academy = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, datahelper.allDataHelper.getAcademies(cityName, locationName));
                 adapter_academy.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 academy_spinner.setAdapter(adapter_academy);
+                academy_spinner.setOnItemSelectedListener(getAcademyLister);
 
-                academy_spinner.setOnItemSelectedListener(academyLister);
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+    private AdapterView.OnItemSelectedListener cityListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (position > -1) {
+                cityName = (String) city_Spinner.getItemAtPosition(position);
+                Log.d("SpinnerCountry", "onItemSelected: state: ");
+
+                adapter_location = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, datahelper.allDataHelper.getLocations(cityName));
+                adapter_location.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                location_Spinner.setAdapter(adapter_location);
+
+                location_Spinner.setOnItemSelectedListener(locationListener);
 
             } else {
                 city_Spinner.setPrompt("select");
@@ -81,6 +104,7 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
         db = datahelper.allDataHelper.getReadableDatabase();
 
         city_Spinner = findViewById(R.id.sp_city);
+        location_Spinner = findViewById(R.id.sp_location);
         level_spinner = findViewById(R.id.sp_level);
         academy_spinner = findViewById(R.id.sp_academy);
 
@@ -103,28 +127,54 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void onTaskComplete(String result) {
-        String[] academyResponse;
-        ArrayList<String> cities = new ArrayList();
-        ArrayList<String> academy_name = new ArrayList();
-        ArrayList<String> aid = new ArrayList<>();
-        ArrayList<String> gamelevels = new ArrayList<>();
-        ArrayList<String> state = new ArrayList<>();
-        ArrayList<String> area = new ArrayList<>();
+        Log.e("onTaskComplete: ", "" + result);
+        switch (result) {
+            case "00": {
+                Toast.makeText(this, "Invalid Request", Toast.LENGTH_LONG).show();
+                break;
+            }
+            case "01":
+            case "02": {
+                Toast.makeText(this, "Server Error", Toast.LENGTH_LONG).show();
+                break;
+            }
+            case "03": {
+                Toast.makeText(this, "User not found!", Toast.LENGTH_LONG).show();
+                break;
+            }
+            case "502": {
+                Toast.makeText(this, "Try again!", Toast.LENGTH_SHORT).show();
+                break;
+            }
+            case "password_reset/0": {
+                Toast.makeText(this, "Password reset successfully", Toast.LENGTH_SHORT).show();
+                break;
+            }
+            default: {
+                String[] academyResponse;
+                ArrayList<String> cities = new ArrayList();
+                ArrayList<String> academy_name = new ArrayList();
+                ArrayList<String> aid = new ArrayList<>();
+                ArrayList<String> gamelevels = new ArrayList<>();
+                ArrayList<String> state = new ArrayList<>();
+                ArrayList<String> area = new ArrayList<>();
 
-        academyResponse = result.split(";");
-        for (int i = 0; i < academyResponse.length; i++) {
-            LocationInfo(academyResponse[i], cities, academy_name, aid, gamelevels, state, area);
-            Log.d("Total Size", String.valueOf(academyResponse.length));
+                academyResponse = result.split(";");
+                for (int i = 0; i < academyResponse.length; i++) {
+                    LocationInfo(academyResponse[i], cities, academy_name, aid, gamelevels, state, area);
+                    Log.d("Total Size", String.valueOf(academyResponse.length));
+                }
+                System.out.println("all the cities " + Collections.singletonList(cities));
+                System.out.println("all the Academy Ids " + Collections.singletonList(aid));
+                System.out.println("all the academy names " + Collections.singletonList(academy_name));
+                //used to display city
+                adapter_city = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, datahelper.allDataHelper.getCity());
+                adapter_city.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                city_Spinner.setAdapter(adapter_city);
+                city_Spinner.setOnItemSelectedListener(cityListener);
+
+            }
         }
-        System.out.println("all the cities " + Collections.singletonList(cities));
-        System.out.println("all the Academy Ids " + Collections.singletonList(aid));
-        System.out.println("all the academy names " + Collections.singletonList(academy_name));
-        //used to display city
-        adapter_city = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, datahelper.allDataHelper.getCity());
-        adapter_city.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        city_Spinner.setAdapter(adapter_city);
-        city_Spinner.setOnItemSelectedListener(cityListerner);
-
     }
 
     private void LocationInfo(String s, ArrayList<String> cities, ArrayList<String> academy_name, ArrayList<String> aid, ArrayList<String> gamelevels, ArrayList<String> states, ArrayList<String> area) {
@@ -166,9 +216,9 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
             b.putString("type", type);
             b.putString("aid", aid);
             b.putString("module", fragment_module);
-            startActivity(new Intent(Coach.this, DisplayPlayer.class));
-           /* Intent i1 = new Intent(Coach.this, DisplayPlayer.class).putExtras(b);
-            startActivity(i1);*/
+//            startActivity(new Intent(Coach.this, DisplayPlayer.class));
+            Intent i1 = new Intent(Coach.this, DisplayPlayer.class).putExtras(b);
+            startActivity(i1);
         } else if (fragment_module.equalsIgnoreCase("LineGraph")) {
             Bundle b = new Bundle();
             b.putString("coach_id", coach_id);
