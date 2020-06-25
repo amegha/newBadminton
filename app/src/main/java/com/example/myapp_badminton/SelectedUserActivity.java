@@ -61,13 +61,15 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
         if (type.equalsIgnoreCase("Player")) {
             Intent i = new Intent(SelectedUserActivity.this, Score_From.class);
             //used to or helps in display particular activity
-            i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 
             startActivity(i);
         } else {
             Intent i = new Intent(SelectedUserActivity.this, DisplayPlayer.class);
             //used to or helps in display particular activity
             i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 
             startActivity(i);
         }

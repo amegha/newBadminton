@@ -56,7 +56,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         if (settings.getString("logged", "").equals("logged")) {
             Intent intent = new Intent(Login.this, HomePage.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
         }
@@ -197,7 +197,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 //            editor.putString("gender", gender);
             editor.apply();
             Intent intent = new Intent(Login.this, HomePage.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
 
@@ -214,7 +214,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
             editor.putString("mail_id", regEmail);
             editor.apply();
             Intent intent = new Intent(Login.this, HomePage.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
         }

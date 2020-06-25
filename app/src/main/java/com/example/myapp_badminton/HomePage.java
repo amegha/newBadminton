@@ -60,7 +60,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
         super.onCreate(savedInstanceState);
         ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_home_page);
-        networkAvailability=networkAvailability.getInstance(this);
+        networkAvailability = NetworkAvailability.getInstance(this);
         Toolbar toolbar = findViewById(R.id.toolbar);// get the reference of Toolbar
         SharedPreferences shared = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         verifyStoragePermissions(this);
@@ -149,7 +149,9 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
 
 //                    frag = new ForgotPasswordFragment();
                 } else if (itemId == R.id.five) {
-                    startActivity(new Intent(getApplicationContext(), PlayVideo.class));
+                    if (utype.equalsIgnoreCase("Player")) {
+                        startActivity(new Intent(getApplicationContext(), PlayVideo.class));
+                    }
                 } else if (itemId == R.id.six)//refer to about
                 {
                     frag = new About();

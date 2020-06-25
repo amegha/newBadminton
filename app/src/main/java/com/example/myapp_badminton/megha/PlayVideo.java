@@ -47,6 +47,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
     static ArrayList<AnswersModel> answersModelsArray = new ArrayList<>();
     //    int[] pauses = {166, 798, 1713, 2101, 3426, 4046, 5262, 5753, 7030, 7969, 8617, 9336, 10425, 10869};
     static int[] pauses, maxTime;/*= {166, 798, 1100, 1713, 2101, 3426, 4046, 5262, 5753, 7030, 7969, 8617, 9336, 10425, 10869};*/
+    static String link = "http://stage1.optipacetech.com/badminton/", videoName;
     private static CustomAdapter adapter;
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.CAMERA,
@@ -58,7 +59,6 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
     String url = "<iframe src='https://www.youtube.com/watch?v=cRFnsOUoHmM?fs=0' width='100%' height='100%' style='border: none;'></iframe>";
     int initPos, currPos, watchAgainCount, pauseAt, REQUEST_ANSWER = 1, answerCount, score;
     Button watchAgain, answerQuestions;
-    static String link = "http://stage1.optipacetech.com/badminton/", videoName;
     MediaController mediaController;
     Bundle bundle = new Bundle();
     TextView ctv;
@@ -246,9 +246,9 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
         super.onCreate(savedInstanceState);
         ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_paly_video);
-        vv = (VideoView) findViewById(R.id.video_view);
+        vv = findViewById(R.id.video_view);
         ctv = findViewById(R.id.count_down);
-        progressBar = (ProgressBar) findViewById(R.id.progressbar);
+        progressBar = findViewById(R.id.progressbar);
         db = new DBHandler(this);
         watchAgain = findViewById(R.id.watch_again);
         answerQuestions = findViewById(R.id.answer_questions);
