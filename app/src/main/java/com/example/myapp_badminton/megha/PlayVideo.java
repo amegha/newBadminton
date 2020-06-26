@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.PlaybackParams;
@@ -55,6 +56,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.ACCESS_FINE_LOCATION
     };
+    public final String PREFS_NAME = "LoginPrefs";
     String html = "<iframe width=\"560\" height=\"315\" src=\"http://www.youtube.com/watch?v=cRFnsOUoHmM\" frameborder=\"0\" allowfullscreen></iframe>\"";
     String url = "<iframe src='https://www.youtube.com/watch?v=cRFnsOUoHmM?fs=0' width='100%' height='100%' style='border: none;'></iframe>";
     int initPos, currPos, watchAgainCount, pauseAt, REQUEST_ANSWER = 1, answerCount, score;
@@ -89,6 +91,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
             return false;
         }
     };
+    String p_id;
     Intent intent;
     DBHandler db;
     int handlerTime = 0, remainingTime = 500000;
@@ -162,7 +165,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
 
     private void checkDBAndGetCorrectAnswer() {
         if (db.isDataEmpty()) {
-            getAnswers = new GetAnswersImpl1(this, new WebService(this));
+            getAnswers = new GetAnswersImpl1(this, new WebService(this), p_id);
             getAnswers.getCorrectAnswersFromServer();
 //            connectionAndVideoStream();
         } else {
@@ -202,7 +205,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
                         && grantResults[2] == PackageManager.PERMISSION_GRANTED
                         && grantResults[3] == PackageManager.PERMISSION_GRANTED) {
 //                    connectionAndVideoStream();
-                    getAnswers = new GetAnswersImpl1(this, new WebService(this));
+                    getAnswers = new GetAnswersImpl1(this, new WebService(this), p_id);
                     getAnswers.getCorrectAnswersFromServer();
 //                    Log.i(TAG, "onRequestPermissionsResult: Permission Granted");
                 } else
@@ -252,6 +255,10 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
         db = new DBHandler(this);
         watchAgain = findViewById(R.id.watch_again);
         answerQuestions = findViewById(R.id.answer_questions);
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        p_id = settings.getString("Id", "");
+
 //        link = "http://stage1.optipacetech.com/badminton/videos/training.mp4";
 //        link = "android.resource://" + getPackageName() + "/" + R.raw.training;
         verifyStoragePermissions(this);

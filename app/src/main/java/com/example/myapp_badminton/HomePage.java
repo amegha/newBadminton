@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
@@ -36,7 +38,7 @@ import com.google.android.material.navigation.NavigationView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomePage extends AppCompatActivity implements AsyncResponse {
-    public static final String PREFS_NAME = "LoginPrefs";
+    public static final String PREFS_NAME ="LoginPrefs";
     private static final int REQUEST_RUNTIME_PERMISSIONS = 1;
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -191,8 +193,12 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
         if (!sNewPass.equals("")) {
             if (sNewPass.equals(sNewPassConfirm)) {
                 alertDialog.dismiss();
-                new WebService(this).execute(API.ServerAddress + API.RESET_PASSWORD, "module=password_reset" + "&mail_id=" + regEmail + "&new_pin=" + sNewPass);
+                if (new HomePage().isConnected()) {
+                    new WebService(this).execute(API.ServerAddress + API.RESET_PASSWORD, "module=password_reset" + "&mail_id=" + regEmail + "&new_pin=" + sNewPass);
 
+                } else {
+                    Toast.makeText(this, "You are offline", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 confirmNewPass.setError("password doesnt match");
             }
@@ -293,7 +299,8 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
 
     }
 
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_RUNTIME_PERMISSIONS: {
@@ -307,5 +314,22 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
                 }
             }
         }
+    }
+
+    boolean isConnected() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+            haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+            haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
     }
 }

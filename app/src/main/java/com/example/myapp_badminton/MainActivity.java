@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -18,7 +17,6 @@ import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.widget.Spinner;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,14 +26,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.core.app.ActivityCompat;
+
+import com.example.myapp_badminton.Location.City;
+import com.example.myapp_badminton.Location.LocalLocation;
+import com.example.myapp_badminton.Location.State;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -46,12 +48,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-
-import com.example.myapp_badminton.Location.*;
 
 import static android.os.Environment.getExternalStorageDirectory;
 
@@ -415,8 +414,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
     private void initializeUI() {
-        state_Spinner = (Spinner) findViewById(R.id.state);
-        city_Spinner = (Spinner) findViewById(R.id.city);
+        state_Spinner = findViewById(R.id.state);
+        city_Spinner = findViewById(R.id.city);
         location_spinner = findViewById(R.id.location);
         academy_spinner = findViewById(R.id.academy_name);
 
@@ -450,8 +449,11 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     private void getAcademyInfo() {
         module = "academy";
-        new WebService(this).execute(API.ServerAddress + "" + API.GET_ACADEMY_INFO, "module=" + module);
-
+        if (new Login().isConnected()) {
+            new WebService(this).execute(API.ServerAddress + "" + API.GET_ACADEMY_INFO, "module=" + module);
+        } else {
+            Toast.makeText(this, "You are offline", Toast.LENGTH_SHORT).show();
+        }
     }
 
     //for spinner
@@ -702,7 +704,10 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     }
 
-    private void formXMl(String name, String phone, String mailId, String state, String city, String location, String academy, int stateRank, int nationalRank, String image_uri, String radio_gender, String radio_education, String age, String dob, String timestamp1) {
+    private void formXMl(String name, String phone, String mailId, String state, String
+            city, String location, String academy, int stateRank, int nationalRank, String
+                                 image_uri, String radio_gender, String radio_education, String age, String dob, String
+                                 timestamp1) {
         Log.e("getdata", "entered form xml: ");
 
         String xml = "<user_details>\n" +
@@ -732,7 +737,11 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
     private void sendRequest(String xml) {
-        new WebService(this).execute(API.ServerAddress + "" + API.USER_REGISTER, xml);
+        if (new Login().isConnected()) {
+            new WebService(this).execute(API.ServerAddress + "" + API.USER_REGISTER, xml);
+        } else {
+            Toast.makeText(this, "You are offline", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -758,7 +767,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     }
     /*private void signIn(String regEmail, String password) {
-        new WebService(this).execute(API.ServerAddress + API.USER_LOGIN, "mail_id=" + regEmail + "&password=" + password);
+        if (new Login().isConnected()) {new WebService(this).execute(API.ServerAddress + API.USER_LOGIN, "mail_id=" + regEmail + "&password=" + password);
 
     }*/
 
@@ -976,7 +985,11 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     public void validateEmailId(View view) {
         module = "verify_mailID";
-        new WebService(this).execute(API.ServerAddress + "" + API.GENERATE_OTP, "mail_id=" + email_s + "&module=" + module);
+        if (new Login().isConnected()) {
+            new WebService(this).execute(API.ServerAddress + "" + API.GENERATE_OTP, "mail_id=" + email_s + "&module=" + module);
+        } else {
+            Toast.makeText(this, "You are offline", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void validateOTP(View view) {
@@ -987,7 +1000,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         final String otp = etOTP.getText().toString().trim();
         confirmOTP = new ConfirmOTPImpl(m_id, new WebService(this), module, "confirmOTP", otp);
         confirmOTP.confirmOtp();
-//        new WebService(this).execute(API.ServerAddress + "" + API.CONFIRM_OTP, "module=" + module + "&otp=" + otp + "&mail_id=" + m_id+"intent");
+//        if (new Login().isConnected()) {new WebService(this).execute(API.ServerAddress + "" + API.CONFIRM_OTP, "module=" + module + "&otp=" + otp + "&mail_id=" + m_id+"intent");
 
     }
 
@@ -1019,15 +1032,18 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         sNewPassConfirm = confirmNewPass.getText().toString().trim();
         if (sNewPass.equals(sNewPassConfirm)) {
             alertDialog.dismiss();
-            new WebService(this).execute(API.ServerAddress + API.RESET_PASSWORD, "module=password_reset" + "&mail_id=" + m_id + "&new_pin=" + sNewPass);
-
+            if (new Login().isConnected()) {
+                new WebService(this).execute(API.ServerAddress + API.RESET_PASSWORD, "module=password_reset" + "&mail_id=" + m_id + "&new_pin=" + sNewPass);
+            } else {
+                Toast.makeText(this, "You are offline", Toast.LENGTH_SHORT).show();
+            }
         } else {
             confirmNewPass.setError("password doesn't match");
         }
     }
 
     /*public void bypassReg(View view) {
-        new WebService(this).execute(API.ServerAddress + "" + API.USER_PRE_REGISTER*//*, xml*//*);
+        if (new Login().isConnected()) {new WebService(this).execute(API.ServerAddress + "" + API.USER_PRE_REGISTER*//*, xml*//*);
 
     }*/
 }

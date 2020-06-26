@@ -11,18 +11,20 @@ public class GetAnswersImpl1 implements GetAnswers {
     String serverAddress = API.ServerAddress + API.ANSWERS;
     private PlayVideo playVideo;
     private WebService webService;
+    private String pid;
     private HashMap<Integer, String> map1 = new HashMap<>();
 
-    public  GetAnswersImpl1(PlayVideo playVideo, WebService webService) {
+    public GetAnswersImpl1(PlayVideo playVideo, WebService webService, String pid) {
         this.serverAddress = serverAddress;
         this.playVideo = playVideo;
         this.webService = webService;
+        this.pid = pid;
     }
 
 
     @Override
     public void getCorrectAnswersFromServer() {
-        webService.execute(serverAddress, "user_id=47");
+        webService.execute(serverAddress, "user_id=" + pid);
 
     }
 

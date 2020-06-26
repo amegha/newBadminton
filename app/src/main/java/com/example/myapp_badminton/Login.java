@@ -280,11 +280,11 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         alertDialog.dismiss();
         regEmail = email.getText().toString().trim();
 //        final String mailId = email.getText().toString().trim();
-        if (isConnected()) {
+        if (isConnected()){
             getOTP = new GetOTPImpl(regEmail, new WebService(this), "forgot_password", "getOTP");
             getOTP.requestForOTP();
         }
-        else {
+        else{
             Toast.makeText(this, "You are offlne", Toast.LENGTH_SHORT).show();
         }
 
@@ -293,12 +293,12 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     public void validateOTP(View view) {
         alertDialog.dismiss();
         String OTP = etOTP.getText().toString().trim();
-        if (isConnected()) {
+        if (isConnected()){
 
             confirmOTP = new ConfirmOTPImpl(regEmail, new WebService(this), "forgot_password", "confirmOTP", OTP);
             confirmOTP.confirmOtp();
         }
-        else {
+        else{
             Toast.makeText(this, "You are offlne", Toast.LENGTH_SHORT).show();
         }
     }
@@ -309,11 +309,11 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         sNewPassConfirm = confirmNewPass.getText().toString().trim();
         if (sNewPass.equals(sNewPassConfirm)) {
             alertDialog.dismiss();
-            if (isConnected()) {
+            if (isConnected()){
 
                 new WebService(this).execute(API.ServerAddress + API.RESET_PASSWORD, "module=password_reset" + "&mail_id=" + regEmail + "&new_pin=" + sNewPass);
             }
-            else {
+            else{
                 Toast.makeText(this, "You are offlne", Toast.LENGTH_SHORT).show();
             }
 
@@ -331,9 +331,9 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
     private void signIn(String regEmail, String password) {
         if (isConnected())
-            new WebService(Login.this).execute(API.ServerAddress + API.USER_LOGIN, "mail_id=" + regEmail + "&password=" + password);
+        new WebService(Login.this).execute(API.ServerAddress + API.USER_LOGIN, "mail_id=" + regEmail + "&password=" + password);
         else
-            Toast.makeText(this, "You are offlne", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "You are offlne", Toast.LENGTH_SHORT).show();
     }
 
     boolean isConnected() {

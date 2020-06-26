@@ -392,7 +392,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
                     if (_score != null) {
                         Intent i = new Intent(SelectedUserActivity.this, HomePage.class);//.putExtras(bundle_score);
                         //used to or helps in display particular activity
-                        i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        i.setFlags((Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)|(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
                         startActivity(i);
                         //to avoid flickering or flipped screen or activity use finish() ,which is used to kill or complete the activity
@@ -660,14 +660,34 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
 
 
     private void sendRequest(String xml) {
-        new WebService(this).execute(API.ServerAddress + "" + "upload_score.php", xml);
+        if (isConnected()) {
+            new WebService(this).execute(API.ServerAddress + "" + "upload_score.php", xml);
+        } else {
+            Toast.makeText(this, "You are offline", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onTaskComplete(String result) {
+        if (result.equals("statuscoach/0")) {
+            Toast.makeText(this, "sync Successful", Toast.LENGTH_SHORT).show();
+        }
 
         Log.e("ViewUserDetails", "Score Upload status" + result);
 
+    }
+
+    private boolean isConnected() {
+        try {
+            Process p1 = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.com");
+            int returnVal = p1.waitFor();
+            boolean reachable = (returnVal == 0);
+            return reachable;
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

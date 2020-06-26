@@ -42,7 +42,7 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
                 adapter_levels = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, datahelper.allDataHelper.getLevels(cityName, locationName, academyName));
                 adapter_levels.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 level_spinner.setAdapter(adapter_levels);
-                aid=datahelper.allDataHelper.getAid(cityName, locationName, academyName);
+                aid = datahelper.allDataHelper.getAid(cityName, locationName, academyName);
 
             }
         }
@@ -121,8 +121,24 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
         } else {
             coach_id = bundle1.getString("userid");
         }
-        new WebService(this).execute(API.ServerAddress + "get_academy.php", "module=coach&coach_id=" + coach_id);
+        if (isConnected()) {
+            new WebService(this).execute(API.ServerAddress + "get_academy.php", "module=coach&coach_id=" + coach_id);
+        } else {
+            Toast.makeText(this, "you are offline", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    private boolean isConnected() {
+        try {
+            Process p1 = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.com");
+            int returnVal = p1.waitFor();
+            boolean reachable = (returnVal == 0);
+            return reachable;
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
@@ -263,4 +279,5 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
         Log.e("pause: ", "pause called");
 
     }
+
 }

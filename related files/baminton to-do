@@ -5056,3 +5056,9 @@ scp add_coach.php megha@stage1.optipacetech.com:/var/www/html/badminton
 
 
 coach ajith@gmail.com, id 987,9986120875,(password)ajith
+
+
+SELECT DISTINCT `V_ID` FROM `ANSWERS` WHERE `V_ID` NOT IN(select `V_ID` from USER_LOG WHERE U_ID='1099') and `V_ID` IN(SELECT V_ID FROM VIDEOS WHERE V_TYPE='level2')
+
+
+SELECT V_ID FROM VIDEOS WHERE V_TYPE='level2' and `V_ID` NOT IN(select `V_ID` from USER_LOG WHERE U_ID='1099')order by RAND() limit 1
