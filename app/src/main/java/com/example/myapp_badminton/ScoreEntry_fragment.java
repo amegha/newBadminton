@@ -111,4 +111,5 @@ public class ScoreEntry_fragment extends Fragment {
 return view;
     }
 
+
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -13,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.ByteArrayOutputStream;
 
-public class Score_From extends AppCompatActivity {
+public class Score_From extends AppCompatActivity implements AsyncResponse{
     public RadioButton fitness, grip, oncourt_skill, singles_oncourt, doubles_oncourt, shadow_oncourt;
     public byte[] imagebytes;
     public String value;
@@ -35,6 +36,9 @@ public class Score_From extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
         setContentView(R.layout.activity_score__from);
+
+        sendLog();
+
 
         fitness = findViewById(R.id.cat1);
         grip = findViewById(R.id.cat2);
@@ -106,6 +110,10 @@ public class Score_From extends AppCompatActivity {
         }
 
     }
+    private void sendLog() {
+        new WebService(this).execute(API.ServerAddress+API.LOG,"fileUpload");
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -317,4 +325,8 @@ public class Score_From extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onTaskComplete(String result) {
+        Log.e( "onTaskComplete: ","userLogUpload" );
+    }
 }

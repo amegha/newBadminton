@@ -16,6 +16,7 @@ public class ActivityTracker {
                 root.mkdirs();
             }
             File textFile = new File(root, fileName);
+
             BufferedWriter out = new BufferedWriter(
                     new FileWriter(textFile, true));
             out.write(string + "/");
