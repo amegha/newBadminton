@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -64,7 +65,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
     private Bitmap decodedImage;
     private Date date;
     private SimpleDateFormat ymdDateFormat, dmyDateFormat;
-    private String ymdnextDate;
+    private String nextDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +95,8 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
             if (bundle != null) {
                 userModel = (UserModel) bundle.getSerializable("data");
                 mainCat = bundle.getString("main_category");
-                tv_sub_cat.setText(userModel.getUserName());
+                subCat = userModel.getUserName();
+                tv_sub_cat.setText(subCat);
                 tv_MainCat.setText(mainCat);
 
                 type = bundle.getString("type");
@@ -110,16 +112,17 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
                     tv_userId.setText(savedID);
                     tvUser.setText(UNAME);
                     if (coachdate.compareTo(ymdCurrDate) < 0) {
-                        ymdnextDate = getNextDate(coachdate, 1);
-                        selected = dmyDateFormat.format(ymdnextDate);
-                        DOScore.setText(dmyDateFormat.format(ymdnextDate));
+                        nextDate = getNextDate(coachdate, 1);
+                        selected = nextDate/*ymdDateFormat.format(nextDate)*/;
+                        DOScore.setText(dmyDateFormat.format(ymdDateFormat.parse(nextDate)));
                     } else if (coachdate.compareTo(ymdCurrDate) == 0 || coachdate.equals("DATE_NOTSET")) {
-                        selected = dmyDateFormat.format(dmyCurrDate);
+                        selected = ymdCurrDate;
+//                        selected = dmyDateFormat.format(dmyCurrDate);
                         DOScore.setText(dmyCurrDate);
                     } else if (coachdate.compareTo(ymdCurrDate) > 0) { // this condition should nor come at all..
                         DOScore.setError("Future Date not allowed");
                     }
-                } else {
+                } else {//player
                     Intent playerIntent = getIntent();
                     Bundle playerBundle = playerIntent.getExtras();
                     getPlayerBundleData(playerBundle);
@@ -134,18 +137,21 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
                     imageView.setImageBitmap(decodedImage);
 
                     if (lastScoreEntryDate.compareTo(ymdCurrDate) < 0) {
-                        ymdnextDate = getNextDate(lastScoreEntryDate, 1);
-                        selected = dmyDateFormat.format(ymdnextDate);
-                        DOScore.setText(selected);
+                        nextDate = getNextDate(lastScoreEntryDate, 1);
+                        selected =nextDate/* ymdDateFormat.format(nextDate)*/;
+                        DOScore.setText(dmyDateFormat.format(ymdDateFormat.parse(nextDate)));
+
                     } else if (lastScoreEntryDate.compareTo(ymdCurrDate) == 0 || lastScoreEntryDate.equals("DATE_NOTSET")) {
-                        selected = dmyDateFormat.format(ymdnextDate);
-                        DOScore.setText(selected);
+                        selected = ymdCurrDate;
+//                        selected = dmyDateFormat.format(nextDate);
+                        DOScore.setText(dmyCurrDate);
                     } else if (lastScoreEntryDate.compareTo(ymdCurrDate) > 0) {
                         DOScore.setError("Future Date not allowed");
                     }
                 }
             }
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
@@ -186,31 +192,35 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
         imageView = findViewById(R.id.playerPic);
         DOScore = findViewById(R.id.tv_DateOfScoreSubmit);
         et_score = findViewById(R.id.score_training);
+//        et_score.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
     }
 
     //add data
     public void addUser(View view) {
         try {
-            score = (String) DOScore.getText();
-            if (score.equals("") || score.matches(".*[a-zA-Z]+.*")) {
+            score = et_score.getText().toString();
+            if (score.equals("") || score.matches(".*[a-zA-Z]+.*")||(Integer.parseInt(score))>10) {
                 et_score.setError("Enter the score");
             } else {
                 if (type.equalsIgnoreCase("Coach")) {
                     //get difference between last date and selected date
                     if (coachdate.compareTo(selected) < 0) {
-                        diffInDays = (int) ((ymdDateFormat.parse(coachdate).getTime() - ymdDateFormat.parse(selected).getTime()) / (1000 * 60 * 60 * 24));
+//                        diffInDays = (int) ((ymdDateFormat.parse(coachdate).getTime() - ymdDateFormat.parse(selected).getTime()) / (1000 * 60 * 60 * 24));
+                        diffInDays = (int) (((ymdDateFormat.parse(selected)).getTime()-((ymdDateFormat.parse(coachdate)).getTime())) / (1000 * 60 * 60 * 24));
+
                         if (diffInDays > 0) { //obviously it will be grater than zero
-                            xml = "<player_root>";
+                            xml = "<player_root>\n<total_score>" + diffInDays + "</total_score>\n";
                             for (int i = 0; i < diffInDays; i++) {
-                                createXml("coach", i);
+                                createXml("coach", i, coachdate);
                             }
                             xml += "</player_root>";
                             writeToTxtFile(xml);
                         }
                     } else if ((coachdate.compareTo(selected) > 0) || (coachdate.compareTo(selected) == 0)) {
-                        xml = "<player_root>";
-                        createXml("coach", 0);
+                        diffInDays = 1;
+                        xml = "<player_root>\n<total_score>" + diffInDays + "</total_score>\n";
+                        createXml("coach", 0, selected);
                         xml += "</player_root>";
                         writeToTxtFile(xml);
 
@@ -221,18 +231,26 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
                 } else {
                     //get difference between last date and selected date
                     if (lastScoreEntryDate.compareTo(selected) < 0) {
-                        diffInDays = (int) ((ymdDateFormat.parse(lastScoreEntryDate).getTime() - ymdDateFormat.parse(selected).getTime()) / (1000 * 60 * 60 * 24));
+//                        diffInDays = (int) (((ymdDateFormat.parse(lastScoreEntryDate)).getTime() - ((ymdDateFormat.parse(selected)).getTime())) / (1000 * 60 * 60 * 24));
+                        diffInDays = (int) (((ymdDateFormat.parse(selected)).getTime()-((ymdDateFormat.parse(lastScoreEntryDate)).getTime())) / (1000 * 60 * 60 * 24));
                         if (diffInDays > 0) { //obviously it will be grater than zero
-                            xml = "<player_root>\n<total_score>"+diffInDays+"</total_score>";
+                            xml = "<player_root>\n<total_score>" + diffInDays + "</total_score>\n";
                             for (int i = 0; i < diffInDays; i++) {
-                                createXml("player", i);
+                                createXml("player", i, lastScoreEntryDate);
                             }
+                            xml += "</player_root>";
+                            writeToTxtFile(xml);
+                        }else{
+                            diffInDays = 1;
+                            xml = "<player_root>\n<total_score>" + diffInDays + "</total_score>\n";
+                            createXml("player", 0, selected);
                             xml += "</player_root>";
                             writeToTxtFile(xml);
                         }
                     } else if ((lastScoreEntryDate.compareTo(selected) > 0) || (lastScoreEntryDate.compareTo(selected) == 0)) {
-                        xml = "<player_root>\n<total_score>\"+diffInDays+\"</total_score>\";";
-                        createXml("player", 0);
+                        diffInDays = 1;
+                        xml = "<player_root>\n<total_score>" + diffInDays + "</total_score>\n";
+                        createXml("player", 0, selected);
                         xml += "</player_root>";
                         writeToTxtFile(xml);
                     } else {
@@ -246,37 +264,44 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
         }
     }
 
-    private void createXml(String user, int i) {
-        if (user.equalsIgnoreCase("coach")) {
-            xml += "<playerScore" + i + ">\n" +
-                    "<module>" + type + "</module>\n" +
-                    "<pid>" + playerId + "</pid>\n" +
-                    "<cid>" + cid + "</cid>\n" +
-                    "<aid>" + aid + "</aid>\n" +
-                    "<date>" + getNextDate(coachdate, i) + "</date>\n" +
-                    "<main_cat>" + last_mainCat + "</main_cat>\n" +
-                    "<sub_cat>" + last_sub_cat + "</sub_cat>\n" +
-                    "<score>" + last_score + "</score>\n" +
-                    "<level>" + level + "</level>\n" +
-                    "</playerScore" + i + ">\n";
-        } else {
-            xml += "<playerScore>\n" +
-                    "<module>" + type + "</module>\n" +
-                    "<pid>" + playerId + "</pid>\n" +
-                    "<date>" + date + "</date>\n" +
-                    "<main_cat>" + last_mainCat + "</main_cat>\n" +
-                    "<sub_cat>" + last_sub_cat + "</sub_cat>\n" +
-                    "<score>" + last_score + "</score>\n" +
-                    "<aid>1</aid>\n" +
-                    "<level>2</level>\n" +
-                    "</playerScore>";
+    private void createXml(String user, int i, String selected) {
+
+        try {
+            if (user.equalsIgnoreCase("coach")) {
+                xml += "<playerScore>\n" +
+                        "<module>" + type + "</module>\n" +
+                        "<pid>" + playerId + "</pid>\n" +
+                        "<cid>" + cid + "</cid>\n" +
+                        "<aid>" + aid + "</aid>\n" +
+                        "<date>" + (getNextDate(selected, i)) + "</date>\n" +
+                        "<main_cat>" + mainCat + "</main_cat>\n" +
+                        "<sub_cat>" + subCat + "</sub_cat>\n" +
+                        "<score>" + score + "</score>\n" +
+                        "<level>" + level + "</level>\n" +
+                        "</playerScore>\n\n";
+            } else {
+                xml += "<playerScore>\n" +
+                        "<module>" + type + "</module>\n" +
+                        "<pid>" + playerId + "</pid>\n" +
+                        "<date>" + getNextDate(selected, i) + "</date>\n" +
+                        "<main_cat>" + mainCat + "</main_cat>\n" +
+                        "<sub_cat>" + subCat + "</sub_cat>\n" +
+                        "<score>" + score + "</score>\n" +
+                        "<aid>1</aid>\n" +
+                        "<level>2</level>\n" +
+                        "</playerScore>\n\n";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+
         }
 
     }
 
     private void writeToTxtFile(String text) {
         try {
-            String filename = "base.txt";
+            String filename = "scoreUpload.txt";
             File root = new File(getExternalStorageDirectory(), "Badminton");
             if (!root.exists()) {
                 root.mkdirs();
@@ -293,6 +318,8 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
 
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
+
         }
     }
 
@@ -301,6 +328,9 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
     }
 
     private String getNextDate(String inputDate, int i) {
+        if(i==0){
+            return inputDate;
+        }
         //inputDate = "2015-12-15"; // for example
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -337,6 +367,8 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            System.out.println(e.getMessage());
+
             inputDate = "";
         }
         return inputDate;
@@ -357,9 +389,10 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
             datePickerDialog.show();
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
+
         }
     }
-
 
 
     @Override
@@ -376,6 +409,8 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
             }
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
+
         }
 
     }
@@ -392,6 +427,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
         }
         return false;
     }
+
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         try {
@@ -405,7 +441,10 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
             // String date = sdf.format(" " + year + "-" + month + "-" + dayOfMonth + "\n");
             String date = sdf.format(c.getTime());
             DOScore.setText(date);
+            selected=ymdDateFormat.format(c.getTime());
         } catch (Exception e) {
+            System.out.println(e.getMessage());
+
             e.printStackTrace();
         }
     }
