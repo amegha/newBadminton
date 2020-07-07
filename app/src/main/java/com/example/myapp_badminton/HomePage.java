@@ -58,7 +58,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
 
     private EditText newPass, confirmNewPass;
     private byte[] imageBytes;
-    private ProgressDialog password_reset;
+    private ProgressDialog progressDialog;
 
     //    String uname,id,utype,lastScoreDate,Score;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -231,7 +231,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
 
     public void resetPasswordOrPin(View view) {
         try {
-            password_reset = ProgressDialog.show(this, "Password Resetting", "Please wait..", false, false);
+            progressDialog = ProgressDialog.show(this, "Password Resetting", "Please wait..", false, false);
 //        alertDialog.dismiss();
             sNewPass = newPass.getText().toString().trim();
             sNewPassConfirm = confirmNewPass.getText().toString().trim();
@@ -252,7 +252,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
                 newPass.setError("can't be empty");
 
             }
-            password_reset.dismiss();
+            progressDialog.dismiss();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -290,6 +290,9 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
     @Override
     public void onTaskComplete(String result) {
         try {
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
             Log.e("onTaskComplete: ", "res " + result);
             switch (result) {
                 case "00": {
@@ -314,7 +317,6 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
                     break;
                 }
                 case "password_reset/0": {
-                    password_reset.dismiss();
                     Toast.makeText(this, "Password reset successfully", Toast.LENGTH_SHORT).show();
                     break;
                 }

@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -119,6 +118,10 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
                         selected = ymdCurrDate;
 //                        selected = dmyDateFormat.format(dmyCurrDate);
                         DOScore.setText(dmyCurrDate);
+                    } else if (coachdate.equals("DATE_NOTSET")) {
+                        selected = "DATE_NOTSET";
+                        DOScore.setText(dmyCurrDate);
+
                     } else if (coachdate.compareTo(ymdCurrDate) > 0) { // this condition should nor come at all..
                         DOScore.setError("Future Date not allowed");
                     }
@@ -138,12 +141,14 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
 
                     if (lastScoreEntryDate.compareTo(ymdCurrDate) < 0) {
                         nextDate = getNextDate(lastScoreEntryDate, 1);
-                        selected =nextDate/* ymdDateFormat.format(nextDate)*/;
+                        selected = nextDate/* ymdDateFormat.format(nextDate)*/;
                         DOScore.setText(dmyDateFormat.format(ymdDateFormat.parse(nextDate)));
-
-                    } else if (lastScoreEntryDate.compareTo(ymdCurrDate) == 0 || lastScoreEntryDate.equals("DATE_NOTSET")) {
+                    } else if (lastScoreEntryDate.compareTo(ymdCurrDate) == 0) {
                         selected = ymdCurrDate;
 //                        selected = dmyDateFormat.format(nextDate);
+                        DOScore.setText(dmyCurrDate);
+                    } else if (lastScoreEntryDate.equals("DATE_NOTSET")) {
+                        selected = "DATE_NOTSET";
                         DOScore.setText(dmyCurrDate);
                     } else if (lastScoreEntryDate.compareTo(ymdCurrDate) > 0) {
                         DOScore.setError("Future Date not allowed");
@@ -200,18 +205,23 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
     public void addUser(View view) {
         try {
             score = et_score.getText().toString();
-            if (score.equals("") || score.matches(".*[a-zA-Z]+.*")||(Integer.parseInt(score))>10) {
+            if (score.equals("") || score.matches(".*[a-zA-Z]+.*") || (Double.parseDouble(score)) > 10.0) {
                 et_score.setError("Enter the score");
-            } else {
+            } else if (selected.equals("DATE_NOTSET")) {
+                DOScore.setError("Before Registration");
+            } else if(selected.compareTo(ymdCurrDate)>0){
+                DOScore.setError("Future date Not allowed");
+            }
+            else {
                 if (type.equalsIgnoreCase("Coach")) {
                     //get difference between last date and selected date
                     if (coachdate.compareTo(selected) < 0) {
 //                        diffInDays = (int) ((ymdDateFormat.parse(coachdate).getTime() - ymdDateFormat.parse(selected).getTime()) / (1000 * 60 * 60 * 24));
-                        diffInDays = (int) (((ymdDateFormat.parse(selected)).getTime()-((ymdDateFormat.parse(coachdate)).getTime())) / (1000 * 60 * 60 * 24));
+                        diffInDays = (int) (((ymdDateFormat.parse(selected)).getTime() - ((ymdDateFormat.parse(coachdate)).getTime())) / (1000 * 60 * 60 * 24));
 
                         if (diffInDays > 0) { //obviously it will be grater than zero
                             xml = "<player_root>\n<total_score>" + diffInDays + "</total_score>\n";
-                            for (int i = 0; i < diffInDays; i++) {
+                            for (int i = 1; i <= diffInDays; i++) {
                                 createXml("coach", i, coachdate);
                             }
                             xml += "</player_root>";
@@ -232,21 +242,21 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
                     //get difference between last date and selected date
                     if (lastScoreEntryDate.compareTo(selected) < 0) {
 //                        diffInDays = (int) (((ymdDateFormat.parse(lastScoreEntryDate)).getTime() - ((ymdDateFormat.parse(selected)).getTime())) / (1000 * 60 * 60 * 24));
-                        diffInDays = (int) (((ymdDateFormat.parse(selected)).getTime()-((ymdDateFormat.parse(lastScoreEntryDate)).getTime())) / (1000 * 60 * 60 * 24));
+                        diffInDays = (int) (((ymdDateFormat.parse(selected)).getTime() - ((ymdDateFormat.parse(lastScoreEntryDate)).getTime())) / (1000 * 60 * 60 * 24));
                         if (diffInDays > 0) { //obviously it will be grater than zero
                             xml = "<player_root>\n<total_score>" + diffInDays + "</total_score>\n";
-                            for (int i = 0; i < diffInDays; i++) {
+                            for (int i = 1; i <= diffInDays; i++) {
                                 createXml("player", i, lastScoreEntryDate);
                             }
                             xml += "</player_root>";
                             writeToTxtFile(xml);
-                        }else{
+                        } /*else {
                             diffInDays = 1;
                             xml = "<player_root>\n<total_score>" + diffInDays + "</total_score>\n";
                             createXml("player", 0, selected);
                             xml += "</player_root>";
                             writeToTxtFile(xml);
-                        }
+                        }*/
                     } else if ((lastScoreEntryDate.compareTo(selected) > 0) || (lastScoreEntryDate.compareTo(selected) == 0)) {
                         diffInDays = 1;
                         xml = "<player_root>\n<total_score>" + diffInDays + "</total_score>\n";
@@ -270,7 +280,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
             if (user.equalsIgnoreCase("coach")) {
                 xml += "<playerScore>\n" +
                         "<module>" + type + "</module>\n" +
-                        "<pid>" + playerId + "</pid>\n" +
+                        "<pid>" + savedID + "</pid>\n" +
                         "<cid>" + cid + "</cid>\n" +
                         "<aid>" + aid + "</aid>\n" +
                         "<date>" + (getNextDate(selected, i)) + "</date>\n" +
@@ -328,7 +338,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
     }
 
     private String getNextDate(String inputDate, int i) {
-        if(i==0){
+        if (i == 0) {
             return inputDate;
         }
         //inputDate = "2015-12-15"; // for example
@@ -398,6 +408,8 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
     @Override
     public void onTaskComplete(String result) {
         try {
+            Log.e("onTaskComplete: ", "uploadtxt " + result);
+
             if (result.equals("0")) {
                 Toast.makeText(this, "sync Successful", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(SelectedUserActivity.this, HomePage.class);//.putExtras(bundle_score);
@@ -441,7 +453,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
             // String date = sdf.format(" " + year + "-" + month + "-" + dayOfMonth + "\n");
             String date = sdf.format(c.getTime());
             DOScore.setText(date);
-            selected=ymdDateFormat.format(c.getTime());
+            selected = ymdDateFormat.format(c.getTime());
         } catch (Exception e) {
             System.out.println(e.getMessage());
 

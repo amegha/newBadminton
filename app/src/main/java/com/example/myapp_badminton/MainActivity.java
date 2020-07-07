@@ -24,7 +24,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -47,6 +46,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -90,18 +90,16 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     RadioButton male, female, school, college;
     String radio_gender, radio_Education, age_a;
 
-    //    Spinner academyName,state,city,location;
-//    private AppCompatAutoCompleteTextView autoTextState, autoTextCity, autoTextLocation, autoTextAcademyName;
-    //other data variables
+
     EditText fname, email, state_rank, national_rank, phoneNumber, editTextConfirmOtp;
     TextView showDate;
+    ProgressDialog progressDialog;
     private Spinner location_spinner;
     private Spinner state_Spinner;
     private Spinner city_Spinner;
     private Spinner academy_spinner;
     private ArrayAdapter<String> stateArrayAdapter;
     private ArrayAdapter<String> cityArrayAdapter;
-
     /*private ArrayAdapter<Location.State> stateArrayAdapter;
     private ArrayAdapter<Location.City> cityArrayAdapter;
     private ArrayAdapter<Location.LocalLocation> locationArrayAdapter;*/
@@ -111,27 +109,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     private ArrayList<Location.City> citiesList;
     private ArrayList<Location.LocalLocation> locationList;
     private ConfirmOTP confirmOTP;
-    /* private TextWatcher loginTextWatcher = new TextWatcher() {
-         @Override
-         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-         }
-
-        *//* @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            String name_s = fname.getText().toString().trim();
-            email_s = email.getText().toString().trim();
-            String s_rank = state_rank.getText().toString().trim();
-            String n_rank = national_rank.getText().toString().trim();
-
-            click.setEnabled(!name_s.isEmpty() && !email_s.isEmpty() && !s_rank.isEmpty() && !n_rank.isEmpty());
-        }*//*
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-        }
-    };*/
     private int nextState = 0, nextCity = 0;
     private int tempNextState = 0, tempNextCity = 0;
     private EditText newPass, confirmNewPass;
@@ -416,7 +393,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 public void onClick(View v) {
                     Radio_gender_selected();
                     Radio_education_selected();
-    //                Radio_playerType_selected();
+                    //                Radio_playerType_selected();
                     if ((male.isChecked() == true || female.isChecked() == true) && (college.isChecked() == true || school.isChecked() == true) /*&& (coach.isChecked() == true || player.isChecked() == true) || mentor.isChecked() == true*/) {
                         addUser();
                     } else {
@@ -544,6 +521,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             e.printStackTrace();
         }
     }
+
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         // month = month + 1;
         int age_cal;
@@ -558,19 +536,27 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         age_cal = (endYear - year);
         age_a = age_cal + "";
         //age validation
-        if(age_cal <= 5){
-            Message.message(getApplicationContext()," Age should be Grater than 5 !,please enter relevant data !");
+        if (age_cal <= 5) {
+            Message.message(getApplicationContext(), " Age should be Grater than 5 !,please enter relevant data !");
         }
         age.setText("Age is " + age_a);
         age.setVisibility(View.VISIBLE);
         //DOB selected by user
         //String date = " " + dayOfMonth + "-" + month + "-" + year + "\n";
         //   String date = " " + year + "-" + month + "-" + dayOfMonth + "\n";
-        c.set(year,month,dayOfMonth);
-        SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+        c.set(year, month, dayOfMonth);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat ymdformat = new SimpleDateFormat("yyyy-MM-dd");
         // String date = sdf.format(" " + year + "-" + month + "-" + dayOfMonth + "\n");
-        String date=sdf.format(c.getTime());
+        String date = sdf.format(c.getTime());
+        xmldate=ymdformat.format(c.getTime());
         showDate.setText(date);
+        dob.setText(date);
+        /*try {
+            xmldate = ymdformat.format(sdf.parse(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }*/
 
     }
 
@@ -737,8 +723,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     //add data
     public void addUser() {
         try {
-            ProgressDialog.show(MainActivity.this, "Sending OTP!!", "Please wait..", false, false);
-
+            progressDialog = ProgressDialog.show(MainActivity.this, "Sending OTP!!", "Please wait..", false, false);
             if (fieldEmpty()) {
                 Toast.makeText(this, "Fill all the fields correctly", Toast.LENGTH_LONG).show();
             } else {
@@ -787,28 +772,28 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                     Message.message(getApplicationContext(), "Enter all Text Fields as well as select Proper Radio Fields !!");
                 } else {*/
 
-    //            long id = helper.insertData(etName, password_user, enc_password, mailId, trainingCenter, stateRank, nationalRank, image_uri_data, radio_gender, radio_Education, radio_playerType, age, dob, timestamp1);
+                //            long id = helper.insertData(etName, password_user, enc_password, mailId, trainingCenter, stateRank, nationalRank, image_uri_data, radio_gender, radio_Education, radio_playerType, age, dob, timestamp1);
                 add.setEnabled(false);
                 formXMl(name, phone_user, mailId, stateSpinner, citySpinner, locationSpinner, academySpinner, stateRank, nationalRank, image_uri_data, radio_gender, radio_Education, age, xmldate, timestamp1);
-    //            }// end of else
+                //            }// end of else
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        progressDialog.dismiss();
 
     }
 
     private boolean fieldEmpty() {
 
-            String name_s = fname.getText().toString().trim();
-            email_s = email.getText().toString().trim();
-            final String phone_user = phoneNumber.getText().toString();
-            final String dob = showDate.getText().toString();
+        String name_s = fname.getText().toString().trim();
+        email_s = email.getText().toString().trim();
+        final String phone_user = phoneNumber.getText().toString();
+        final String dob = showDate.getText().toString();
 
 
 //        !name_s.isEmpty() && !email_s.isEmpty() && !s_rank.isEmpty() && !n_rank.isEmpty()
-            return name_s.isEmpty() || email_s.isEmpty() || phone_user.isEmpty() || dob.isEmpty() || (phone_user.length() != 10 && phone_user.length() != 13);
+        return name_s.isEmpty() || email_s.isEmpty() || phone_user.isEmpty() || dob.isEmpty() || (phone_user.length() != 10 && phone_user.length() != 13);
 
 
     }
@@ -824,7 +809,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                     "<userName>" + name + "</userName>\n" +
                     "<phoneNumber>" + phone + "</phoneNumber>\n" + //                "<etPassword>" + radio_playerType + "</etPassword>\n" +
                     "<uAge>" + age + "</uAge>\n" +
-                    "<uDob>" + dob + "</uDob>\n" +
+                    "<uDob>" + xmldate + "</uDob>\n" +
                     "<usex>" + radio_gender + "</usex>\n" +
                     "<ueducation>" + radio_education + "</ueducation>\n" +
                     "<umailid>" + mailId + "</umailid>\n" +
@@ -852,6 +837,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     private void sendRequest(String xml) {
         try {
             if (isConnected()) {
+                progressDialog = ProgressDialog.show(this, "Registering!", "Please wait..", false, false);
                 new WebService(this).execute(API.ServerAddress + "" + API.USER_REGISTER, xml);
             } else {
                 Toast.makeText(this, "You are offline", Toast.LENGTH_SHORT).show();
@@ -863,6 +849,9 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     @Override
     public void onTaskComplete(String result) {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
         try {
             Log.e("ontask complt", "response" + result);
             if (result.equals("pre_registration/0/pre_reg ")) {
@@ -873,7 +862,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             } else if (result.equals("password_reset/0")) {
                 startActivity(new Intent(this, Login.class));
                 finish();
-    //            signIn(m_id, sNewPass);
+                //            signIn(m_id, sNewPass);
             } else {
                 String[] arrRes;
                 arrRes = result.split("/");
@@ -1122,6 +1111,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     public void validateEmailId(View view) {
         module = "verify_mailID";
         if (isConnected()) {
+
             new WebService(this).execute(API.ServerAddress + "" + API.GENERATE_OTP, "mail_id=" + email_s + "&module=" + module);
         } else {
             Toast.makeText(this, "You are offline", Toast.LENGTH_SHORT).show();
@@ -1133,7 +1123,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             alertDialog.dismiss();
             module = "register";
             //Displaying a progressbarmail_id
-            final ProgressDialog loading = ProgressDialog.show(MainActivity.this, "Verifying!!", "Please wait..", false, false);
+            progressDialog = ProgressDialog.show(MainActivity.this, "Verifying!!", "Please wait..", false, false);
             final String otp = etOTP.getText().toString().trim();
             confirmOTP = new ConfirmOTPImpl(m_id, new WebService(this), module, "confirmOTP", otp);
             confirmOTP.confirmOtp();
@@ -1169,8 +1159,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     public void resetPasswordOrPin(View view) {
         try {
-            Log.e("reset","resetPasswordOrPin: "+m_id );
-            ProgressDialog.show(this, "Password Resetting", "Please wait..", false, false);
+            Log.e("reset", "resetPasswordOrPin: " + m_id);
+            progressDialog = ProgressDialog.show(this, "Password setting", "Please wait..", false, false);
             sNewPass = newPass.getText().toString().trim();
             sNewPassConfirm = confirmNewPass.getText().toString().trim();
             if (sNewPass.equals(sNewPassConfirm)) {
@@ -1186,6 +1176,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         } catch (Exception e) {
             e.printStackTrace();
         }
+        progressDialog.dismiss();
     }
 
     /*public void bypassReg(View view) {

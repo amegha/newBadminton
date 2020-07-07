@@ -32,6 +32,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     public String regEmail, password, today, type, Id, Name, lastScoreEntryDate, Score, image, gender;
     SQLiteDatabase sqLiteDatabase;
     AlertDialog alertDialog;
+    ProgressDialog progressDialog;
     String sNewPass, sNewPassConfirm;
 
     //variables used for sharedpreferences
@@ -43,7 +44,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     private int counter = 5, x;
     private GetOTP getOTP;
     private ConfirmOTP confirmOTP;
-    private ProgressDialog password_reset;
+//    private ProgressDialog password_reset;
 
     //this is for first time registration
     public void Register(View view) {
@@ -143,6 +144,9 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     public void onTaskComplete(String result) {
         try {
             Log.e("sign in", "result " + result);
+            if(progressDialog!=null){
+                progressDialog.dismiss();
+            }
 //        try {
             switch (result) {
                 case "00": {
@@ -158,7 +162,8 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                     Toast.makeText(this, "User not found!", Toast.LENGTH_LONG).show();
                     etName.setError("wrong");
                     break;
-                }case "103":{
+                }
+                case "103": {
                     etPassword.setError("wrong!");
                 }
                 case "502":
@@ -175,7 +180,6 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                     break;
                 }
                 case "password_reset/0": {
-                    password_reset.dismiss();
                     signIn(regEmail, sNewPass);
                     break;
                 }
@@ -329,7 +333,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     public void getOtp(View view) {
         try {
             alertDialog.dismiss();
-            ProgressDialog.show(this, "Sending OTP!!", "Please wait..", false, false);
+            progressDialog = ProgressDialog.show(this, "Sending OTP!!", "Please wait..", false, false);
 
             regEmail = email.getText().toString().trim();
 //        final String mailId = email.getText().toString().trim();
@@ -337,11 +341,12 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                 getOTP = new GetOTPImpl(regEmail, new WebService(this), "forgot_password", "getOTP");
                 getOTP.requestForOTP();
             } else {
-                Toast.makeText(this, "You are offlne", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "You are offline", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        progressDialog.dismiss();
 
     }
 
@@ -363,7 +368,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
     public void resetPasswordOrPin(View view) {
         try {
-            password_reset = ProgressDialog.show(this, "Password Resetting", "Please wait..", false, false);
+            progressDialog = ProgressDialog.show(this, "Password Resetting", "Please wait..", false, false);
 //        alertDialog.dismiss();
             sNewPass = newPass.getText().toString().trim();
             sNewPassConfirm = confirmNewPass.getText().toString().trim();
@@ -384,7 +389,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                 newPass.setError("can't be empty");
 
             }
-            password_reset.dismiss();
+            progressDialog.dismiss();
         } catch (Exception e) {
             e.printStackTrace();
         }

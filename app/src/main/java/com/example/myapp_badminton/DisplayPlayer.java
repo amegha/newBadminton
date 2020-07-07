@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
@@ -39,16 +38,19 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
     databaseConnectionAdapter datahelper;
     private ExampleAdapter adapter;
     private List<ExampleItem> exampleList;
+    private ArrayList<String> Ids, names, image, lastdate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
 //        ActivityTracker.writeActivityLogs(this.getLocalClassName());
-            Log.e("onCreate: ","***from activity***"+this.getLocalClassName() );
+            Log.e("onCreate: ", "***from activity***" + this.getLocalClassName());
             setContentView(R.layout.activity_display_player);
             datahelper = new databaseConnectionAdapter(getApplicationContext());
             db = datahelper.allDataHelper.getReadableDatabase();
+
             //decodedImage=datahelper.allDataHelper.retreiveImageFromDB(db);
 
 
@@ -63,6 +65,12 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
             AID = bundle.getString("aid");
             fragment_module = bundle.getString("module");
 
+            Ids = new ArrayList<>();
+            names = new ArrayList<>();
+            image = new ArrayList<>();
+            lastdate = new ArrayList<>();
+            exampleList = new ArrayList<>();
+
             new WebService(DisplayPlayer.this).execute(API.ServerAddress + "player_details.php", "academy_id=" + AID + "&level=" + level + "&coach_id=" + cid);
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,7 +78,7 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
 
 
     }
-
+/*
     private List<ExampleItem> fillExampleList() {
         try {
             exampleList = new ArrayList<>();
@@ -91,7 +99,7 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
             e.printStackTrace();
         }
         return null;
-    }
+    }*/
 
     private void setUpRecyclerView() {
         try {
@@ -121,7 +129,7 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
                         Bundle b = new Bundle();
                         b.putString("coach_id", cid);
                         b.putString("coachname", coach_name);
-                        b.putString("date", date);
+                        b.putString("date", lastdate.get(position));
                         b.putString("level", level);
                         b.putString("Academy", academy);
                         b.putString("type", type);
@@ -135,7 +143,7 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
                         Bundle b = new Bundle();
                         b.putString("coach_id", cid);
                         b.putString("coachname", coach_name);
-                        b.putString("date", date);
+                        b.putString("date", lastdate.get(position));
                         b.putString("level", level);
                         b.putString("Academy", academy);
                         b.putString("type", type);
@@ -149,7 +157,7 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
                         Bundle b = new Bundle();
                         b.putString("coach_id", cid);
                         b.putString("coachname", coach_name);
-                        b.putString("date", date);
+                        b.putString("date", lastdate.get(position));
                         b.putString("level", level);
                         b.putString("Academy", academy);
                         b.putString("type", type);
@@ -213,27 +221,13 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
     @Override
     public void onTaskComplete(String result) {
         try {
-            /* if(result.equals("Success")){*/
-            Log.e("ViewUserDetails","Upload status "+result);
-            String[] arrRes;
-            arrRes = result.split(",");
-            String locationXml;
-            Log.e("ViewUserDetails", " arrRes[0] " + arrRes[0] + " arrRes[1]  " + arrRes[1] + "  arrRes[2]" + arrRes[2]);
-
             String[] academyResponse;
-            ArrayList<String> Ids = new ArrayList();
-            ArrayList<String> name = new ArrayList();
-            ArrayList<String> image = new ArrayList<>();
-            ArrayList<String> lastdate = new ArrayList<>();
-
             academyResponse = result.split(";");
             for (int i = 0; i < academyResponse.length; i++) {
-                ImageInfo(academyResponse[i], Ids, name, image, lastdate);
+
+                ImageInfo(academyResponse[i], i);
                 Log.d("Total display Player", String.valueOf(academyResponse.length));
             }
-            System.out.println("all the Ids " + Collections.singletonList(Ids));
-            System.out.println("all the names " + Collections.singletonList(name));
-            System.out.println("all Images" + Collections.singleton(image));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -241,21 +235,23 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
 
     }
 
-    private void ImageInfo(String s, ArrayList<String> Ids, ArrayList<String> names, ArrayList<String> image, ArrayList<String> lastdate) {
+    private void ImageInfo(String s, int i) {
         try {
             String[] locInfo = s.split(",");
             Ids.add(locInfo[0]);
             names.add(locInfo[1]);
             image.add(locInfo[2]);
             lastdate.add(locInfo[4]);
-            arrayListId = Ids;
-            Log.e("ArrayListId ", "Id =" + arrayListId);
+            /*arrayListId = Ids;
             arrayListName = names;
-            Log.e("ArrayListName ", "Id =" + arrayListName);
-            arrayListImage = image;
-            Log.e("ArrayListImage ", "Id =" + arrayListImage);
+            arrayListImage = image;*/
             arrayListLastdate = lastdate;
-            fillExampleList();
+//            fillExampleList();
+
+            imagebytes = Base64.decode(locInfo[2], Base64.DEFAULT);
+            Bitmap decodedImage = BitmapFactory.decodeByteArray(imagebytes, 0, imagebytes.length);
+            exampleList.add(new ExampleItem(decodedImage, names.get(i), Ids.get(0)));
+
             setUpRecyclerView();
         } catch (Exception e) {
             e.printStackTrace();
