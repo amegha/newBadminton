@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.myapp_badminton">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -13,13 +14,14 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/caisa"
+        android:icon="@mipmap/app_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/caisa"
+        android:roundIcon="@mipmap/app_logo"
         android:supportsRtl="true"
+        android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".Coach"></activity>
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".Coach" />
         <activity
             android:name=".Mentor"
             android:windowSoftInputMode="stateHidden" />
@@ -35,23 +37,20 @@
         <activity
             android:name=".SearchActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".Score_From" />
-        <activity
-            android:name=".SelectedUserActivity"
-            android:parentActivityName=".Score_From" />
+        <activity android:name=".ScoreFrom" />
+        <activity android:name=".SelectedUserActivity" />
 
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.myapp_badminton"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
+        <!--  <provider
+              android:name="androidx.core.content.FileProvider"
+              android:authorities="com.example.myapp_badminton"
+              android:exported="false"
+              android:grantUriPermissions="true">
+              <meta-data
+                  android:name="android.support.FILE_PROVIDER_PATHS"
+                  android:resource="@xml/file_paths" />
+          </provider>-->
 
-        <activity android:name=".Login"
-            android:launchMode="singleTop">
+        <activity android:name=".Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -74,7 +73,7 @@
             android:launchMode="singleTask"
             android:resizeableActivity="true"
             android:screenOrientation="landscape"
-            android:supportsRtl="true"/>
+            android:supportsRtl="true" />
         <activity android:name=".DisplayPlayer" />
     </application>
 

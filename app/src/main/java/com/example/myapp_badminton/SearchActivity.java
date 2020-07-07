@@ -2,6 +2,7 @@ package com.example.myapp_badminton;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -48,105 +49,108 @@ public class SearchActivity extends AppCompatActivity implements UsersAdapter.Se
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
-        setContentView(R.layout.activity_search);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_search);
+            Log.e("onCreate: ","***from activity***"+this.getLocalClassName() );
 
-        recyclerView = findViewById(R.id.recyclerview);
-        toolbar = findViewById(R.id.toolbar);
+            recyclerView = findViewById(R.id.recyclerview);
+            toolbar = findViewById(R.id.toolbar);
 
-        this.setSupportActionBar(toolbar);
-        this.getSupportActionBar().setTitle("");
+            this.setSupportActionBar(toolbar);
+            this.getSupportActionBar().setTitle("");
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
 
-        Bundle bundle = getIntent().getExtras();
-        type = bundle.getString("type");
-        if (type.equalsIgnoreCase("Coach")) {
-            value = bundle.getString("y");
-            date = bundle.getString("date_value");
+            Bundle bundle = getIntent().getExtras();
+            type = bundle.getString("type");
+            if (type.equalsIgnoreCase("Coach")) {
+                value = bundle.getString("y");
+                date = bundle.getString("date_value");
 
-            cid = bundle.getString("coach_id");
-            coach_name = bundle.getString("coachname");
-            coachdate = bundle.getString("date");
-            level = bundle.getString("level");
-            academy = bundle.getString("Academy");
-            imagebytes = bundle.getByteArray("ImageBytes");
-            playerName = bundle.getString("PlayerName");
-            playerId = bundle.getString("playerId");
-            aid = bundle.getString("aid");
-            MainCategory_name = bundle.getString("check_id");
+                cid = bundle.getString("coach_id");
+                coach_name = bundle.getString("coachname");
+                coachdate = bundle.getString("date");
+                level = bundle.getString("level");
+                academy = bundle.getString("Academy");
+                imagebytes = bundle.getByteArray("ImageBytes");
+                playerName = bundle.getString("PlayerName");
+                playerId = bundle.getString("playerId");
+                aid = bundle.getString("aid");
+                MainCategory_name = bundle.getString("check_id");
 
-        } else {
-            //player Part
-            Intent playerIntent = getIntent();
-            Bundle playerBundle = playerIntent.getExtras();
-            playerName = playerBundle.getString("Pname");
-            playerId = playerBundle.getString("Pid");
-            type = playerBundle.getString("type");
-            lastScoreEntryDate = playerBundle.getString("lastScoreDate");
-            Score = playerBundle.getString("ScoreLast");
-            playerImage = playerBundle.getString("Image");
-            MainCategory_name = playerBundle.getString("check_id");
-        }
+            } else {
+                //player Part
+                Intent playerIntent = getIntent();
+                Bundle playerBundle = playerIntent.getExtras();
+                playerName = playerBundle.getString("Pname");
+                playerId = playerBundle.getString("Pid");
+                type = playerBundle.getString("type");
+                lastScoreEntryDate = playerBundle.getString("lastScoreDate");
+                Score = playerBundle.getString("ScoreLast");
+                playerImage = playerBundle.getString("Image");
+                MainCategory_name = playerBundle.getString("check_id");
+                ActivityTracker.writeActivityLogs(this.getLocalClassName(), playerId);
 
-        if (bundle.getString("check_id").equals("Fitness")) {
-            DatabaseAccess databaseAccess1 = DatabaseAccess.getInstance(getApplicationContext());
-            databaseAccess1.open();
-
-            Fitness = databaseAccess1.getFitness();
-            for (String s : Fitness) {
-                UserModel userModel = new UserModel(s);
-                userModelList.add(userModel);
             }
-            databaseAccess1.close();
+
+            if (bundle.getString("check_id").equals("Fitness")) {
+                DatabaseAccess databaseAccess1 = DatabaseAccess.getInstance(getApplicationContext());
+                databaseAccess1.open();
+
+                Fitness = databaseAccess1.getFitness();
+                for (String s : Fitness) {
+                    UserModel userModel = new UserModel(s);
+                    userModelList.add(userModel);
+                }
+                databaseAccess1.close();
 
 
-        } else if (bundle.getString("check_id").equals("Grip")) {
-            DatabaseAccess databaseAccess1 = DatabaseAccess.getInstance(getApplicationContext());
-            databaseAccess1.open();
+            } else if (bundle.getString("check_id").equals("Grip")) {
+                DatabaseAccess databaseAccess1 = DatabaseAccess.getInstance(getApplicationContext());
+                databaseAccess1.open();
 
-            Grip = databaseAccess1.getGrip();
-            for (String s : Grip) {
-                UserModel userModel = new UserModel(s);
-                userModelList.add(userModel);
+                Grip = databaseAccess1.getGrip();
+                for (String s : Grip) {
+                    UserModel userModel = new UserModel(s);
+                    userModelList.add(userModel);
+                }
+                databaseAccess1.close();
+            } else if (bundle.getString("check_id").equals("Singles")) {
+                DatabaseAccess databaseAccess1 = DatabaseAccess.getInstance(getApplicationContext());
+                databaseAccess1.open();
+                On_court_Skill_strokes_singles = databaseAccess1.getOnCourtSkill(1);
+
+                for (String s : On_court_Skill_strokes_singles) {
+                    UserModel userModel = new UserModel(s);
+                    userModelList.add(userModel);
+                }
+                databaseAccess1.close();
+
+            } else if (bundle.getString("check_id").equals("Doubles")) {
+
+                DatabaseAccess databaseAccess1 = DatabaseAccess.getInstance(getApplicationContext());
+                databaseAccess1.open();
+
+                On_court_Skill_strokes_doubles = databaseAccess1.getOnCourtSkill(2);
+                for (String s : On_court_Skill_strokes_doubles) {
+                    UserModel userModel = new UserModel(s);
+                    userModelList.add(userModel);
+                }
+                databaseAccess1.close();
+            } else if (bundle.getString("check_id").equals("Shadow/Footwork")) {
+                DatabaseAccess databaseAccess1 = DatabaseAccess.getInstance(getApplicationContext());
+                databaseAccess1.open();
+
+                On_court_Skill_shadow_foorwork = databaseAccess1.getOnCourtSkill(3);
+                for (String s : On_court_Skill_shadow_foorwork) {
+                    UserModel userModel = new UserModel(s);
+                    userModelList.add(userModel);
+                }
+                databaseAccess1.close();
             }
-            databaseAccess1.close();
-        } else if (bundle.getString("check_id").equals("Singles")) {
-            DatabaseAccess databaseAccess1 = DatabaseAccess.getInstance(getApplicationContext());
-            databaseAccess1.open();
-            On_court_Skill_strokes_singles = databaseAccess1.getOnCourtSkill(1);
-
-            for (String s : On_court_Skill_strokes_singles) {
-                UserModel userModel = new UserModel(s);
-                userModelList.add(userModel);
-            }
-            databaseAccess1.close();
-
-        } else if (bundle.getString("check_id").equals("Doubles")) {
-
-            DatabaseAccess databaseAccess1 = DatabaseAccess.getInstance(getApplicationContext());
-            databaseAccess1.open();
-
-            On_court_Skill_strokes_doubles = databaseAccess1.getOnCourtSkill(2);
-            for (String s : On_court_Skill_strokes_doubles) {
-                UserModel userModel = new UserModel(s);
-                userModelList.add(userModel);
-            }
-            databaseAccess1.close();
-        } else if (bundle.getString("check_id").equals("Shadow/Footwork")) {
-            DatabaseAccess databaseAccess1 = DatabaseAccess.getInstance(getApplicationContext());
-            databaseAccess1.open();
-
-            On_court_Skill_shadow_foorwork = databaseAccess1.getOnCourtSkill(3);
-            for (String s : On_court_Skill_shadow_foorwork) {
-                UserModel userModel = new UserModel(s);
-                userModelList.add(userModel);
-            }
-            databaseAccess1.close();
-        }
 //use to pass array of data
    /*     for(String s:names)
         {
@@ -154,8 +158,11 @@ public class SearchActivity extends AppCompatActivity implements UsersAdapter.Se
 
             userModelList.add(userModel);
         }*/
-        usersAdapter = new UsersAdapter(userModelList, this);
-        recyclerView.setAdapter(usersAdapter);
+            usersAdapter = new UsersAdapter(userModelList, this);
+            recyclerView.setAdapter(usersAdapter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -163,56 +170,60 @@ public class SearchActivity extends AppCompatActivity implements UsersAdapter.Se
     //for CoachScore Entry
     @Override
     public void selectedUser(UserModel userModel) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("data", userModel);
-        if (type.equalsIgnoreCase("Coach")) {
-            bundle.putString("z", value);
+        try {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("data", userModel);
+            if (type.equalsIgnoreCase("Coach")) {
+                bundle.putString("z", value);
 
-            bundle.putString("coach_id", cid);
-            bundle.putString("coachname", coach_name);
-            bundle.putString("date", coachdate);
-            bundle.putString("level", level);
-            bundle.putString("Academy", academy);
-            bundle.putString("PlayerName", playerName);
-            bundle.putString("playerId", playerId);
-            bundle.putByteArray("ImageBytes", imagebytes);
-            bundle.putString("type", type);
-            bundle.putString("aid", aid);
-            if (MainCategory_name.equals("Singles") || MainCategory_name.equals("Doubles") || MainCategory_name.equals("Shadow/Footwork")) {
-                MainCategory_name = "On Court Skills => " + MainCategory_name;
+                bundle.putString("coach_id", cid);
+                bundle.putString("coachname", coach_name);
+                bundle.putString("date", coachdate);
+                bundle.putString("level", level);
+                bundle.putString("Academy", academy);
+                bundle.putString("PlayerName", playerName);
+                bundle.putString("playerId", playerId);
+                bundle.putByteArray("ImageBytes", imagebytes);
+                bundle.putString("type", type);
+                bundle.putString("aid", aid);
+                if (MainCategory_name.equals("Singles") || MainCategory_name.equals("Doubles") || MainCategory_name.equals("Shadow/Footwork")) {
+                    MainCategory_name = "On Court Skills => " + MainCategory_name;
+                } else {
+                    MainCategory_name = MainCategory_name + "";
+                }
+                bundle.putString("main_category", MainCategory_name);
+                bundle.putString("date", coachdate);
+
+                Intent i = new Intent(SearchActivity.this, SelectedUserActivity.class).putExtras(bundle);
+                startActivity(i);
+    //            finish();
             } else {
-                MainCategory_name = MainCategory_name + "";
-            }
-            bundle.putString("main_category", MainCategory_name);
-            bundle.putString("date", coachdate);
+                Bundle bundle1 = new Bundle();
+                bundle1.putString("Pname", playerName);
+                bundle1.putString("Pid", playerId);
+                bundle1.putString("type", type);
+                bundle1.putString("lastScoreDate", lastScoreEntryDate);
+                bundle1.putString("ScoreLast", Score);
+                bundle1.putString("Image", playerImage);
 
-            Intent i = new Intent(SearchActivity.this, SelectedUserActivity.class).putExtras(bundle);
-            startActivity(i);
-            finish();
-        } else {
-            Bundle bundle1 = new Bundle();
-            bundle1.putString("Pname", playerName);
-            bundle1.putString("Pid", playerId);
-            bundle1.putString("type", type);
-            bundle1.putString("lastScoreDate", lastScoreEntryDate);
-            bundle1.putString("ScoreLast", Score);
-            bundle1.putString("Image", playerImage);
-
-            if (MainCategory_name.equals("Singles") || MainCategory_name.equals("Doubles") || MainCategory_name.equals("Shadow/Footwork")) {
-                MainCategory_name = "On Court Skills => " + MainCategory_name;
-            } else {
-                MainCategory_name = MainCategory_name + "";
+                if (MainCategory_name.equals("Singles") || MainCategory_name.equals("Doubles") || MainCategory_name.equals("Shadow/Footwork")) {
+                    MainCategory_name = "On Court Skills => " + MainCategory_name;
+                } else {
+                    MainCategory_name = MainCategory_name + "";
+                }
+                bundle1.putString("main_category", MainCategory_name);
+                bundle1.putSerializable("data", userModel);
+                Intent i = new Intent(SearchActivity.this, SelectedUserActivity.class).putExtras(bundle1);
+                startActivity(i);
+                finish();
             }
-            bundle1.putString("main_category", MainCategory_name);
-            bundle1.putSerializable("data", userModel);
-            Intent i = new Intent(SearchActivity.this, SelectedUserActivity.class).putExtras(bundle1);
-            startActivity(i);
-            finish();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
  /*
- for student score entry
+ for student et_score entry
   @Override
     public void selectedUser(UserModel userModel) {
         Bundle bundle=new Bundle();

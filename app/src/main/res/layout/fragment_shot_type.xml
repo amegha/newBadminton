@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_color"
+    android:background="@drawable/bg"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -131,12 +131,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/round_button"
+        style="@style/Button1"
         android:onClick="submit"
         android:layout_marginRight="@dimen/button_space"
         android:layout_marginLeft="@dimen/button_space"
         android:text="SUBMIT"
-        android:textColor="@color/app_text" />
+         />
 <!--    android:backgroundTint="@color/light_blue"-->
 
 

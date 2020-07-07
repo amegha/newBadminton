@@ -1,6 +1,5 @@
 package com.example.myapp_badminton;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,16 +8,12 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 
@@ -104,7 +99,7 @@ public class ScoreEntry_fragment extends Fragment {
             bundle1.putString("lastScoreDate",lastScoreEntryDate);
             bundle1.putString("ScoreLast",Score);
             bundle1.putString("Image",imagePlayer);
-            Intent intent = new Intent(this.getActivity(), Score_From.class).putExtras(bundle1);
+            Intent intent = new Intent(this.getActivity(), ScoreFrom.class).putExtras(bundle1);
             startActivity(intent);
         }
 

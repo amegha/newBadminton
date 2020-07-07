@@ -324,7 +324,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return scoreSum + Integer.parseInt(param);
     }
 
-    public void deletePlayeraAnswerData() {
+    public void deletePlayerAnswerData() {
         //DELETE BOTH THE TABLE CONTENT ON SUCCESS SYNCHRONIZATOIN
         db = this.getWritableDatabase();
         db.execSQL("delete from answers");

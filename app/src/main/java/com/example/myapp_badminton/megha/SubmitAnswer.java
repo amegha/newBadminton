@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import android.support.v7.app.AppCompatActivity;*/
  */
 
 public class SubmitAnswer extends AppCompatActivity {
+    public static final String PREFS_NAME = "LoginPrefs";
     static String answerLoc, answerType;
     ViewPager viewPager;
     int currentPos;
@@ -32,15 +34,17 @@ public class SubmitAnswer extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        ActivityTracker.writeActivityLogs(this.getLocalClassName(), settings.getString("Id", ""));
         setContentView(R.layout.activity_submit_answer);
-        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager = findViewById(R.id.pager);
+
         answerType = null;
         answerLoc = null;
        /* Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Shot Loc"));
         tabLayout.addTab(tabLayout.newTab().setText("Shot Type"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);

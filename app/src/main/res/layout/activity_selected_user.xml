@@ -177,19 +177,19 @@
             android:textSize="15sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/display_mainCat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:maxLines="2"
-            android:text="Fitness"
+            <TextView
+                android:id="@+id/display_mainCat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="Fitness"
 
-            android:textColor="#342a73"
-            android:textSize="15sp" />
+                android:textColor="#342a73"
+                android:textSize="15sp" />
     </LinearLayout>
 
     <LinearLayout

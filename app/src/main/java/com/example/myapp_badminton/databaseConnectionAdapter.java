@@ -6,9 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Base64;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class databaseConnectionAdapter {
     private static final String TAG = "databaseConnectionAdapter";
@@ -48,7 +50,7 @@ public class databaseConnectionAdapter {
                 "CREATE TABLE " + TABLE_NAME +
                         " (" + UID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + FULL_NAME + " VARCHAR(255) ," + PASSWORD + " VARCHAR(255) ," + ENC_PASSWORD + " VARCHAR(255) ," + EMAIL + " VARCHAR(255) ," + STATE + " VARCHAR(255)," + CITY + " VARCHAR(255) ," + TRAINING_CENTERS + " VARCHAR(255)," + STATE_RANK + " Integer ," + NATIONAL_RANK + " Integer," + IMAGE_DATA + " BLOB," + GENDER + " VARCHAR(255)," + EDUCATION + " VARCHAR(255)," + AGE + " VARCHAR(255)," + DOB + " VARCHAR(255)," + TIMESTAMP + " VARCHAR(255));";
         private static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
-        //score details
+        //et_score details
         private static final String TABLE_NAME1 = "Score_details";   // Table Name
         private static final String UsID = "_id";     // Column I (Primary Key)
         //private static final String FULL_NAME = "Name";    //Column II
@@ -60,7 +62,7 @@ public class databaseConnectionAdapter {
         private static final String SCORE = "Score";
         private static final String CREATE_TABLE_SCORE = "CREATE TABLE " + TABLE_NAME1 + " (" + UsID + " INTEGER , " + FULL_NAME + " VARCHAR(255) ," + DATE_OF_SCORE_SUBMIT + " VARCHAR(255) ," + MAIN_CATEGORY + " VARCHAR(255) ," + SUB_CATEGORY + " VARCHAR(255)  ," + SCORE + " VARCHAR(255) );";
         private static final String DROP_TABLE_SCORE = "DROP TABLE IF EXISTS " + TABLE_NAME;
-        //score given by coach details
+        //et_score given by coach details
         private static final String TABLE_COACH = "ScoresByCoach";   // Table Name
         private static final String PID = "Pid";     // Column I (Primary Key)
         private static final String CID = "Cid";
@@ -180,6 +182,7 @@ public class databaseConnectionAdapter {
                 arrayList.add((cursor.getString(0)));
                 cursor.moveToNext();
             }
+            Log.e("academy name", "getAcademies: "+ Collections.singleton(arrayList));
             cursor.close();
             return arrayList;
         }
@@ -525,7 +528,7 @@ public class databaseConnectionAdapter {
         }
 
 
-        //for skip button working ,getting only max of date i.e last date of score entry
+        //for skip button working ,getting only max of date i.e last date of et_score entry
         public Cursor get_lastdateCoach(String ID, SQLiteDatabase sqLiteDatabase) {
 
             //Cursor cursor=sqLiteDatabase.query(ScoreStorageHelper.TABLE_NAME,Columns,where_Clasuse,where_args,null,null,null);
@@ -534,7 +537,7 @@ public class databaseConnectionAdapter {
         }
 
 
-        //Coach score entry last date
+        //Coach et_score entry last date
         public Cursor getCoachLastScoreEntry(String cid, String pid, SQLiteDatabase db) {
             Cursor cursor = db.rawQuery("SELECT max(Date_Score_Submit) from ScoresByCoach where Pid=" + pid + " and Cid=" + cid, null);
             return cursor;

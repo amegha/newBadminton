@@ -16,29 +16,27 @@ public class Reset_pass extends AppCompatActivity {
     EditText uname;
     MyDbAdapter helper;
     SQLiteDatabase sqLiteDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
+        super.onCreate(savedInstanceState);
+//        ActivityTracker.writeActivityLogs(this.getLocalClassName());
         setContentView(R.layout.activity_reset_pass);
-        uname=findViewById(R.id.pass_username);
-        reset=findViewById(R.id.btn_reset);
+        uname = findViewById(R.id.pass_username);
+        reset = findViewById(R.id.btn_reset);
         reset.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
 
-        password_update(uname.getText().toString());
-        Intent intent = new Intent( Reset_pass.this,Login.class);
-        startActivity(intent);
+                password_update(uname.getText().toString());
+                Intent intent = new Intent(Reset_pass.this, Login.class);
+                startActivity(intent);
+            }
+        });
     }
-});
-    }
 
 
-
-
-
-    private void password_update(String UserName)
-    {
+    private void password_update(String UserName) {
         Cursor cursor_name;
         helper = new MyDbAdapter(getApplicationContext());
         sqLiteDatabase = helper.myhelper.getReadableDatabase();
@@ -49,11 +47,10 @@ public class Reset_pass extends AppCompatActivity {
 
             /*the below if statement use to check or match username and phoneNumber entered by user with respective username and phoneNumber in database*/
 
-            if (cursor_name.isAfterLast() == false ) {
+            if (cursor_name.isAfterLast() == false) {
 
                 String a = cursor_name.getString(0);
-                if((UserName.equals(a)))
-                {
+                if ((UserName.equals(a))) {
                     helper.updatePass(UserName);
 
                 }

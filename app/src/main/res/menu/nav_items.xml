@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:checkableBehavior="single">
         <!--
                 Add menu items here
@@ -26,7 +27,10 @@
             android:id="@+id/five"
             android:icon="@drawable/play_game"
             android:title="Play Game" />
-
+        <item
+            android:id="@+id/five1"
+            android:icon="@drawable/ic_sync_gray_24dp"
+            android:title="Sync Data" />
         <item
             android:id="@+id/six"
             android:icon="@drawable/ic_person_black_24dp"
@@ -35,7 +39,24 @@
             android:id="@+id/seven"
             android:icon="@drawable/ic_arrow_back_black_24dp"
             android:title="Sign Out" />
+        <!--<item
+            android:id="@+id/eight"
+            android:icon="@drawable/ic_arrow_back_black_24dp"
+            android:title="Sign Out" />
+        <item
+            android:id="@+id/nine"
+            android:icon="@drawable/ic_arrow_back_black_24dp"
+            android:title="Sign Out" />-->
+        <!--<item
+            android:checkable="false"
+            android:title="@string/powered_by" />-->
 
 
+    </group>
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/powered_by"
+
+            android:title="" />
     </group>
 </menu>

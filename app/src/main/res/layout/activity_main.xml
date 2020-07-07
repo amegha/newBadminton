@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:text="SIGN UP"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/app_text"
             android:textSize="20sp" />
 
     </LinearLayout>
@@ -60,7 +60,7 @@
                     android:background="@drawable/edit_text_top"
                     android:hint="Phone Number"
                     android:inputType="number"
-                    android:maxLength="10"
+                    android:maxLength="13"
                     android:padding="15dp" />
 
                 <TextView
@@ -68,7 +68,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_middle"
+
                     android:hint="Date of Birth"
+                    android:textSize="16dp"
                     android:padding="15dp" />
 
                 <TextView
@@ -303,6 +305,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:enabled="false"
                     android:text="@string/submit" />
 
 

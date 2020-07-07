@@ -36,7 +36,8 @@ public class Mentor extends AppCompatActivity {
     ArrayList<HashMap<String, String>> productList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
+        super.onCreate(savedInstanceState);
+//        ActivityTracker.writeActivityLogs(this.getLocalClassName());
         setContentView(R.layout.activity_mentor);
 
         et_city=findViewById(R.id.location_select);
@@ -76,7 +77,7 @@ public class Mentor extends AppCompatActivity {
                 b.putString("coach_id",coach_id);
                 b.putString("date",date);
                 b.putString("student_id",stud_id);
-                Intent i1=new Intent(Mentor.this,Score_From.class).putExtras(b);
+                Intent i1=new Intent(Mentor.this, ScoreFrom.class).putExtras(b);
                 startActivity(i1);
 
             }

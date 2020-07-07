@@ -1,7 +1,6 @@
 package com.example.myapp_badminton;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
@@ -33,13 +32,13 @@ public class WebService extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... arg0) {
-        if (arg0[1].equals("fileUpload")) {
+        if (arg0[1].equals("badmintonLogs")||arg0[1].equals("scoreUpload")) {
             try {
                 File root = new File(Environment.getExternalStorageDirectory(), "Badminton");
 
-//                String sourceFileUri = "/storage/emulated/0/Badminton/badmintonLogs.txt";
-                String sourceFileUri = Uri.fromFile(root);
-                Uri.fromFile(root);
+                String sourceFileUri = "/storage/emulated/0/Badminton";
+//                String sourceFileUri = root.getAbsolutePath();
+//                Log.e("file path", "web service " + sourceFileUri);
                 HttpURLConnection conn = null;
                 DataOutputStream dos = null;
                 String lineEnd = "\r\n";
@@ -48,9 +47,11 @@ public class WebService extends AsyncTask<String, String, String> {
                 int bytesRead, bytesAvailable, bufferSize;
                 byte[] buffer;
                 int maxBufferSize = 1 * 1024 * 1024;
-                File sourceFile = new File(sourceFileUri);
+                File sourceFile = new File(sourceFileUri + "/"+arg0[1]+".txt");
 
-                if (sourceFile.isFile()) {
+                Log.e("file path", "web service " + sourceFile.toString());
+
+                if (sourceFile.isFile() && (sourceFile.exists())) {
 
                     try {
                         int serverResponseCode;
@@ -58,8 +59,7 @@ public class WebService extends AsyncTask<String, String, String> {
                         Log.d("the postURL is", " " + upLoadServerUri);
 
                         // open a URL connection to the Servlet
-                        FileInputStream fileInputStream = new FileInputStream(
-                                sourceFile);
+                        FileInputStream fileInputStream = new FileInputStream(sourceFile);
                         URL url = new URL(upLoadServerUri);
 
                         // Open a HTTP connection to the URL
@@ -73,12 +73,12 @@ public class WebService extends AsyncTask<String, String, String> {
                                 "multipart/form-data");
                         conn.setRequestProperty("Content-Type",
                                 "multipart/form-data;boundary=" + boundary);
-                        conn.setRequestProperty(arg0[2], sourceFileUri);
+                        conn.setRequestProperty(arg0[1], sourceFileUri);
 
                         dos = new DataOutputStream(conn.getOutputStream());
 
                         dos.writeBytes(twoHyphens + boundary + lineEnd);
-                        dos.writeBytes("Content-Disposition: form-data; name=" + arg0[2] + ";filename=\""
+                        dos.writeBytes("Content-Disposition: form-data; name=" + arg0[1]+ ";filename=\""
                                 + sourceFileUri + "\"" + lineEnd);
 
                         dos.writeBytes(lineEnd);
@@ -128,7 +128,7 @@ public class WebService extends AsyncTask<String, String, String> {
                                 sb.append(line);
                             }
                             br.close();
-                            responseString = sb.toString() + ";" + arg0[2];
+                            responseString = sb.toString();
                             Log.e("RESPONSE:Offline", "" + responseString);
 
                         }
@@ -146,6 +146,8 @@ public class WebService extends AsyncTask<String, String, String> {
                     }
                     // dialog.dismiss();
 
+                } else {
+                    responseString = "404";
                 } // End else block
 
 
@@ -186,7 +188,7 @@ public class WebService extends AsyncTask<String, String, String> {
                     }
                     br.close();
                     responseString = sb.toString();//result form the server
-//                Log.e("Response ", "From " + arg0[2] + " " + responseString);
+//                Log.e("Response ", "From " + "badmintonLogs" + " " + responseString);
                 } else responseString = res;//other http errors-->server busy
 
             } catch (Exception e) {

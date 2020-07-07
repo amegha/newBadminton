@@ -16,15 +16,23 @@ public class ExampleItem implements Parcelable {
 
 
     public ExampleItem(Bitmap imageResource, String text1, String text2) {
-        this.imageResource = imageResource;
-        this.text1 = text1;
-        this.text2 = text2;
+        try {
+            this.imageResource = imageResource;
+            this.text1 = text1;
+            this.text2 = text2;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     protected ExampleItem(Parcel in) {
-        imageResource = in.readParcelable(Bitmap.class.getClassLoader());
-        text1 = in.readString();
-        text2 = in.readString();
+        try {
+            imageResource = in.readParcelable(Bitmap.class.getClassLoader());
+            text1 = in.readString();
+            text2 = in.readString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static final Creator<ExampleItem> CREATOR = new Creator<ExampleItem>() {
@@ -41,7 +49,12 @@ public class ExampleItem implements Parcelable {
 
 
     public Bitmap getImageResource() {
-        return imageResource;
+        try {
+            return imageResource;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
     public String getText1() {
         return text1;
@@ -57,9 +70,13 @@ public class ExampleItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(imageResource, flags);
-        dest.writeString(text1);
-        dest.writeString(text2);
+        try {
+            dest.writeParcelable(imageResource, flags);
+            dest.writeString(text1);
+            dest.writeString(text2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

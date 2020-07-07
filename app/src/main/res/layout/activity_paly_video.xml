@@ -52,12 +52,12 @@
             android:text="Answer"
             android:visibility="gone" />
 
-        <TextView
+        <!--<TextView
             android:id="@+id/count_down"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="visible"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@color/colorWhite" />-->
     </LinearLayout>
 </RelativeLayout>
 

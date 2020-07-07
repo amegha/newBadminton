@@ -6,9 +6,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class ActivityTracker {
-    public static void writeActitivtyLogs(String string) {
+    public static void writeActivityLogs(String string, String pid) {
         try {
             String fileName = "badmintonLogs.txt";
             File root = new File(Environment.getExternalStorageDirectory(), "Badminton");
@@ -19,11 +22,13 @@ public class ActivityTracker {
 
             BufferedWriter out = new BufferedWriter(
                     new FileWriter(textFile, true));
-            out.write(string + "/");
+            out.write(getDate() + "_" + string + "_" + pid + "/");
             out.close();
         } catch (IOException e) {
             System.out.println("exception occoured" + e);
         }
+
+
 
         /*Log.e("String", " to be written " + string +" / ");
         String filename = "badmintonLogs.txt";
@@ -43,6 +48,10 @@ public class ActivityTracker {
         } catch (IOException e1) {
             e1.printStackTrace();
         }*/
+    }
+
+    private static String getDate() {
+        return new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", Locale.getDefault()).format(new Date());
     }
 }
 

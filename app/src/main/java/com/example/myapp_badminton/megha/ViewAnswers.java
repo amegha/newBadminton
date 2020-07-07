@@ -2,6 +2,7 @@ package com.example.myapp_badminton.megha;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.example.myapp_badminton.ActivityTracker;
 import com.example.myapp_badminton.R;
 
 public class ViewAnswers extends Activity implements AsyncResponse {
+    public static final String PREFS_NAME = "LoginPrefs";
     //    private ArrayAdapter<String> adapter;
     private static CustomAdapter adapter;
     TextView score, time;
@@ -25,22 +27,27 @@ public class ViewAnswers extends Activity implements AsyncResponse {
     Button nextVideo;
     private GetAnswers getAnswers;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
-        setContentView(R.layout.activity_view_answer);
-        bundle = getIntent().getExtras();
-        bundle.getParcelable("answerModel");
-        score = findViewById(R.id.score);
-        time = findViewById(R.id.time);
-        nextVideo = findViewById(R.id.next_video);
-        db = new DBHandler(this);
-        displayTotalTimeTaken();
-        getGameScore();
-        playerAnswers = db.getPlayerAnswers();
-        sendResultToServer(playerAnswers);
+        try {
+            super.onCreate(savedInstanceState);
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            ActivityTracker.writeActivityLogs(this.getLocalClassName(), settings.getString("Id", ""));
+
+            setContentView(R.layout.activity_view_answer);
+            bundle = getIntent().getExtras();
+            bundle.getParcelable("answerModel");
+            score = findViewById(R.id.score);
+            time = findViewById(R.id.time);
+            nextVideo = findViewById(R.id.next_video);
+            db = new DBHandler(this);
+            displayTotalTimeTaken();
+            getGameScore();
+            playerAnswers = db.getPlayerAnswers();
+            sendResultToServer(playerAnswers);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -55,49 +62,65 @@ public class ViewAnswers extends Activity implements AsyncResponse {
     @Override
     protected void onResume() {
         super.onResume();
-//        db.deletePlayeraAnswerData();
+//        db.deletePlayerAnswerData();
     }
 
     public void playNextVideo(View view) {
-        db.deletePlayeraAnswerData();
-        startActivity(new Intent(this, PlayVideo.class)/*.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)*/);
-        finish();
+        try {
+            db.deletePlayerAnswerData();
+            startActivity(new Intent(this, PlayVideo.class)/*.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)*/);
+            finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onTaskComplete(String result) {
-        if (result.equals("Success")) {
-//            db.deletePlayeraAnswerData();
-            //empty table answers and correct answers
-            nextVideo.setEnabled(true);
-            Log.e("ViewAnswers", "upload status " + result);
-        } else {
-            Toast.makeText(this, "couldnot sync to server!!", Toast.LENGTH_SHORT).show();
-        }
+        try {
+            if (result.equals("Success")) {
+    //            db.deletePlayerAnswerData();
+                //empty table answers and correct answers
+                nextVideo.setEnabled(true);
+                Log.e("ViewAnswers", "upload status " + result);
+            } else {
+                Toast.makeText(this, "could not sync to server!!", Toast.LENGTH_SHORT).show();
+            }
 
 //        getAnswers.parseCorrectAnswers(result);
 //        displayScore(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-//        db.deletePlayeraAnswerData();
+//        db.deletePlayerAnswerData();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        db.deletePlayeraAnswerData();
+        db.deletePlayerAnswerData();
     }
 
     private void displayTotalTimeTaken() {
-        totaltime = String.valueOf(db.getPlayerTotalTime());
-        time.setText(totaltime);
+        try {
+            totaltime = String.valueOf(db.getPlayerTotalTime());
+            time.setText(totaltime);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void getGameScore() {
-        score.setText(String.valueOf(db.getGameSCore()));
+        try {
+            score.setText(String.valueOf(db.getGameSCore()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

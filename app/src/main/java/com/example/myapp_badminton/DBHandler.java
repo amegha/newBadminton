@@ -150,5 +150,9 @@ public class DBHandler extends SQLiteOpenHelper {
         return selection;
     }
 
+    public void deleteLocations() {
+        db = this.getWritableDatabase();
+        db.execSQL("delete from academy_info");
+    }
 }
 

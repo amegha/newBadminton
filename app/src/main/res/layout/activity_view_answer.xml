@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="4"
-    android:background="@color/main_color"
+    android:background="@drawable/bg"
     android:orientation="vertical">
 
     <LinearLayout
@@ -41,7 +41,7 @@
             android:id="@+id/score"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/app_text"/>
+            android:textColor="@color/app_text" />
     </LinearLayout>
 
     <LinearLayout
@@ -50,15 +50,11 @@
         android:orientation="vertical">
 
         <Button
+            style="@style/Button1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/button_space"
-            android:layout_marginRight="@dimen/button_space"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/round_button"
             android:onClick="ViewMyAnswers"
-            android:text="my answers" />
+            android:text="View Answers" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,25 +66,22 @@
 
             <Button
                 android:id="@+id/next_video"
+                style="@style/Button1"
                 android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_gravity="center"
-                android:layout_marginRight="@dimen/button_space"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/round_button"
                 android:enabled="false"
                 android:onClick="playNextVideo"
-                android:text="next game" />
+                android:text="Next Game" />
 
             <Button
+                style="@style/Button1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/button_space"
                 android:layout_weight="1"
-                android:background="@drawable/round_button"
                 android:onClick="SubmitTheUserDetails"
-                android:text="logout" />
+                android:text="LogOut" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

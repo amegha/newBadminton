@@ -57,7 +57,7 @@
 //
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);ActivityTracker.writeActitivtyLogs(this.getLocalClassName());
+//        super.onCreate(savedInstanceState);ActivityTracker.writeActivityLogs(this.getLocalClassName());
 //        setContentView(R.layout.activity_login);
 //        dbHandler = new DBHandler(this);
 //        name = findViewById(R.id.username_signin);
@@ -153,7 +153,7 @@
 //                    cursor.close();
 //
 //
-//                    // to get last date of score sumission
+//                    // to get last date of et_score sumission
 //                    cursor_lastDate = sHelper.scoreStorageHelper.get_last_login(savedID, db1);
 //                    if (cursor_lastDate != null) {
 //                        cursor_lastDate.moveToFirst();
@@ -166,7 +166,7 @@
 //                    cursor_lastDate.close();
 //
 //
-//                    //to get second last score submission date
+//                    //to get second last et_score submission date
 //                    cursor_sec_last_login = sHelper.scoreStorageHelper.get_sec_last_login(savedID, db1);
 //
 //                    if (cursor_sec_last_login != null) {
@@ -227,7 +227,7 @@
 //                        password.setText("");
 //
 //                    }
-//                    // if user missed session and score entry pending
+//                    // if user missed session and et_score entry pending
 //                    else if (last_date != null && sec_lastDate != null && !last_date.equals(today)) {
 //
 //                        if (x > 0 || x != 0) {
@@ -242,7 +242,7 @@
 //                                                bundle.putString("date", today);
 //                                                bundle.putString("x", UserName);
 //                                                //onBackPressed();
-//                                                //Intent intent = new Intent(LoginOld.this, Score_From.class).putExtras(bundle);
+//                                                //Intent intent = new Intent(LoginOld.this, ScoreFrom.class).putExtras(bundle);
 //                                                Intent intent = new Intent(LoginOld.this, HomePage.class).putExtras(bundle);
 //                                                startActivity(intent);
 //                                                name.setText("");
@@ -255,7 +255,7 @@
 //                                alert.show();
 //
 //                            }
-//                            //already loged in,entering todays score
+//                            //already loged in,entering todays et_score
 //                            else if (pending_day.equals(today)) {
 //
 //                                Bundle bundle = new Bundle();
