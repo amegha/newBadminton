@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Time Used :"
+            android:text="Time Used:"
             android:textColor="@color/app_text" />
 
         <TextView
@@ -47,22 +47,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:weightSum="2"
+        android:padding="5dp"
+        android:orientation="horizontal">
 
         <Button
             style="@style/Button1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="ViewMyAnswers"
+            android:layout_weight="1"
             android:text="View Answers" />
 
+<!--
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:weightSum="2">
+-->
 
             <Button
                 android:id="@+id/next_video"
@@ -74,14 +79,14 @@
                 android:onClick="playNextVideo"
                 android:text="Next Game" />
 
-            <Button
+           <!-- <Button
                 style="@style/Button1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:onClick="SubmitTheUserDetails"
-                android:text="LogOut" />
-        </LinearLayout>
+                android:text="LogOut" />-->
+<!--        </LinearLayout>-->
     </LinearLayout>
 </LinearLayout>

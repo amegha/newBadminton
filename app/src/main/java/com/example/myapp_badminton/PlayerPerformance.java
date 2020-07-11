@@ -216,6 +216,7 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
 
                 XAxis xAxis = lineChart.getXAxis();
                 xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                xAxis.setAvoidFirstLastClipping(true);
                 // final String[] months = new String[]{"Jan", "Feb", "Mar", "Apr"};
                 ValueFormatter formatter = new ValueFormatter() {
                     @Override
@@ -290,6 +291,8 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
 
                 XAxis xAxis = lineChart.getXAxis();
                 xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                xAxis.setAvoidFirstLastClipping(true);
+
                 // final String[] months = new String[]{"Jan", "Feb", "Mar", "Apr"};
                 ValueFormatter formatter = new ValueFormatter() {
                     @Override

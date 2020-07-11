@@ -46,7 +46,6 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -213,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 city_Spinner.setOnItemSelectedListener(city_listener);
 
             }
+
         }
 
         @Override
@@ -221,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         }
     };
     private String xmldate;
+    private ProgressDialog sendOtpProgressDialog;
 
     public static String md5(String input) {
         try {
@@ -269,6 +270,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
 
                 } else {
+                    Toast.makeText(this, "Grant permissions!!", Toast.LENGTH_LONG).show();
                     Log.i("Permission", "onRequestPermissionsResult: Permission Denied");
                 }
                 break;
@@ -549,7 +551,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         SimpleDateFormat ymdformat = new SimpleDateFormat("yyyy-MM-dd");
         // String date = sdf.format(" " + year + "-" + month + "-" + dayOfMonth + "\n");
         String date = sdf.format(c.getTime());
-        xmldate=ymdformat.format(c.getTime());
+        xmldate = ymdformat.format(c.getTime());
         showDate.setText(date);
         dob.setText(date);
         /*try {
@@ -723,9 +725,20 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     //add data
     public void addUser() {
         try {
-            progressDialog = ProgressDialog.show(MainActivity.this, "Sending OTP!!", "Please wait..", false, false);
-            if (fieldEmpty()) {
-                Toast.makeText(this, "Fill all the fields correctly", Toast.LENGTH_LONG).show();
+//            progressDialog = ProgressDialog.show(MainActivity.this, "Sending OTP!!", "Please wait..", false, false);
+//            if (fieldEmpty())
+            if (fname.getText().length() < 3) {
+                fname.setError("short/empty");
+                Toast.makeText(this, "Player name too short or empty", Toast.LENGTH_LONG).show();
+            } else if (phoneNumber.getText().length() != 10 && phoneNumber.getText().length() != 13) {
+                phoneNumber.setError("short");
+                Toast.makeText(this, "Enter proper phone number", Toast.LENGTH_LONG).show();
+            } else if ((email.getText().toString()).isEmpty()) {
+                email.setError("Empty");
+                Toast.makeText(this, "E-mail ID cannot be empty", Toast.LENGTH_LONG).show();
+            } else if ((showDate.getText().toString()).isEmpty()) {
+                showDate.setError("Empty");
+                Toast.makeText(this, "DOB cannot be empty", Toast.LENGTH_LONG).show();
             } else {
                 final String name = fname.getText().toString();
                 final String phone_user = phoneNumber.getText().toString();
@@ -780,7 +793,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         } catch (Exception e) {
             e.printStackTrace();
         }
-        progressDialog.dismiss();
+//        progressDialog.dismiss();
 
     }
 
@@ -837,7 +850,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     private void sendRequest(String xml) {
         try {
             if (isConnected()) {
-                progressDialog = ProgressDialog.show(this, "Registering!", "Please wait..", false, false);
+                progressDialog = ProgressDialog.show(MainActivity.this, "Sending OTP!!", "Please wait..", false, false);
+
                 new WebService(this).execute(API.ServerAddress + "" + API.USER_REGISTER, xml);
             } else {
                 Toast.makeText(this, "You are offline", Toast.LENGTH_SHORT).show();
@@ -849,21 +863,27 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     @Override
     public void onTaskComplete(String result) {
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-        }
         try {
             Log.e("ontask complt", "response" + result);
+            progressDismiss();
             if (result.equals("pre_registration/0/pre_reg ")) {
+//                sendOtpProgressDialog.dismiss();
                 createConfirmOTPAlertDialog();
             } else if (result.equals("register/0/confirmOTP")) {
+                clearFields();
+                Toast.makeText(this, "Registered successfully", Toast.LENGTH_SHORT).show();
                 createResetPasswordAlertDialog();
 
             } else if (result.equals("password_reset/0")) {
                 startActivity(new Intent(this, Login.class));
                 finish();
                 //            signIn(m_id, sNewPass);
+            } else if (result.equals("103")) {
+//                sendOtpProgressDialog.dismiss();
+                email.setError("Already registered");
+                Toast.makeText(this, "Already registered", Toast.LENGTH_SHORT).show();
             } else {
+                progressDismiss();
                 String[] arrRes;
                 arrRes = result.split("/");
                 String locationXml;
@@ -876,6 +896,23 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             e.printStackTrace();
         }
 
+    }
+
+    private void progressDismiss() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+    }
+
+    private void clearFields() {
+        fname.setText("");
+        phoneNumber.setText("");
+        email.setText("");
+        showDate.setText("");
+        dob.setText("");
+        state_rank.setText("");
+        national_rank.setText("");
+        imageView.setImageResource(android.R.color.transparent);
     }
     /*private void signIn(String regEmail, String password) {
         if (isConnected()) {new WebService(this).execute(API.ServerAddress + API.USER_LOGIN, "mail_id=" + regEmail + "&password=" + password);
@@ -943,6 +980,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     private void createResetPasswordAlertDialog() {
         try {
+            progressDismiss();
             LayoutInflater li = LayoutInflater.from(this);
             View confirmDialog = li.inflate(R.layout.activity_reset_password, null);
             newPass = confirmDialog.findViewById(R.id.pass_new);
@@ -1159,6 +1197,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     public void resetPasswordOrPin(View view) {
         try {
+            alertDialog.dismiss();
             Log.e("reset", "resetPasswordOrPin: " + m_id);
             progressDialog = ProgressDialog.show(this, "Password setting", "Please wait..", false, false);
             sNewPass = newPass.getText().toString().trim();
@@ -1176,7 +1215,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         } catch (Exception e) {
             e.printStackTrace();
         }
-        progressDialog.dismiss();
+//        progressDialog.dismiss();
     }
 
     /*public void bypassReg(View view) {

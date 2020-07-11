@@ -76,7 +76,7 @@ public class ListOfAnswers extends Activity {
                     pause = db.getVideoPause(position);
                     review(pause);
                 } else {
-                    Toast.makeText(ListOfAnswers.this, "Database empty!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListOfAnswers.this, "Cannot review!!", Toast.LENGTH_SHORT).show(); //db is empty
                 }
             }
 
@@ -90,6 +90,7 @@ public class ListOfAnswers extends Activity {
                     (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             vv.setLayoutParams(layoutParams);
             mediaController.setAnchorView(vv);
+            Toast.makeText(this, "Loading...", Toast.LENGTH_LONG).show();
             vv.setMediaController(null);
             vv.setVideoURI(video);
             vv.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -100,11 +101,13 @@ public class ListOfAnswers extends Activity {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         mp.seekTo(pause[0], MediaPlayer.SEEK_CLOSEST);
                         mp.start();
+                        mp.setVolume(0f,0f);
                         mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
                             @Override
                             public void onVideoSizeChanged(MediaPlayer mp, int arg1,
                                                            int arg2) {
                                 mp.start();
+                                mp.setVolume(0f,0f);
                                 if (pause.length == 1) {
                                     handler.postDelayed(stopPlayerTask, mp.getDuration());
                                 } else

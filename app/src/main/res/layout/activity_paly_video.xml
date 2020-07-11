@@ -48,8 +48,8 @@
             android:layout_weight="1"
             android:background="@drawable/round_button"
             android:onClick="answerQuestions"
-            android:textColor="@color/button_text_color"
             android:text="Answer"
+            android:textColor="@color/button_text_color"
             android:visibility="gone" />
 
         <!--<TextView

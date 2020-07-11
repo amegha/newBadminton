@@ -21,7 +21,7 @@ public class SearchActivity extends AppCompatActivity implements UsersAdapter.Se
 
     public String value, date;
     public String MainCategory_name;
-    public String cid, coach_name, coachdate, level, academy, playerName, playerId, aid;
+    public String cid, coach_name, coachdate, level, academy, playerName, playerId, aid, regDate;
     public byte[] imagebytes;
     /**
      * Initializing variables to fetch from databases category
@@ -52,7 +52,7 @@ public class SearchActivity extends AppCompatActivity implements UsersAdapter.Se
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_search);
-            Log.e("onCreate: ","***from activity***"+this.getLocalClassName() );
+            Log.e("onCreate: ", "***from activity***" + this.getLocalClassName());
 
             recyclerView = findViewById(R.id.recyclerview);
             toolbar = findViewById(R.id.toolbar);
@@ -73,6 +73,7 @@ public class SearchActivity extends AppCompatActivity implements UsersAdapter.Se
                 cid = bundle.getString("coach_id");
                 coach_name = bundle.getString("coachname");
                 coachdate = bundle.getString("date");
+                regDate = bundle.getString("regDate");
                 level = bundle.getString("level");
                 academy = bundle.getString("Academy");
                 imagebytes = bundle.getByteArray("ImageBytes");
@@ -179,6 +180,8 @@ public class SearchActivity extends AppCompatActivity implements UsersAdapter.Se
                 bundle.putString("coach_id", cid);
                 bundle.putString("coachname", coach_name);
                 bundle.putString("date", coachdate);
+                bundle.putString("regDate", regDate);
+
                 bundle.putString("level", level);
                 bundle.putString("Academy", academy);
                 bundle.putString("PlayerName", playerName);
@@ -196,7 +199,7 @@ public class SearchActivity extends AppCompatActivity implements UsersAdapter.Se
 
                 Intent i = new Intent(SearchActivity.this, SelectedUserActivity.class).putExtras(bundle);
                 startActivity(i);
-    //            finish();
+                //            finish();
             } else {
                 Bundle bundle1 = new Bundle();
                 bundle1.putString("Pname", playerName);

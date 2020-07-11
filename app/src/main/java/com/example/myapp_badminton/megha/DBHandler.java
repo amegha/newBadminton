@@ -168,7 +168,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(SHOT_TYPE, shotType);
         values.put(TIME_TAKEN_TO_ANSWER, elapsedTime);
         values.put(SCORE, score);
-        Log.e(TAG, "ANSWER SAVED!!" + db.insert(ANSWERS, null, values));
+        Log.e(TAG, "my answers!!" + db.insert(ANSWERS, null, values));
     }
 
     public void storeCorrectAnswers(String vid, String shotLoc, String shotType, long endtime, int maxTime, String videoName) {
@@ -181,7 +181,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(VIDEO_ID, vid);
         values.put(VIDEO_NAME, videoName);
 
-        Log.e(TAG, "pauses!!" + db.insert(CORRECT_ANSWERS, null, values));
+        Log.e(TAG, "correct answers!!" + db.insert(CORRECT_ANSWERS, null, values));
     }
 
     public boolean isDataEmpty() {
@@ -270,7 +270,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     @SuppressLint("DefaultLocale")
-    public String getPlayerAnswers() {
+    public String getPlayerAnswers(String pid) {
         stringBuilder = new StringBuilder();
         db = this.getReadableDatabase();
         object = new Object[c.getColumnCount()];
@@ -308,7 +308,7 @@ public class DBHandler extends SQLiteOpenHelper {
             stringBuilder.append(String.format("<total_time>%s</total_time>\n" +
                     "<total_score>%s</total_score>\n" +
                     "<pid>%s</pid>\n" +
-                    "</player_record>\n\n", timeSum, scoreSum, "047"));
+                    "</player_record>\n\n", timeSum, scoreSum,pid ));
 
             xmldata = stringBuilder.toString();
             Log.e("db handler", "xml data \n" + xmldata);

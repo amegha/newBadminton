@@ -59,6 +59,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
     private EditText newPass, confirmNewPass;
     private byte[] imageBytes;
     private ProgressDialog progressDialog;
+    private boolean permissionGiven;
 
     //    String uname,id,utype,lastScoreDate,Score;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -72,6 +73,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
             Toolbar toolbar = findViewById(R.id.toolbar);// get the reference of Toolbar
             SharedPreferences shared = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
             verifyStoragePermissions(this);
+//            setNavigationDrawer();
             setSupportActionBar(toolbar);
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             utype = settings.getString("type", "");
@@ -82,24 +84,32 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
 
                 //            setNavigationDrawer();
                 //            displayNavHeaderInfo();
+//                setNavigationDrawer();
             } else {
                 uname = settings.getString("Name", "");
                 id = settings.getString("Id", "");
                 playerImage = settings.getString("Image", "");
                 regEmail = settings.getString("mail_id", "");
                 ActivityTracker.writeActivityLogs(this.getLocalClassName(), id);
-
-                new WebService(HomePage.this).execute(API.ServerAddress + API.AFTER_LOGIN, "user_id=" + id);
-
+                if (isConnected()) {
+                    new WebService(HomePage.this).execute(API.ServerAddress + API.AFTER_LOGIN, "user_id=" + id);
+                } else {
+//                    setNavigationDrawer();
+                }
             }
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    dLayout.openDrawer(Gravity.LEFT);
-                    tvUserMainInfo = findViewById(R.id.nav_main_info);
+                    if (permissionGiven) {
+                        dLayout.openDrawer(Gravity.LEFT);
+                        displayNavHeaderInfo();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Grant permissions!!", Toast.LENGTH_LONG).show();
+                    }
+                    /*tvUserMainInfo = findViewById(R.id.nav_main_info);
                     tvUserSubInfo = findViewById(R.id.nav_sub_info);
                     tvUserMainInfo.setText(uname);
-                    tvUserSubInfo.setText(regEmail);
+                    tvUserSubInfo.setText(regEmail);*/
 
                 }
             });
@@ -124,19 +134,25 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
 
             );
         }
+        else{
+            permissionGiven=true;
+        }
     }
 
     private void setNavigationDrawer() {
         try {
-            profilePic = findViewById(R.id.nav_user_image);
+            /*profilePic = findViewById(R.id.nav_user_image);
             tvUserMainInfo = findViewById(R.id.nav_main_info);
-            tvUserSubInfo = findViewById(R.id.nav_sub_info);
+            tvUserSubInfo = findViewById(R.id.nav_sub_info);*/
             Bitmap bmp = null;
             dLayout = findViewById(R.id.drawer_layout); // initiate a DrawerLayout
             NavigationView navView = findViewById(R.id.navigation); // initiate a Navigation View
+            displayNavHeaderInfo();
             Menu menu = navView.getMenu();
             if (utype.equalsIgnoreCase("coach")) {
                 menu.findItem(R.id.five).setVisible(false);
+                menu.findItem(R.id.five1).setVisible(false);
+
             }
 
             navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -171,8 +187,8 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
                         //                    frag = new ForgotPasswordFragment();
                     } else if (itemId == R.id.five) {
                         if (utype.equalsIgnoreCase("Player")) {
+                            sendLog();
                             startActivity(new Intent(getApplicationContext(), PlayVideo.class));
-                            finish();
                         }
                         //                    else{
                         //                        menu.findItem(itemId).setVisible(false);
@@ -293,6 +309,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
             if (progressDialog != null) {
                 progressDialog.dismiss();
             }
+            setNavigationDrawer();
             Log.e("onTaskComplete: ", "res " + result);
             switch (result) {
                 case "00": {
@@ -320,7 +337,8 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
                     Toast.makeText(this, "Password reset successfully", Toast.LENGTH_SHORT).show();
                     break;
                 }
-                case "file-0": {
+                case "file-0": { //sync data
+                    Toast.makeText(this, "Sync successful", Toast.LENGTH_SHORT).show();
                     deleteFile();
 
                     break;
@@ -333,9 +351,9 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
                     } else /*if (arrRes.length == 3) */ {
                         lastScoreDate = arrRes[1];
                         Score = arrRes[2];
-                        setNavigationDrawer();
+//                        setNavigationDrawer();
 
-                        displayNavHeaderInfo();
+                        /* displayNavHeaderInfo();*/
                     } /*else {
                         imageBytes = Base64.decode(result, Base64.DEFAULT);
                         Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
@@ -370,6 +388,10 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
 
     private void displayNavHeaderInfo() {
         try {
+            profilePic = findViewById(R.id.nav_user_image);
+            tvUserMainInfo = findViewById(R.id.nav_main_info);
+            tvUserSubInfo = findViewById(R.id.nav_sub_info);
+
             if (utype.equals("player")) {
                 imageBytes = Base64.decode(playerImage, Base64.DEFAULT);
                 Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
@@ -378,11 +400,8 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
                 tvUserMainInfo.setText(uname);
                 tvUserSubInfo.setText(regEmail);
             } else {
-
                 tvUserMainInfo.setText(uname);
                 tvUserSubInfo.setText(regEmail);
-
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -399,8 +418,10 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-
+                    permissionGiven = true;
                 } else {
+                    permissionGiven = false;
+                    Toast.makeText(this, "Grant permissions!!", Toast.LENGTH_LONG).show();
                     Log.i("Permission", "onRequestPermissionsResult: Permission Denied");
                 }
             }

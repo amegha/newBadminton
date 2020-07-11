@@ -97,7 +97,7 @@ public class CustomAdapter extends ArrayAdapter<AnswersModel> implements View.On
 
         viewHolder.myShotType.setText(answersModel.shotType);
         viewHolder.myShotLoc.setText(answersModel.ShotLocation);
-        viewHolder.myAnswerTitle.setText("My selection " + answersModel.questionNumber);
+        viewHolder.myAnswerTitle.setText("My selection " + (answersModel.questionNumber));
         viewHolder.correctAnswerTitle.setText("Correct answers");
         viewHolder.correctShotLoc.setText(answersModel.correctShotLocation);
         viewHolder.correctShotType.setText(answersModel.correctShotType);

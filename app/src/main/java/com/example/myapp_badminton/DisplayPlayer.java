@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +39,7 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
     databaseConnectionAdapter datahelper;
     private ExampleAdapter adapter;
     private List<ExampleItem> exampleList;
-    private ArrayList<String> Ids, names, image, lastdate;
+    private ArrayList<String> Ids, names, image, lastdate,regDate;
 
 
     @Override
@@ -69,6 +70,7 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
             names = new ArrayList<>();
             image = new ArrayList<>();
             lastdate = new ArrayList<>();
+            regDate=new ArrayList<>();
             exampleList = new ArrayList<>();
 
             new WebService(DisplayPlayer.this).execute(API.ServerAddress + "player_details.php", "academy_id=" + AID + "&level=" + level + "&coach_id=" + cid);
@@ -130,6 +132,7 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
                         b.putString("coach_id", cid);
                         b.putString("coachname", coach_name);
                         b.putString("date", lastdate.get(position));
+                        b.putString("regDate", regDate.get(position));
                         b.putString("level", level);
                         b.putString("Academy", academy);
                         b.putString("type", type);
@@ -242,6 +245,8 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
             names.add(locInfo[1]);
             image.add(locInfo[2]);
             lastdate.add(locInfo[4]);
+            regDate.add(locInfo[5]);
+
             /*arrayListId = Ids;
             arrayListName = names;
             arrayListImage = image;*/
@@ -250,7 +255,7 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
 
             imagebytes = Base64.decode(locInfo[2], Base64.DEFAULT);
             Bitmap decodedImage = BitmapFactory.decodeByteArray(imagebytes, 0, imagebytes.length);
-            exampleList.add(new ExampleItem(decodedImage, names.get(i), Ids.get(0)));
+            exampleList.add(new ExampleItem(decodedImage, names.get(i), Ids.get(i)));
 
             setUpRecyclerView();
         } catch (Exception e) {

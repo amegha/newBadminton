@@ -3,6 +3,7 @@ package com.example.myapp_badminton.megha;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,8 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.example.myapp_badminton.ActivityTracker;
+import com.example.myapp_badminton.HomePage;
 import com.example.myapp_badminton.R;
 
 public class ViewAnswers extends Activity implements AsyncResponse {
@@ -22,17 +25,19 @@ public class ViewAnswers extends Activity implements AsyncResponse {
     TextView score, time;
     Bundle bundle;
     DBHandler db;
-    String totaltime;
+    String totaltimeInSec, totalTimeInMins;
     String playerAnswers;
     Button nextVideo;
     private GetAnswers getAnswers;
+    private String pid;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-            ActivityTracker.writeActivityLogs(this.getLocalClassName(), settings.getString("Id", ""));
+            pid = settings.getString("Id", "");
+            ActivityTracker.writeActivityLogs(this.getLocalClassName(), pid);
 
             setContentView(R.layout.activity_view_answer);
             bundle = getIntent().getExtras();
@@ -43,7 +48,7 @@ public class ViewAnswers extends Activity implements AsyncResponse {
             db = new DBHandler(this);
             displayTotalTimeTaken();
             getGameScore();
-            playerAnswers = db.getPlayerAnswers();
+            playerAnswers = db.getPlayerAnswers(pid);
             sendResultToServer(playerAnswers);
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,9 +70,20 @@ public class ViewAnswers extends Activity implements AsyncResponse {
 //        db.deletePlayerAnswerData();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        db.deletePlayerAnswerData();
+        PlayVideo.answersModelsArray.clear();
+        startActivity(new Intent(this, HomePage.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void playNextVideo(View view) {
         try {
             db.deletePlayerAnswerData();
+            PlayVideo.answersModelsArray.clear();
             startActivity(new Intent(this, PlayVideo.class)/*.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)*/);
             finish();
         } catch (Exception e) {
@@ -79,7 +95,7 @@ public class ViewAnswers extends Activity implements AsyncResponse {
     public void onTaskComplete(String result) {
         try {
             if (result.equals("Success")) {
-    //            db.deletePlayerAnswerData();
+                //            db.deletePlayerAnswerData();
                 //empty table answers and correct answers
                 nextVideo.setEnabled(true);
                 Log.e("ViewAnswers", "upload status " + result);
@@ -103,13 +119,15 @@ public class ViewAnswers extends Activity implements AsyncResponse {
     @Override
     protected void onStop() {
         super.onStop();
-        db.deletePlayerAnswerData();
+//        db.deletePlayerAnswerData();
     }
 
     private void displayTotalTimeTaken() {
         try {
-            totaltime = String.valueOf(db.getPlayerTotalTime());
-            time.setText(totaltime);
+            totaltimeInSec = String.valueOf(db.getPlayerTotalTime());
+            time.setText(totaltimeInSec+" Sec");
+//            totalTimeInMins = String.valueOf(db.getPlayerTotalTime()/60);
+//            time.setText("Time in sec:"+totaltimeInSec+"\nTime in min:"+totalTimeInMins);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -144,7 +162,7 @@ public class ViewAnswers extends Activity implements AsyncResponse {
 
         try {
             jsonObject.put("userId", "1");
-            jsonObject.put("total time", totaltime);
+            jsonObject.put("total time", totaltimeInSec);
             jsonObject.put("totalscore", "");
         } catch (JSONException e) {
             e.printStackTrace();

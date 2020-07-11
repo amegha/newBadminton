@@ -26,7 +26,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -52,22 +51,20 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
     static ArrayList<AnswersModel> answersModelsArray = new ArrayList<>();
     //    int[] pauses = {166, 798, 1713, 2101, 3426, 4046, 5262, 5753, 7030, 7969, 8617, 9336, 10425, 10869};
     static int[] pauses, maxTime;/*= {166, 798, 1100, 1713, 2101, 3426, 4046, 5262, 5753, 7030, 7969, 8617, 9336, 10425, 10869};*/
-    static String link = "http://stage1.optipacetech.com/badminton/", videoName;
+    static String link, videoName;
+    static int totalPauses;
     private static CustomAdapter adapter;
     private static String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.CAMERA,
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.ACCESS_FINE_LOCATION
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
-    static int totalPauses;
     String html = "<iframe width=\"560\" height=\"315\" src=\"http://www.youtube.com/watch?v=cRFnsOUoHmM\" frameborder=\"0\" allowfullscreen></iframe>\"";
     String url = "<iframe src='https://www.youtube.com/watch?v=cRFnsOUoHmM?fs=0' width='100%' height='100%' style='border: none;'></iframe>";
     int initPos, currPos, watchAgainCount, pauseAt, REQUEST_ANSWER = 1, answerCount, score;
     Button watchAgain, answerQuestions;
     MediaController mediaController;
     Bundle bundle = new Bundle();
-//    TextView ctv;
+    //    TextView ctv;
     Handler handler;
     String[] correctAnswers;
     String[] answerContents;
@@ -146,11 +143,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
     private long start, playerTime;
 
     public void verifyStoragePermissions(Activity activity) {
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)//required for blutooth scan
-                != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -172,14 +165,14 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
             if (db.isDataEmpty()) {
                 getAnswers = new GetAnswersImpl1(this, new WebService(this), p_id);
                 getAnswers.getCorrectAnswersFromServer();
-    //            connectionAndVideoStream();
+                //            connectionAndVideoStream();
             } else {
 
                 String res = db.getAllData();
-                Log.e("all pause data","from db "+res);
+                Log.e("all pause data", "from db " + res);
                 correctAnswers = res.split(",");
-    //            videoName = correctAnswers[correctAnswers.length - 1];
-    //            link = link +videoName;
+                //            videoName = correctAnswers[correctAnswers.length - 1];
+                //            link = link +videoName;
                 pauses = new int[correctAnswers.length - 1];
                 correctShotLoc = new String[correctAnswers.length - 1];
                 correctShotType = new String[correctAnswers.length - 1];
@@ -195,7 +188,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
 
                 }
                 videoName = correctAnswers[correctAnswers.length - 1];
-                link = link + videoName;
+                link = com.example.myapp_badminton.megha.API.VIDEO_LINK + videoName;
                 connectionAndVideoStream();
             }
         } catch (NumberFormatException e) {
@@ -210,15 +203,17 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[2] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[3] == PackageManager.PERMISSION_GRANTED) {
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
 //                    connectionAndVideoStream();
                     getAnswers = new GetAnswersImpl1(this, new WebService(this), p_id);
                     getAnswers.getCorrectAnswersFromServer();
 //                    Log.i(TAG, "onRequestPermissionsResult: Permission Granted");
-                } else
+                } else {
+                    Toast.makeText(this, "GrantGrant permissions!!", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(this, HomePage.class));
+                    finish();
                     Log.i("Permission", "Permission Denied");
+                }
             }
             /*getAnswers = new GetAnswersImpl1(this, new WebService(this));
             getAnswers.getCorrectAnswersFromServer();*/
@@ -291,24 +286,28 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
                         mediaController = new MediaController(this);
                     }
                     mediaController.setAnchorView(vv);
+                    Toast.makeText(this, "Loading...", Toast.LENGTH_LONG).show();
+
                     Uri video = Uri.parse(link);
+//                    Toast.makeText(this, link, Toast.LENGTH_SHORT).show();
                     vv.setMediaController(null);
                     vv.setVideoURI(video);
                     buttonDisable();
                     Log.e("onPrepared11: ", "pauses[pauseAt] " + pauses[pauseAt] + " pauseAt " + pauseAt + "initpos " + initPos + "answercount " + answerCount);
                     progressBar.setVisibility(View.VISIBLE);
                     vv.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @RequiresApi(api = Build.VERSION_CODES.O)
+//                        @RequiresApi(api = Build.VERSION_CODES.O)
                         @Override
                         public void onPrepared(MediaPlayer mp) {
                             mediaPlayer = mp;
                             PlaybackParams myPlayBackParams = null;
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                 myPlayBackParams = new PlaybackParams();
-    //                            myPlayBackParams.setSpeed(0.2f); //you can set speed here c
+                                //                            myPlayBackParams.setSpeed(0.2f); //you can set speed here c
                                 mp.setPlaybackParams(myPlayBackParams);
                                 mp.seekTo(initPos, MediaPlayer.SEEK_CLOSEST);
                                 mp.start();
+                                mp.setVolume(0f, 0f);
                                 mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
                                     @Override
                                     public void onVideoSizeChanged(MediaPlayer mp, int arg1,
@@ -317,6 +316,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
                                         // TODO Auto-generated method stub
                                         progressBar.setVisibility(View.GONE);
                                         mp.start();
+                                        mp.setVolume(0f, 0f);
                                         vv.setOnInfoListener(onInfoToPlayStateListener);
                                         handler.postDelayed(stopPlayerTask, handlerTime);
                                         buttonDisable();
@@ -461,12 +461,6 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
     protected void onStart() {
 
         super.onStart();
-        if (isConnectingToInternet(this)) {
-//            sendLog();
-
-        } else {
-            Toast.makeText(this, "No internet!", Toast.LENGTH_SHORT).show();
-        }
 
     }
 
@@ -501,11 +495,11 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
         }
     }
 
-    @Override
+   /* @Override
     public void onBackPressed() {
         super.onBackPressed();
-        link="http://stage1.optipacetech.com/badminton/";
-    }
+        link = "http://stage1.optipacetech.com/badminton/";
+    }*/
 
     @Override
     protected void onResume() {
@@ -553,7 +547,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
                 db.saveAnswers(shotLoc, shotType, playerTime, score);
                 Log.e("type and loc", "onActivityResult: " + shotLoc + "\n" + shotType + "\n elapsed time " + playerTime);
 
-                answersModelsArray.add(new AnswersModel(answerCount, shotType, shotLoc, correctShotType[answerCount], correctShotLoc[answerCount], playerTime, maxTime[answerCount]));
+                answersModelsArray.add(new AnswersModel(answerCount + 1, shotType, shotLoc, correctShotType[answerCount], correctShotLoc[answerCount], playerTime, maxTime[answerCount]));
                 Log.e("array val ", "here " + answersModelsArray.size());
                /* answersModel.setShotLocation((String) bundle.get("shot_location"));
                 answersModel.setShotType((String) bundle.get("shot_type"));*/
@@ -598,13 +592,12 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
                 switch (result) {
                     case "00":
                     case "01":
-                    case "02":
-                    {
+                    case "02": {
                         Toast.makeText(this, "Completed all the levels!!", Toast.LENGTH_SHORT).show();
                         break;
                     }
                     case "03": {
-                        Toast.makeText(this, "Player Mapping not Done!!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Completed all the videos!", Toast.LENGTH_LONG).show();
                         startActivity(new Intent(this, HomePage.class));
                         finish();
                         break;
@@ -641,12 +634,11 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
     }
 
     private void parseCorrectAnswers(String result) {
-
         try {
 //        if (db.isDataEmpty()) {
             correctAnswers = result.split(",");//715:Top right:Clear:159:11,715:Middle middle:Drive:361:1,715:Out left:Drop:523:2,upload/training9.mp4
             videoName = correctAnswers[correctAnswers.length - 1];
-            link = link + videoName;
+            link = com.example.myapp_badminton.megha.API.VIDEO_LINK + videoName;
             pauses = new int[correctAnswers.length - 1];
 
             correctShotLoc = new String[correctAnswers.length - 1];
@@ -655,7 +647,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
             maxTime = new int[correctAnswers.length - 1];
             for (int i = 0; i < correctAnswers.length - 1; i++) {  //correctAnswer.length-1 coz it fetches the video etName also at the end which is appended to result, seperated by ','
                 answerContents = correctAnswers[i].split(":");
-    //            for (int j = 0; j < answerContents.length; j++) {
+                //            for (int j = 0; j < answerContents.length; j++) {
                 videoId[i] = answerContents[0];
                 correctShotLoc[i] = answerContents[1];
                 correctShotType[i] = answerContents[2];
@@ -665,7 +657,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
                 db.storeCorrectAnswers(videoId[i], correctShotLoc[i], correctShotType[i], pauses[i], maxTime[i], videoName);
                 Log.e("playVideo", "pauses are " + pauses[i] + " ");
             }
-            totalPauses=pauses.length;
+            totalPauses = pauses.length;
             System.out.println("correct ansers" + correctAnswers);
 //            System.out.println("ansers contents " + answerContents);
             System.out.println("pauses" + pauses.toString());

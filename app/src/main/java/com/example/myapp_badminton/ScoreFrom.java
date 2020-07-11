@@ -28,7 +28,7 @@ public class ScoreFrom extends AppCompatActivity implements AsyncResponse {
     //  Spinner spin;
     ByteArrayOutputStream baos;
     String today, yesterday, pass_date, name, userid;
-    String cid, coach_name, coachdate, level, academy, playerName, playerId, last_date, aid;
+    String cid, coach_name, coachdate, level, academy, playerName, playerId, regDate, aid;
     String type, PName, PId, lastScoreEntryDate, Score;
     int x;
 
@@ -104,6 +104,7 @@ public class ScoreFrom extends AppCompatActivity implements AsyncResponse {
                 cid = b.getString("coach_id");
                 coach_name = b.getString("coachname");
                 coachdate = b.getString("date");
+                regDate = bundle.getString("regDate");
                 level = b.getString("level");
                 academy = b.getString("Academy");
                 type = b.getString("type");
@@ -173,6 +174,7 @@ public class ScoreFrom extends AppCompatActivity implements AsyncResponse {
                 bundlecoach.putString("coach_id", cid);
                 bundlecoach.putString("coachname", coach_name);
                 bundlecoach.putString("date", coachdate);
+                bundlecoach.putString("regDate", regDate);
                 bundlecoach.putString("level", level);
                 bundlecoach.putString("Academy", academy);
                 bundlecoach.putString("PlayerName", playerName);
@@ -214,6 +216,7 @@ public class ScoreFrom extends AppCompatActivity implements AsyncResponse {
                 bundlecoach.putString("coach_id", cid);
                 bundlecoach.putString("coachname", coach_name);
                 bundlecoach.putString("date", coachdate);
+                bundlecoach.putString("regDate", regDate);
                 bundlecoach.putString("level", level);
                 bundlecoach.putString("Academy", academy);
                 bundlecoach.putString("PlayerName", playerName);
@@ -264,6 +267,7 @@ public class ScoreFrom extends AppCompatActivity implements AsyncResponse {
                 bundlecoach.putString("coach_id", cid);
                 bundlecoach.putString("coachname", coach_name);
                 bundlecoach.putString("date", coachdate);
+                bundlecoach.putString("regDate", regDate);
                 bundlecoach.putString("level", level);
                 bundlecoach.putString("Academy", academy);
                 bundlecoach.putString("PlayerName", playerName);
@@ -304,6 +308,7 @@ public class ScoreFrom extends AppCompatActivity implements AsyncResponse {
                 bundlecoach.putString("coach_id", cid);
                 bundlecoach.putString("coachname", coach_name);
                 bundlecoach.putString("date", coachdate);
+                bundlecoach.putString("regDate", regDate);
                 bundlecoach.putString("level", level);
                 bundlecoach.putString("Academy", academy);
                 bundlecoach.putString("PlayerName", playerName);
@@ -344,6 +349,7 @@ public class ScoreFrom extends AppCompatActivity implements AsyncResponse {
                 bundlecoach.putString("coach_id", cid);
                 bundlecoach.putString("coachname", coach_name);
                 bundlecoach.putString("date", coachdate);
+                bundlecoach.putString("regDate", regDate);
                 bundlecoach.putString("level", level);
                 bundlecoach.putString("Academy", academy);
                 bundlecoach.putString("PlayerName", playerName);

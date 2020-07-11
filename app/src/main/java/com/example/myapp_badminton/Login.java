@@ -1,9 +1,12 @@
 package com.example.myapp_badminton;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
@@ -17,7 +20,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import java.io.File;
 
@@ -26,21 +31,26 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     public static final String PREFS_NAME = "LoginPrefs";
     public static final String Password_pref = "passKey";
     public static final String Email_pref = "emailKey";
+    private static final int REQUEST_RUNTIME_PERMISSIONS = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    };
     public Button btn_signIn, reset;
     public EditText etName, etPassword, email, etOTP, newPass, confirmNewPass;
     public TextView Registration, password_forgot;
-    public String regEmail, password, today, type, Id, Name, lastScoreEntryDate, Score, image, gender;
+    public String regEmail, password, today, type, Id, Name, lastScoreEntryDate, Score, image, regDate;
     SQLiteDatabase sqLiteDatabase;
     AlertDialog alertDialog;
     ProgressDialog progressDialog;
     String sNewPass, sNewPassConfirm;
-
     //variables used for sharedpreferences
     SharedPreferences sharedpreferences;
     SQLiteDatabase db;
     Cursor cursor, cursor_name;//cursor_days_not_entered,cursor_lastDate,cursor_sec_last_login;
     String last_date, savedID, UserName, sec_lastDate, pending_day;
     NetworkAvailability networkAvailability;
+    private boolean permissionGiven;
     private int counter = 5, x;
     private GetOTP getOTP;
     private ConfirmOTP confirmOTP;
@@ -48,8 +58,49 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
     //this is for first time registration
     public void Register(View view) {
-        Intent intent = new Intent(Login.this, MainActivity.class);
-        startActivity(intent);
+        verifyStoragePermissions(this);
+        if (permissionGiven) {
+            Intent intent = new Intent(Login.this, MainActivity.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(getApplicationContext(), "Grant permissions!!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void verifyStoragePermissions(Activity activity) {
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_RUNTIME_PERMISSIONS
+
+            );
+        } else {
+            permissionGiven = true;
+        }
+    }
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_RUNTIME_PERMISSIONS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    permissionGiven = true;
+                } else {
+                    permissionGiven = false;
+                    Toast.makeText(this, "Grant permissions!!", Toast.LENGTH_LONG).show();
+                    Log.i("Permission", "onRequestPermissionsResult: Permission Denied");
+                }
+            }
+        }
     }
 
     @Override
@@ -144,7 +195,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     public void onTaskComplete(String result) {
         try {
             Log.e("sign in", "result " + result);
-            if(progressDialog!=null){
+            if (progressDialog != null) {
                 progressDialog.dismiss();
             }
 //        try {
@@ -159,7 +210,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                     break;
                 }
                 case "03": {
-                    Toast.makeText(this, "User not found!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "You are not mapped!!", Toast.LENGTH_LONG).show();
                     etName.setError("wrong");
                     break;
                 }
@@ -224,6 +275,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                 lastScoreEntryDate = arrRes[3];
                 Score = arrRes[4];
                 image = arrRes[5];
+                regDate = arrRes[6];
                 //player
                 editor.putString("logged", "logged");
                 editor.putString("type", type);
@@ -233,6 +285,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                 editor.putString("DateLastScore", lastScoreEntryDate);
                 editor.putString("lastScore", Score);
                 editor.putString("mail_id", regEmail);
+                editor.putString("regDate", regDate);
                 //            editor.putString("gender", gender);
                 editor.apply();
                 Intent intent = new Intent(Login.this, HomePage.class);
@@ -346,7 +399,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        progressDialog.dismiss();
+//        progressDialog.dismiss();
 
     }
 
@@ -369,7 +422,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     public void resetPasswordOrPin(View view) {
         try {
             progressDialog = ProgressDialog.show(this, "Password Resetting", "Please wait..", false, false);
-//        alertDialog.dismiss();
+            alertDialog.dismiss();
             sNewPass = newPass.getText().toString().trim();
             sNewPassConfirm = confirmNewPass.getText().toString().trim();
             if (!sNewPass.equals("")) {
@@ -389,7 +442,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                 newPass.setError("can't be empty");
 
             }
-            progressDialog.dismiss();
+//            progressDialog.dismiss();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -399,7 +452,13 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         try {
             regEmail = etName.getText().toString();
             password = etPassword.getText().toString();
-            signIn(regEmail, password);
+            if (regEmail.isEmpty()) {
+                etName.setError("Empty");
+            } else if (password.isEmpty()) {
+                etPassword.setError("Empty");
+            } else {
+                signIn(regEmail, password);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

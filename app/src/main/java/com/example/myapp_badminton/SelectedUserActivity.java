@@ -3,6 +3,7 @@ package com.example.myapp_badminton;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -34,13 +35,13 @@ import static android.os.Environment.getExternalStorageDirectory;
 
 public class SelectedUserActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, AsyncResponse {
 
+    public static final String PREFS_NAME = "LoginPrefs";
     public String UNAME, UID, pending_day, selected;
-    public String cid, coach_name, coachdate, level, academy, playerName, playerId, imageString, aid;
+    public String cid, coach_name, coachdate, level, academy, playerName, playerId, imageString, aid, regDate;
     int x, y, diffInDays;
     Button date_selectionBtn;
     databaseConnectionAdapter helper;
     SQLiteDatabase db;
-
     String last_date, savedID, savedMID, ymdCurrDate, dmyCurrDate, sec_lastDate, MID;
     Button btn_today;
     EditText et_score;
@@ -51,6 +52,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
     String lastScoreEntryDate, type, Score;
     String ImagePlayer;
     AlertDialog alertDialog;
+    SharedPreferences settings;
     //    Exception e;
 //    ParseException e;
     private int mYear, mMonth, mDay;
@@ -72,6 +74,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
             super.onCreate(savedInstanceState);
             Log.e("onCreate: ", "***from activity***" + this.getLocalClassName());
             setContentView(R.layout.activity_selected_user);
+            settings = getSharedPreferences(PREFS_NAME, 0);
             initUI();
             date = new Date();
             getCurrentDate();
@@ -168,6 +171,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
         lastScoreEntryDate = playerBundle.getString("lastScoreDate");
         Score = playerBundle.getString("ScoreLast");
         ImagePlayer = playerBundle.getString("Image");
+        regDate = settings.getString("regDate", "");
     }
 
     private void getCurrentDate() {
@@ -184,6 +188,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
         cid = bundle.getString("coach_id");
         coach_name = bundle.getString("coachname");
         coachdate = bundle.getString("date");
+        regDate = bundle.getString("regDate");
         academy = bundle.getString("Academy");
         level = bundle.getString("level");
         aid = bundle.getString("aid");
@@ -207,12 +212,13 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
             score = et_score.getText().toString();
             if (score.equals("") || score.matches(".*[a-zA-Z]+.*") || (Double.parseDouble(score)) > 10.0) {
                 et_score.setError("Enter the score");
-            } else if (selected.equals("DATE_NOTSET")) {
+            } else if (selected.equals("DATE_NOTSET") ||((ymdDateFormat.parse(regDate).after(ymdDateFormat.parse(selected))))) {
                 DOScore.setError("Before Registration");
-            } else if(selected.compareTo(ymdCurrDate)>0){
+                Toast.makeText(this, "You were not registered", Toast.LENGTH_SHORT).show();
+            } else if (selected.compareTo(ymdCurrDate) > 0) {
                 DOScore.setError("Future date Not allowed");
-            }
-            else {
+                Toast.makeText(this, "Future date Not allowed", Toast.LENGTH_SHORT).show();
+            } else {
                 if (type.equalsIgnoreCase("Coach")) {
                     //get difference between last date and selected date
                     if (coachdate.compareTo(selected) < 0) {
