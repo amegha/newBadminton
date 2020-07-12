@@ -18,6 +18,8 @@ public class API {
     public static String GENERATE_OTP = "gen_otp.php";
     public static String GET_ACADEMY_INFO = "get_academy.php";
     public static String CONFIRM_OTP = "confirm_otp.php";
+    public static String PLAYER_DETAILS = "player_details.php";
+    public static String GET_ALL_SCORE = "get_all_score.php";
 
 
 }

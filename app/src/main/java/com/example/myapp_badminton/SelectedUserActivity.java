@@ -122,7 +122,8 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
 //                        selected = dmyDateFormat.format(dmyCurrDate);
                         DOScore.setText(dmyCurrDate);
                     } else if (coachdate.equals("DATE_NOTSET")) {
-                        selected = "DATE_NOTSET";
+//                        selected = "DATE_NOTSET";
+                        selected = ymdCurrDate;
                         DOScore.setText(dmyCurrDate);
 
                     } else if (coachdate.compareTo(ymdCurrDate) > 0) { // this condition should nor come at all..
@@ -151,7 +152,8 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
 //                        selected = dmyDateFormat.format(nextDate);
                         DOScore.setText(dmyCurrDate);
                     } else if (lastScoreEntryDate.equals("DATE_NOTSET")) {
-                        selected = "DATE_NOTSET";
+//                        selected = "DATE_NOTSET";
+                        selected=ymdCurrDate;
                         DOScore.setText(dmyCurrDate);
                     } else if (lastScoreEntryDate.compareTo(ymdCurrDate) > 0) {
                         DOScore.setError("Future Date not allowed");

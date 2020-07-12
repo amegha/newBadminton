@@ -39,8 +39,8 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (position > -1) {
                 academyName = (String) academy_spinner.getItemAtPosition(position);
-                adapter_levels = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, datahelper.allDataHelper.getLevels(cityName, locationName, academyName));
-                adapter_levels.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                adapter_levels = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, datahelper.allDataHelper.getLevels(cityName, locationName, academyName));
+                adapter_levels.setDropDownViewResource(R.layout.spinner_item);
                 level_spinner.setAdapter(adapter_levels);
                 aid = datahelper.allDataHelper.getAid(cityName, locationName, academyName);
 
@@ -57,8 +57,8 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (position > -1) {
                 locationName = (String) location_Spinner.getItemAtPosition(position);
-                adapter_academy = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, datahelper.allDataHelper.getAcademies(cityName, locationName));
-                adapter_academy.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                adapter_academy = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, datahelper.allDataHelper.getAcademies(cityName, locationName));
+                adapter_academy.setDropDownViewResource(R.layout.spinner_item);
                 academy_spinner.setAdapter(adapter_academy);
                 academy_spinner.setOnItemSelectedListener(getAcademyLister);
 
@@ -77,8 +77,8 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
                 cityName = (String) city_Spinner.getItemAtPosition(position);
                 Log.d("SpinnerCountry", "onItemSelected: state: ");
 
-                adapter_location = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, datahelper.allDataHelper.getLocations(cityName));
-                adapter_location.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                adapter_location = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, datahelper.allDataHelper.getLocations(cityName));
+                adapter_location.setDropDownViewResource(R.layout.spinner_item);
                 location_Spinner.setAdapter(adapter_location);
 
                 location_Spinner.setOnItemSelectedListener(locationListener);
@@ -125,7 +125,8 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
                 coach_id = bundle1.getString("userid");
             }
             if (isConnected()) {
-                new WebService(this).execute(API.ServerAddress + "get_academy.php", "module=coach&coach_id=" + coach_id);
+//                new WebService(this).execute(API.ServerAddress + "get_academy.php", "module=coach&coach_id=" + coach_id);
+                new WebService(this).execute(API.ServerAddress + API.GET_ACADEMY_INFO, "module=coach&coach_id=" + coach_id);
             } else {
                 Toast.makeText(this, "you are offline", Toast.LENGTH_SHORT).show();
             }
@@ -191,8 +192,8 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
                     System.out.println("all the Academy Ids " + Collections.singletonList(aid));
                     System.out.println("all the academy names " + Collections.singletonList(academy_name));
                     //used to display city
-                    adapter_city = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, datahelper.allDataHelper.getCity());
-                    adapter_city.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    adapter_city = new ArrayAdapter<String>(this, R.layout.spinner_item, datahelper.allDataHelper.getCity());
+                    adapter_city.setDropDownViewResource(R.layout.spinner_item);
                     city_Spinner.setAdapter(adapter_city);
                     city_Spinner.setOnItemSelectedListener(cityListener);
 

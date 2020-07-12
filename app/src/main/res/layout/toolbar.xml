@@ -11,6 +11,8 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     app:navigationIcon="@drawable/ic_menu_black_24dp"
     app:title="Badminton"
+    android:contentInsetStart="0dp"
+    app:contentInsetStart="0dp"
     app:titleTextColor="@drawable/bg">
 
 </androidx.appcompat.widget.Toolbar>

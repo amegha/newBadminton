@@ -60,8 +60,14 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     public void Register(View view) {
         verifyStoragePermissions(this);
         if (permissionGiven) {
-            Intent intent = new Intent(Login.this, MainActivity.class);
-            startActivity(intent);
+            if(isConnected()) {
+                Intent intent = new Intent(Login.this, MainActivity.class);
+                startActivity(intent);
+
+            }
+            else{
+                Toast.makeText(this, "You are offline", Toast.LENGTH_LONG).show();
+            }
         } else {
             Toast.makeText(getApplicationContext(), "Grant permissions!!", Toast.LENGTH_LONG).show();
         }

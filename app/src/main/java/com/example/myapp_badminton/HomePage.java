@@ -34,7 +34,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.myapp_badminton.megha.PlayVideo;
+import com.example.myapp_badminton.PlayModule.PlayVideo;
 import com.google.android.material.navigation.NavigationView;
 
 import java.io.File;
@@ -55,6 +55,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
     String sNewPass, sNewPassConfirm, regEmail;
     TextView tvUserMainInfo, tvUserSubInfo;
     NetworkAvailability networkAvailability;
+    NavigationView navView; // initiate a Navigation View
 
     private EditText newPass, confirmNewPass;
     private byte[] imageBytes;
@@ -73,6 +74,9 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
             Toolbar toolbar = findViewById(R.id.toolbar);// get the reference of Toolbar
             SharedPreferences shared = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
             verifyStoragePermissions(this);
+            profilePic = findViewById(R.id.nav_user_image);
+            tvUserMainInfo = findViewById(R.id.nav_main_info);
+            tvUserSubInfo = findViewById(R.id.nav_sub_info);
 //            setNavigationDrawer();
             setSupportActionBar(toolbar);
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
@@ -82,7 +86,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
                 id = settings.getString("Id", "");
                 regEmail = settings.getString("mail_id", "");
 
-                //            setNavigationDrawer();
+                setNavigationDrawer();
                 //            displayNavHeaderInfo();
 //                setNavigationDrawer();
             } else {
@@ -94,7 +98,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
                 if (isConnected()) {
                     new WebService(HomePage.this).execute(API.ServerAddress + API.AFTER_LOGIN, "user_id=" + id);
                 } else {
-//                    setNavigationDrawer();
+                    setNavigationDrawer();
                 }
             }
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -133,21 +137,21 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
                     REQUEST_RUNTIME_PERMISSIONS
 
             );
-        }
-        else{
-            permissionGiven=true;
+        } else {
+            permissionGiven = true;
         }
     }
 
     private void setNavigationDrawer() {
         try {
-            /*profilePic = findViewById(R.id.nav_user_image);
+            profilePic = findViewById(R.id.nav_user_image);
             tvUserMainInfo = findViewById(R.id.nav_main_info);
-            tvUserSubInfo = findViewById(R.id.nav_sub_info);*/
+            tvUserSubInfo = findViewById(R.id.nav_sub_info);
             Bitmap bmp = null;
             dLayout = findViewById(R.id.drawer_layout); // initiate a DrawerLayout
-            NavigationView navView = findViewById(R.id.navigation); // initiate a Navigation View
-            displayNavHeaderInfo();
+
+            navView = findViewById(R.id.navigation);
+//            displayNavHeaderInfo();
             Menu menu = navView.getMenu();
             if (utype.equalsIgnoreCase("coach")) {
                 menu.findItem(R.id.five).setVisible(false);
@@ -187,7 +191,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
                         //                    frag = new ForgotPasswordFragment();
                     } else if (itemId == R.id.five) {
                         if (utype.equalsIgnoreCase("Player")) {
-                            sendLog();
+//                            sendLog();
                             startActivity(new Intent(getApplicationContext(), PlayVideo.class));
                         }
                         //                    else{
@@ -318,7 +322,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
                 }
                 case "01":
                 case "02": {
-                    Toast.makeText(this, "Server Error!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Server busy!", Toast.LENGTH_LONG).show();
                     break;
                 }
                 case "03": {
@@ -351,7 +355,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
                     } else /*if (arrRes.length == 3) */ {
                         lastScoreDate = arrRes[1];
                         Score = arrRes[2];
-//                        setNavigationDrawer();
+                        setNavigationDrawer();
 
                         /* displayNavHeaderInfo();*/
                     } /*else {

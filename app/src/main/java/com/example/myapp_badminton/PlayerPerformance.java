@@ -127,7 +127,8 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
 
     public void callServer(String data) {
         //new WebService(getApplicationContext()).execute(API.ServerAddress + "get_all_score.php", "module=coach&coach_id="+score_uid+"&player_id="+pid);
-        new WebService(PlayerPerformance.this).execute("http://stage1.optipacetech.com/badminton/api/get_all_score.php", "module=coach&coach_id=" + cid + "&player_id=" + data);
+//        new WebService(PlayerPerformance.this).execute("http://stage1.optipacetech.com/badminton/api/get_all_score.php", "module=coach&coach_id=" + cid + "&player_id=" + data);
+        new WebService(PlayerPerformance.this).execute(API.ServerAddress + API.GET_ALL_SCORE, "module=coach&coach_id=" + cid + "&player_id=" + data);
 
 
     }
@@ -169,154 +170,154 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
         System.out.println("all the cities "+ Collections.singletonList(ScoreDate));
         System.out.println("all the Academy Ids "+ Collections.singletonList(Scores));*/
 
-        //player checking
-        if(type.equalsIgnoreCase("Player")) {
+            //player checking
+            if (type.equalsIgnoreCase("Player")) {
            /* editTextId.setVisibility(View.GONE);
             ok.setVisibility(View.GONE);*/
 
-            if (list1.size() == 0 && list2.size() == 0) {//used to check if no data is entered
-                //if(lineChart.getData().equals(null) || lineChart.getData().equals(""))
+                if (list1.size() == 0 && list2.size() == 0) {//used to check if no data is entered
+                    //if(lineChart.getData().equals(null) || lineChart.getData().equals(""))
 
-                lineChart.setNoDataText("No Data Available !");
-                // lineChart.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(), "No Data Available!", Toast.LENGTH_LONG).show();
-            } else {
-                score_date = new String[list1.size()];
+                    lineChart.setNoDataText("No Data Available !");
+                    // lineChart.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(), "No Data Available!", Toast.LENGTH_LONG).show();
+                } else {
+                    score_date = new String[list1.size()];
 
-                for (int i = 0; i < list1.size(); i++) {
-                    score_date[i] = list1.get(i);
-                }
-                for (int j = 0; j < list2.size(); j++) {
-                    lineEntries = new ArrayList<>();
                     for (int i = 0; i < list1.size(); i++) {
-                        if (i == 0 && list1.size() <= 1) {
-                            if (lineChart.getData() == null || lineChart.getData().getDataSetCount() == 0 || lineChart.getData().getDataSetCount() <= 1) {
-                                lineEntries = (ArrayList) lineChart.getData().getDataSetByIndex(0);
-                                //   lineEntries.add(new Entry(0f, 0f));
-                                // lineEntries.add(new Entry(Float.valueOf(i), Float.valueOf(list2.get(i))));
-                                lineChart.getData().notifyDataChanged();
-                                lineChart.notifyDataSetChanged();
-                                lineChart.setNoDataText("No graph is available !");
+                        score_date[i] = list1.get(i);
+                    }
+                    for (int j = 0; j < list2.size(); j++) {
+                        lineEntries = new ArrayList<>();
+                        for (int i = 0; i < list1.size(); i++) {
+                            if (i == 0 && list1.size() <= 1) {
+                                if (lineChart.getData() == null || lineChart.getData().getDataSetCount() == 0 || lineChart.getData().getDataSetCount() <= 1) {
+                                    lineEntries = (ArrayList) lineChart.getData().getDataSetByIndex(0);
+                                    //   lineEntries.add(new Entry(0f, 0f));
+                                    // lineEntries.add(new Entry(Float.valueOf(i), Float.valueOf(list2.get(i))));
+                                    lineChart.getData().notifyDataChanged();
+                                    lineChart.notifyDataSetChanged();
+                                    lineChart.setNoDataText("No graph is available !");
+                                }
+                                Toast.makeText(getApplicationContext(), "More than 2 Entries can only be Displayed!..", Toast.LENGTH_LONG).show();
+                                lineChart.setVisibility(View.GONE);
+                                lineChart.setNoDataText("No Chart is Available!");
+                            } else {
+                                lineEntries.add(new Entry(Float.valueOf(i), Float.valueOf(list2.get(i))));
                             }
-                            Toast.makeText(getApplicationContext(), "More than 2 Entries can only be Displayed!..", Toast.LENGTH_LONG).show();
-                            lineChart.setVisibility(View.GONE);
-                            lineChart.setNoDataText("No Chart is Available!");
-                        } else {
-                            lineEntries.add(new Entry(Float.valueOf(i), Float.valueOf(list2.get(i))));
+
                         }
 
                     }
+                    lineDataSet = new LineDataSet(lineEntries, "Performanace");
+                    lineDataSet.setColor(ContextCompat.getColor(getApplicationContext(), R.color.app_text));
+                    lineDataSet.setValueTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+                    lineChart.setVerticalScrollBarEnabled(true);
 
+
+                    XAxis xAxis = lineChart.getXAxis();
+                    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                    xAxis.setAvoidFirstLastClipping(true);
+                    // final String[] months = new String[]{"Jan", "Feb", "Mar", "Apr"};
+                    ValueFormatter formatter = new ValueFormatter() {
+                        @Override
+                        public String getAxisLabel(float value, AxisBase axis) {
+                            return score_date[(int) value];
+                        }
+                    };
+                    xAxis.setGranularity(1f);
+                    // lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(list1));
+                    xAxis.setValueFormatter(formatter);
+
+                    YAxis yAxisRight = lineChart.getAxisRight();
+                    //yAxisRight.setEnabled(false);
+
+                    YAxis yAxisLeft = lineChart.getAxisLeft();
+                    yAxisLeft.setGranularity(1f);
+
+                    LineData data = new LineData(lineDataSet);
+                    lineChart.setData(data);
+                    lineChart.animateX(1000);
+                    lineChart.getDescription().setEnabled(false);
+                    lineChart.invalidate();
                 }
-                lineDataSet = new LineDataSet(lineEntries, "Performanace");
-                lineDataSet.setColor(ContextCompat.getColor(getApplicationContext(), R.color.app_text));
-                lineDataSet.setValueTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
-                lineChart.setVerticalScrollBarEnabled(true);
-
-
-                XAxis xAxis = lineChart.getXAxis();
-                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-                xAxis.setAvoidFirstLastClipping(true);
-                // final String[] months = new String[]{"Jan", "Feb", "Mar", "Apr"};
-                ValueFormatter formatter = new ValueFormatter() {
-                    @Override
-                    public String getAxisLabel(float value, AxisBase axis) {
-                        return score_date[(int) value];
-                    }
-                };
-                xAxis.setGranularity(1f);
-                // lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(list1));
-                xAxis.setValueFormatter(formatter);
-
-                YAxis yAxisRight = lineChart.getAxisRight();
-                //yAxisRight.setEnabled(false);
-
-                YAxis yAxisLeft = lineChart.getAxisLeft();
-                yAxisLeft.setGranularity(1f);
-
-                LineData data = new LineData(lineDataSet);
-                lineChart.setData(data);
-                lineChart.animateX(1000);
-                lineChart.getDescription().setEnabled(false);
-                lineChart.invalidate();
             }
-        }
 
             //checking coach
 
-        if (type.equalsIgnoreCase("coach")) {
+            if (type.equalsIgnoreCase("coach")) {
 
-            if (list1.size() == 0 && list2.size() == 0) {//no data is available
-                //if(lineChart.getData().equals(null) || lineChart.getData().equals(""))
+                if (list1.size() == 0 && list2.size() == 0) {//no data is available
+                    //if(lineChart.getData().equals(null) || lineChart.getData().equals(""))
 
-                lineChart.setNoDataText("No Data Available !");
-                // lineChart.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(), "No Data Available!", Toast.LENGTH_LONG).show();
-            } else {
-                score_date = new String[list1.size()];
+                    lineChart.setNoDataText("No Data Available !");
+                    // lineChart.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(), "No Data Available!", Toast.LENGTH_LONG).show();
+                } else {
+                    score_date = new String[list1.size()];
 
 
-                for (int i = 0; i < list1.size(); i++) {
-                    score_date[i] = list1.get(i);
-                }
-                for (int j = 0; j < list2.size(); j++) {
-                    lineEntries = new ArrayList<>();
                     for (int i = 0; i < list1.size(); i++) {
-                        if (i == 0 && list1.size() == 1) {
-                            if (lineChart.getData() != null && lineChart.getData().getDataSetCount() > 1) {
-                                lineEntries = (ArrayList) lineChart.getData().getDataSetByIndex(0);
-                                //lineEntries.add(new Entry(0f, 0f));
-                                //  lineEntries.add(new Entry(Float.valueOf(i), Float.valueOf(list2.get(i))));
-                                lineChart.getData().notifyDataChanged();
-                                lineChart.notifyDataSetChanged();
+                        score_date[i] = list1.get(i);
+                    }
+                    for (int j = 0; j < list2.size(); j++) {
+                        lineEntries = new ArrayList<>();
+                        for (int i = 0; i < list1.size(); i++) {
+                            if (i == 0 && list1.size() == 1) {
+                                if (lineChart.getData() != null && lineChart.getData().getDataSetCount() > 1) {
+                                    lineEntries = (ArrayList) lineChart.getData().getDataSetByIndex(0);
+                                    //lineEntries.add(new Entry(0f, 0f));
+                                    //  lineEntries.add(new Entry(Float.valueOf(i), Float.valueOf(list2.get(i))));
+                                    lineChart.getData().notifyDataChanged();
+                                    lineChart.notifyDataSetChanged();
+                                    lineChart.setNoDataText("No Chart is Available!");
+                                }
                                 lineChart.setNoDataText("No Chart is Available!");
+                                Toast.makeText(getApplicationContext(), "More than 2 Entries can only be Displayed!..", Toast.LENGTH_LONG).show();
+                                lineChart.setVisibility(View.GONE);
+                            } else {
+                                lineEntries.add(new Entry(Float.valueOf(i), Float.valueOf(list2.get(i))));
                             }
-                            lineChart.setNoDataText("No Chart is Available!");
-                            Toast.makeText(getApplicationContext(), "More than 2 Entries can only be Displayed!..", Toast.LENGTH_LONG).show();
-                            lineChart.setVisibility(View.GONE);
-                        } else {
-                            lineEntries.add(new Entry(Float.valueOf(i), Float.valueOf(list2.get(i))));
+
                         }
 
                     }
 
+
+                    lineDataSet = new LineDataSet(lineEntries, "Performanace");
+                    lineDataSet.setColor(ContextCompat.getColor(getApplicationContext(), R.color.app_text));
+                    lineDataSet.setValueTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+                    lineChart.setVerticalScrollBarEnabled(true);
+
+
+                    XAxis xAxis = lineChart.getXAxis();
+                    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                    xAxis.setAvoidFirstLastClipping(true);
+
+                    // final String[] months = new String[]{"Jan", "Feb", "Mar", "Apr"};
+                    ValueFormatter formatter = new ValueFormatter() {
+                        @Override
+                        public String getAxisLabel(float value, AxisBase axis) {
+                            return score_date[(int) value];
+                        }
+                    };
+                    xAxis.setGranularity(1f);
+                    // lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(list1));
+                    xAxis.setValueFormatter(formatter);
+
+                    YAxis yAxisRight = lineChart.getAxisRight();
+                    //yAxisRight.setEnabled(false);
+
+                    YAxis yAxisLeft = lineChart.getAxisLeft();
+                    yAxisLeft.setGranularity(1f);
+
+                    LineData data = new LineData(lineDataSet);
+                    lineChart.setData(data);
+                    lineChart.getDescription().setEnabled(false);
+                    lineChart.animateX(1000);
+                    lineChart.invalidate();
                 }
-
-
-                lineDataSet = new LineDataSet(lineEntries, "Performanace");
-                lineDataSet.setColor(ContextCompat.getColor(getApplicationContext(), R.color.app_text));
-                lineDataSet.setValueTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
-                lineChart.setVerticalScrollBarEnabled(true);
-
-
-                XAxis xAxis = lineChart.getXAxis();
-                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-                xAxis.setAvoidFirstLastClipping(true);
-
-                // final String[] months = new String[]{"Jan", "Feb", "Mar", "Apr"};
-                ValueFormatter formatter = new ValueFormatter() {
-                    @Override
-                    public String getAxisLabel(float value, AxisBase axis) {
-                        return score_date[(int) value];
-                    }
-                };
-                xAxis.setGranularity(1f);
-                // lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(list1));
-                xAxis.setValueFormatter(formatter);
-
-                YAxis yAxisRight = lineChart.getAxisRight();
-                //yAxisRight.setEnabled(false);
-
-                YAxis yAxisLeft = lineChart.getAxisLeft();
-                yAxisLeft.setGranularity(1f);
-
-                LineData data = new LineData(lineDataSet);
-                lineChart.setData(data);
-                lineChart.getDescription().setEnabled(false);
-                lineChart.animateX(1000);
-                lineChart.invalidate();
             }
-        }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -325,7 +326,7 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
 
     private void LocationInfo(String s, ArrayList<String> scoredate, ArrayList<String> score) {
         try {
-            if(s.equals(null)|| s.equals("")|| s.isEmpty()==true){
+            if (s.equals(null) || s.equals("") || s.isEmpty() == true) {
                 lineChart.setNoDataText("No Data Available!");
             }
             String[] locInfo = s.split(",");
@@ -390,7 +391,8 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
             PScore = Bplayers.getString("ScoreLast");
             ActivityTracker.writeActivityLogs(this.getLocalClassName(), uidPlay);
             if (type.equalsIgnoreCase("Player")) {
-                new WebService(PlayerPerformance.this).execute("http://stage1.optipacetech.com/badminton/api/get_all_score.php", "module=player&player_id=" + uidPlay);
+//                new WebService(PlayerPerformance.this).execute("http://stage1.optipacetech.com/badminton/api/get_all_score.php", "module=player&player_id=" + uidPlay);
+                new WebService(PlayerPerformance.this).execute(API.ServerAddress + API.GET_ALL_SCORE, "module=player&player_id=" + uidPlay);
             }
         } catch (Exception e) {
             e.printStackTrace();

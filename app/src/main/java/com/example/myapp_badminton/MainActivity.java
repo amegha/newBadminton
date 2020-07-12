@@ -123,13 +123,13 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 //                String cityName = (String) city_Spinner.getItemAtPosition(position);
 /*
 
-                cityArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, db.getCities(stateName));
-                cityArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                cityArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, db.getCities(stateName));
+                cityArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
                 city_Spinner.setAdapter(cityArrayAdapter);
 */
 
-                academyArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, db.getAcademy(cityName, locationName));
-                academyArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                academyArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, db.getAcademy(cityName, locationName));
+                academyArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
                 academy_spinner.setAdapter(academyArrayAdapter);
 
 //                location_spinner.setOnItemSelectedListener(location_listener);
@@ -149,13 +149,13 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 cityName = (String) city_Spinner.getItemAtPosition(position);
 /*
 
-                cityArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, db.getCities(stateName));
-                cityArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                cityArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, db.getCities(stateName));
+                cityArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
                 city_Spinner.setAdapter(cityArrayAdapter);
 */
 
-                locationArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, db.getLocations(cityName));
-                locationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                locationArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, db.getLocations(cityName));
+                locationArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
                 location_spinner.setAdapter(locationArrayAdapter);
 
                 location_spinner.setOnItemSelectedListener(location_listener);
@@ -205,8 +205,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 stateName = (String) state_Spinner.getItemAtPosition(position);
                 Log.d("SpinnerCountry", "onItemSelected: state: ");
 
-                cityArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, db.getCities(stateName));
-                cityArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                cityArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, db.getCities(stateName));
+                cityArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
                 city_Spinner.setAdapter(cityArrayAdapter);
 
                 city_Spinner.setOnItemSelectedListener(city_listener);
@@ -626,6 +626,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     private void invokeCamera() {
         try {
             Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            Toast.makeText(this, "Please wait..", Toast.LENGTH_SHORT).show();
             startActivityForResult(cameraIntent, CAMERA_REQUEST);
         } catch (Exception e) {
             e.printStackTrace();
@@ -639,6 +640,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(photo);
+
             convertTobase64(photo);
         }
     }
@@ -1136,8 +1138,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     private void populateSpinner() {
         try {
-            stateArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, db.getStates());
-            stateArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            stateArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, db.getStates());
+            stateArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
             state_Spinner.setAdapter(stateArrayAdapter);
             state_Spinner.setOnItemSelectedListener(state_listener);
         } catch (Exception e) {

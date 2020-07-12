@@ -33,11 +33,11 @@
             android:title="Sync Data" />
         <item
             android:id="@+id/six"
-            android:icon="@drawable/ic_person_black_24dp"
+            android:icon="@drawable/ic_info_black"
             android:title="About" />
         <item
             android:id="@+id/seven"
-            android:icon="@drawable/ic_arrow_back_black_24dp"
+            android:icon="@drawable/ic_arrow_back_black"
             android:title="Sign Out" />
         <!--<item
             android:id="@+id/eight"

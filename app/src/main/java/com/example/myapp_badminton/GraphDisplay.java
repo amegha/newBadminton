@@ -114,62 +114,62 @@ public class GraphDisplay extends AppCompatActivity implements AsyncResponse {
 */
 
 //testing player
-        if(type.equalsIgnoreCase("Player")) {
-            if (list1.size() == 0 && list2.size() == 0) {
-                //if(lineChart.getData().equals(null) || lineChart.getData().equals(""))
+            if (type.equalsIgnoreCase("Player")) {
+                if (list1.size() == 0 && list2.size() == 0) {
+                    //if(lineChart.getData().equals(null) || lineChart.getData().equals(""))
 
-                barChart.setNoDataText("No Data Available !");
-                // barChart.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(), "No Data Available!", Toast.LENGTH_LONG).show();
-            } else {
-
-
-                XAxis xAxis = barChart.getXAxis();
-                //   xAxis.setLabelCount(barEntries.size());
-
-                xAxis.setGranularity(1f);
-                xAxis.setGranularityEnabled(true);
-                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                    barChart.setNoDataText("No Data Available !");
+                    // barChart.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(), "No Data Available!", Toast.LENGTH_LONG).show();
+                } else {
 
 
-                // getEntries(stringData,integerData);
-                // getEntries();
-                for (int j = 0; j < list2.size(); j++) {
-                    barEntries = new ArrayList<>();
-                    for (int i = 0; i < list1.size(); i++) {
-                        barEntries.add(new BarEntry(i, list2.get(i)));
+                    XAxis xAxis = barChart.getXAxis();
+                    //   xAxis.setLabelCount(barEntries.size());
+
+                    xAxis.setGranularity(1f);
+                    xAxis.setGranularityEnabled(true);
+                    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+
+                    // getEntries(stringData,integerData);
+                    // getEntries();
+                    for (int j = 0; j < list2.size(); j++) {
+                        barEntries = new ArrayList<>();
+                        for (int i = 0; i < list1.size(); i++) {
+                            barEntries.add(new BarEntry(i, list2.get(i)));
                 /*
                 sample data
                 barEntries.add(new BarEntry(1, 7.8f));
                 barEntries.add(new BarEntry(2, 8.5f));
                 barEntries.add(new BarEntry(3, 6.8f));*/
+                        }
                     }
+
+                    barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(list1));
+                    barDataSet = new BarDataSet(barEntries, "");
+                    barData = new BarData(barDataSet);
+                    barChart.setData(barData);
+                    YAxis left = barChart.getAxisLeft();
+                    left.setAxisMinimum(0f);
+                    barDataSet.setColors(Color.BLUE);
+                    barDataSet.setValueTextColor(Color.BLACK);
+                    barDataSet.setValueTextSize(10f);
+
+                    barDataSet.setDrawValues(true);
+
+
+                    // Bars are sliding in from left to right
+                    barChart.animateXY(1000, 1000);
+                    // Display scores inside the bars
+                    barChart.setDrawValueAboveBar(true);
+                    barData.setBarWidth(0.3f); // set custom bar width
+                    barChart.getDescription().setEnabled(false);
+                    barChart.setFitBars(true); // make the x-axis fit exactly all bars
+                    barChart.invalidate();
+
                 }
-
-                barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(list1));
-                barDataSet = new BarDataSet(barEntries, "");
-                barData = new BarData(barDataSet);
-                barChart.setData(barData);
-                YAxis left = barChart.getAxisLeft();
-                left.setAxisMinimum(0f);
-                barDataSet.setColors(Color.BLUE);
-                barDataSet.setValueTextColor(Color.BLACK);
-                barDataSet.setValueTextSize(10f);
-
-                barDataSet.setDrawValues(true);
-
-
-                // Bars are sliding in from left to right
-                barChart.animateXY(1000, 1000);
-                // Display scores inside the bars
-                barChart.setDrawValueAboveBar(true);
-                barData.setBarWidth(0.3f); // set custom bar width
-                barChart.getDescription().setEnabled(false);
-                barChart.setFitBars(true); // make the x-axis fit exactly all bars
-                barChart.invalidate();
-
             }
-        }
 
 
             //testing coach
@@ -270,7 +270,8 @@ public class GraphDisplay extends AppCompatActivity implements AsyncResponse {
     public void callServer(String data) {
         try {
             //new WebService(getApplicationContext()).execute(API.ServerAddress + "get_all_score.php", "module=coach&coach_id="+score_uid+"&player_id="+pid);
-            new WebService(GraphDisplay.this).execute("http://stage1.optipacetech.com/badminton/api/get_all_score.php", "module=coach&coach_id=" + cid + "&player_id=" + data);
+//            new WebService(GraphDisplay.this).execute("http://stage1.optipacetech.com/badminton/api/get_all_score.php", "module=coach&coach_id=" + cid + "&player_id=" + data);
+            new WebService(GraphDisplay.this).execute(API.ServerAddress + API.GET_ALL_SCORE, "module=coach&coach_id=" + cid + "&player_id=" + data);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -316,10 +317,10 @@ public class GraphDisplay extends AppCompatActivity implements AsyncResponse {
             score_uidplay = Bplayers.getString("Pid");
             Pdate = Bplayers.getString("lastScoreDate");
             PScore = Bplayers.getString("ScoreLast");
-            ActivityTracker.writeActivityLogs(this.getLocalClassName(),score_uidplay);
+            ActivityTracker.writeActivityLogs(this.getLocalClassName(), score_uidplay);
 
             if (type.equalsIgnoreCase("Player")) {
-                new WebService(GraphDisplay.this).execute("http://stage1.optipacetech.com/badminton/api/get_all_score.php", "module=player&player_id=" + score_uidplay);
+                new WebService(GraphDisplay.this).execute(API.ServerAddress + API.GET_ALL_SCORE, "module=player&player_id=" + score_uidplay);
             }
         } catch (Exception e) {
             e.printStackTrace();

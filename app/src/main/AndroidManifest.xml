@@ -58,23 +58,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".megha.ViewAnswers"
+            android:name=".PlayModule.ViewAnswers"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".megha.SubmitAnswer"
+            android:name=".PlayModule.SubmitAnswer"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".megha.ListOfAnswers"
+            android:name=".PlayModule.ListOfAnswers"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Dialog" />
         <activity
-            android:name=".megha.PlayVideo"
+            android:name=".PlayModule.PlayVideo"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:launchMode="singleTask"
             android:resizeableActivity="true"
             android:screenOrientation="landscape"
             android:supportsRtl="true" />
         <activity android:name=".DisplayPlayer" />
+<!--        <activity android:name=".PlayModule.PlayVideo" />-->
     </application>
 
 </manifest>
