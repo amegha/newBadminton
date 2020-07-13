@@ -873,6 +873,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 createConfirmOTPAlertDialog();
             } else if (result.equals("register/0/confirmOTP")) {
                 clearFields();
+                alertDialog.dismiss();
                 Toast.makeText(this, "Registered successfully", Toast.LENGTH_SHORT).show();
                 createResetPasswordAlertDialog();
 
@@ -884,6 +885,9 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 //                sendOtpProgressDialog.dismiss();
                 email.setError("Already registered");
                 Toast.makeText(this, "Already registered", Toast.LENGTH_SHORT).show();
+            } else if (result.equals("203")) {//wrong otp
+                etOTP.setError("wrong!");
+
             } else {
                 progressDismiss();
                 String[] arrRes;
@@ -1160,7 +1164,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     public void validateOTP(View view) {
         try {
-            alertDialog.dismiss();
+//            alertDialog.dismiss();
             module = "register";
             //Displaying a progressbarmail_id
             progressDialog = ProgressDialog.show(MainActivity.this, "Verifying!!", "Please wait..", false, false);
@@ -1202,8 +1206,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             alertDialog.dismiss();
             Log.e("reset", "resetPasswordOrPin: " + m_id);
             progressDialog = ProgressDialog.show(this, "Password setting", "Please wait..", false, false);
-            sNewPass = newPass.getText().toString().trim();
-            sNewPassConfirm = confirmNewPass.getText().toString().trim();
+            sNewPass = newPass.getText().toString();
+            sNewPassConfirm = confirmNewPass.getText().toString();
             if (sNewPass.equals(sNewPassConfirm)) {
                 alertDialog.dismiss();
                 if (isConnected()) {

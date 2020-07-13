@@ -192,7 +192,10 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
                     } else if (itemId == R.id.five) {
                         if (utype.equalsIgnoreCase("Player")) {
 //                            sendLog();
+                            if(isConnected())
                             startActivity(new Intent(getApplicationContext(), PlayVideo.class));
+                            else
+                                Toast.makeText(getApplicationContext(), "You are offline", Toast.LENGTH_SHORT).show();
                         }
                         //                    else{
                         //                        menu.findItem(itemId).setVisible(false);
@@ -253,8 +256,8 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
         try {
             progressDialog = ProgressDialog.show(this, "Password Resetting", "Please wait..", false, false);
 //        alertDialog.dismiss();
-            sNewPass = newPass.getText().toString().trim();
-            sNewPassConfirm = confirmNewPass.getText().toString().trim();
+            sNewPass = newPass.getText().toString();
+            sNewPassConfirm = confirmNewPass.getText().toString();
             if (!sNewPass.equals("")) {
                 if (sNewPass.equals(sNewPassConfirm)) {
                     alertDialog.dismiss();

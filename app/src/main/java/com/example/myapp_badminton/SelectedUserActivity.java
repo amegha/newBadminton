@@ -117,7 +117,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
                         nextDate = getNextDate(coachdate, 1);
                         selected = nextDate/*ymdDateFormat.format(nextDate)*/;
                         DOScore.setText(dmyDateFormat.format(ymdDateFormat.parse(nextDate)));
-                    } else if (coachdate.compareTo(ymdCurrDate) == 0 || coachdate.equals("DATE_NOTSET")) {
+                    } else if (coachdate.compareTo(ymdCurrDate) == 0 /*|| coachdate.equals("DATE_NOTSET")*/) {
                         selected = ymdCurrDate;
 //                        selected = dmyDateFormat.format(dmyCurrDate);
                         DOScore.setText(dmyCurrDate);

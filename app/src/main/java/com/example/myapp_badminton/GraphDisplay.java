@@ -90,7 +90,6 @@ public class GraphDisplay extends AppCompatActivity implements AsyncResponse {
             arrRes = result.split(",");
             String locationXml;
 //        Log.e("ViewUserDetails", " arrRes[0] " + arrRes[0] + " arrRes[1]  " +  arrRes[1] + "  arrRes[2]" + arrRes[2]);
-
             arrRes = result.split("/");
             for (int i = 1; i < arrRes.length; i++) {
                 getCorrected(arrRes[i]);

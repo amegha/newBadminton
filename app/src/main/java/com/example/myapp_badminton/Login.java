@@ -222,6 +222,10 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                 }
                 case "103": {
                     etPassword.setError("wrong!");
+                    break;
+                }case "203": {
+                    etOTP.setError("wrong!");
+                    break;
                 }
                 case "502":
                 case "503": {
@@ -233,6 +237,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                     break;
                 }
                 case "forgot_password/0/confirmOTP": {
+                    alertDialog.dismiss();
                     createResetPasswordAlertDialog();
                     break;
                 }
@@ -364,6 +369,9 @@ public class Login extends AppCompatActivity implements AsyncResponse {
             alert.setView(confirmDialog);
             alertDialog = alert.create();
             alertDialog.show();
+            alertDialog.setCanceledOnTouchOutside(false);
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -411,7 +419,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
     public void validateOTP(View view) {
         try {
-            alertDialog.dismiss();
+//            alertDialog.dismiss();
             String OTP = etOTP.getText().toString().trim();
             if (isConnected()) {
 
@@ -428,9 +436,9 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     public void resetPasswordOrPin(View view) {
         try {
             progressDialog = ProgressDialog.show(this, "Password Resetting", "Please wait..", false, false);
-            alertDialog.dismiss();
-            sNewPass = newPass.getText().toString().trim();
-            sNewPassConfirm = confirmNewPass.getText().toString().trim();
+//            alertDialog.dismiss();
+            sNewPass = newPass.getText().toString();
+            sNewPassConfirm = confirmNewPass.getText().toString();
             if (!sNewPass.equals("")) {
                 if (sNewPass.equals(sNewPassConfirm)) {
                     alertDialog.dismiss();
@@ -448,7 +456,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                 newPass.setError("can't be empty");
 
             }
-//            progressDialog.dismiss();
+            progressDialog.dismiss();
         } catch (Exception e) {
             e.printStackTrace();
         }
