@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     private static final int CAMERA_REQUEST = 1888;
     private static final int REQUEST_RUNTIME_PERMISSIONS = 1;
     public static String result;
+    Bitmap photo;
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -362,7 +363,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         national_rank.addTextChangedListener(loginTextWatcher);*/
             imageView = findViewById(R.id.image);
 
-
             add = findViewById(R.id.btn_add);
 
 
@@ -638,7 +638,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            photo = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(photo);
 
             convertTobase64(photo);
@@ -788,7 +788,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 } else {*/
 
                 //            long id = helper.insertData(etName, password_user, enc_password, mailId, trainingCenter, stateRank, nationalRank, image_uri_data, radio_gender, radio_Education, radio_playerType, age, dob, timestamp1);
-                add.setEnabled(false);
+//                add.setEnabled(false);
                 formXMl(name, phone_user, mailId, stateSpinner, citySpinner, locationSpinner, academySpinner, stateRank, nationalRank, image_uri_data, radio_gender, radio_Education, age, xmldate, timestamp1);
                 //            }// end of else
             }
@@ -884,6 +884,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             } else if (result.equals("103")) {
 //                sendOtpProgressDialog.dismiss();
                 email.setError("Already registered");
+//                imageView.setImageResource(android.R.color.white);
                 Toast.makeText(this, "Already registered", Toast.LENGTH_SHORT).show();
             } else if (result.equals("203")) {//wrong otp
                 etOTP.setError("wrong!");
@@ -918,7 +919,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         dob.setText("");
         state_rank.setText("");
         national_rank.setText("");
-        imageView.setImageResource(android.R.color.transparent);
+        imageView.setImageResource(android.R.color.white);
     }
     /*private void signIn(String regEmail, String password) {
         if (isConnected()) {new WebService(this).execute(API.ServerAddress + API.USER_LOGIN, "mail_id=" + regEmail + "&password=" + password);

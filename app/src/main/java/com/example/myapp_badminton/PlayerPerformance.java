@@ -199,7 +199,7 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
                                     lineChart.notifyDataSetChanged();
                                     lineChart.setNoDataText("No graph is available !");
                                 }
-                                Toast.makeText(getApplicationContext(), "More than 2 Entries can only be Displayed!..", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "No sufficient data to display the graph!", Toast.LENGTH_LONG).show();
                                 lineChart.setVisibility(View.GONE);
                                 lineChart.setNoDataText("No Chart is Available!");
                             } else {

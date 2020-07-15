@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/bg"
     tools:context=".About">
 
     <ImageView
@@ -13,13 +14,22 @@
         android:layout_gravity="center"
         android:layout_marginHorizontal="@android:dimen/app_icon_size" />
 
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="15dp"
-        android:text="App Version:1.0 "
-        android:textColor="#fff"
+        android:text="@string/app_version"
+        android:textColor="#000000" />
 
-        />
+    <!--<TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/versionInfo"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="15dp"
+        android:visibility="visible"
+        android:text="@string/version_info"
+        android:textColor="#000000" />-->
 </LinearLayout>

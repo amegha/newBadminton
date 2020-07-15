@@ -171,13 +171,15 @@
 
 
     <!--    new string vals-->
-    <string name="hint_username">Username</string>
+    <string name="hint_username">Email ID</string>
     <string name="hint_password">Password</string>
     <string name="hint_confirm_password">Re-enter</string>
     <string name="button_sign_in">Sign in</string>
     <string name="button_sign_up">Sign up</string>
     <string name="button_send">Send</string>
     <string name="button_get_otp">Get OTP</string>
+    <string name="app_version">Version 1.0</string>
+    <string name="version_info">Play game module below 8 starts playing from beginning after each pause.</string>
     <string name="text_forgot_password">Forgot password?</string>
     <string name="text_signin_message">Sign in</string>
     <string name="text_signin_social_media">Or Sign in using social media</string>
@@ -191,7 +193,7 @@
     <string name="text_reset_password_title">Password Reset</string>
     <string name="text_forgot_password_message">We will send you a link to reset your password</string>
 
-    <string name="hint_email">Email</string>
+    <string name="hint_email">Email ID</string>
     <string name="hint_phone">Phone</string>
 
     <string name="submit">Submit</string>

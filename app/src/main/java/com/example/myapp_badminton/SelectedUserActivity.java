@@ -216,7 +216,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
                 et_score.setError("Enter the score");
             } else if (selected.equals("DATE_NOTSET") ||((ymdDateFormat.parse(regDate).after(ymdDateFormat.parse(selected))))) {
                 DOScore.setError("Before Registration");
-                Toast.makeText(this, "You were not registered", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Before registration not allowed", Toast.LENGTH_SHORT).show();
             } else if (selected.compareTo(ymdCurrDate) > 0) {
                 DOScore.setError("Future date Not allowed");
                 Toast.makeText(this, "Future date Not allowed", Toast.LENGTH_SHORT).show();

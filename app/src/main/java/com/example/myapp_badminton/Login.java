@@ -449,7 +449,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                         Toast.makeText(this, "You are offline", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    confirmNewPass.setError("password doesnt match");
+                    confirmNewPass.setError("password  mismatch");
 
                 }
             } else {

@@ -13,6 +13,6 @@
     app:title="Badminton"
     android:contentInsetStart="0dp"
     app:contentInsetStart="0dp"
-    app:titleTextColor="@drawable/bg">
+    app:titleTextColor="@color/colorPrimaryDark">
 
 </androidx.appcompat.widget.Toolbar>

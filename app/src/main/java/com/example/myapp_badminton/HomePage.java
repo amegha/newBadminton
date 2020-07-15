@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +53,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
     String date, uname, id, utype, lastScoreDate, Score, playerImage;
     AlertDialog alertDialog;
     CircleImageView profilePic;
+    ImageView tipsImage;
     String sNewPass, sNewPassConfirm, regEmail;
     TextView tvUserMainInfo, tvUserSubInfo;
     NetworkAvailability networkAvailability;
@@ -77,6 +79,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
             profilePic = findViewById(R.id.nav_user_image);
             tvUserMainInfo = findViewById(R.id.nav_main_info);
             tvUserSubInfo = findViewById(R.id.nav_sub_info);
+            tipsImage = findViewById(R.id.image_tip);
 //            setNavigationDrawer();
             setSupportActionBar(toolbar);
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
@@ -85,7 +88,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
                 uname = settings.getString("Name", "");
                 id = settings.getString("Id", "");
                 regEmail = settings.getString("mail_id", "");
-
+                tipsImage.setVisibility(View.GONE);
                 setNavigationDrawer();
                 //            displayNavHeaderInfo();
 //                setNavigationDrawer();
@@ -124,6 +127,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
 
 
     }
+
 
     public void verifyStoragePermissions(Activity activity) {
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -192,8 +196,8 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
                     } else if (itemId == R.id.five) {
                         if (utype.equalsIgnoreCase("Player")) {
 //                            sendLog();
-                            if(isConnected())
-                            startActivity(new Intent(getApplicationContext(), PlayVideo.class));
+                            if (isConnected())
+                                startActivity(new Intent(getApplicationContext(), PlayVideo.class));
                             else
                                 Toast.makeText(getApplicationContext(), "You are offline", Toast.LENGTH_SHORT).show();
                         }
@@ -268,7 +272,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
                         Toast.makeText(this, "You are offline", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    confirmNewPass.setError("password doesnt match");
+                    confirmNewPass.setError("password mismatch");
 
                 }
             } else {
