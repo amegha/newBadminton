@@ -62,7 +62,7 @@ public class ListOfAnswers extends Activity {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         id = settings.getString("Id", "");
 
-        ActivityTracker.writeActivityLogs(this.getLocalClassName(), id);
+        ActivityTracker.writeActivityLogs(this.getLocalClassName(), id,getApplicationContext());
         db = new DBHandler(this);
         setContentView(R.layout.list_of_answers);
         listView = findViewById(R.id.list);

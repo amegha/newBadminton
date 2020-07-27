@@ -316,7 +316,7 @@ public class GraphDisplay extends AppCompatActivity implements AsyncResponse {
             score_uidplay = Bplayers.getString("Pid");
             Pdate = Bplayers.getString("lastScoreDate");
             PScore = Bplayers.getString("ScoreLast");
-            ActivityTracker.writeActivityLogs(this.getLocalClassName(), score_uidplay);
+            ActivityTracker.writeActivityLogs(this.getLocalClassName(), score_uidplay,getApplicationContext());
 
             if (type.equalsIgnoreCase("Player")) {
                 new WebService(GraphDisplay.this).execute(API.ServerAddress + API.GET_ALL_SCORE, "module=player&player_id=" + score_uidplay);

@@ -2,8 +2,11 @@ package com.example.myapp_badminton;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
+
+import androidx.core.content.ContextCompat;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -21,25 +24,28 @@ public class WebService extends AsyncTask<String, String, String> {
     String responseString;
     NetworkAvailability networkAvailability;
     List<String> nameValuePairs = new ArrayList<String>(2);
+    Context mContext;
     private AsyncResponse mCallback;
 
 
     public WebService(Context context) {
-        Context mContext = context;
+        mContext = context;
         this.mCallback = (AsyncResponse) context;
         networkAvailability = NetworkAvailability.getInstance(context);
     }
 
     @Override
     protected String doInBackground(String... arg0) {
-        if (arg0[1].equals("badmintonLogs")||arg0[1].equals("scoreUpload")) {
+        if (arg0[1].equals("badmintonLogs") || arg0[1].equals("scoreUpload")) {
             try {
                 File root = new File(Environment.getExternalStorageDirectory(), "Badminton");
 
-                String sourceFileUri = "/storage/emulated/0/Badminton";
+//                String sourceFileUri = "/storage/emulated/0/Badminton";
+                String sourceFileUri = getFileUri();
 //                String sourceFileUri = root.getAbsolutePath();
 //                Log.e("file path", "web service " + sourceFileUri);
                 HttpURLConnection conn = null;
+
                 DataOutputStream dos = null;
                 String lineEnd = "\r\n";
                 String twoHyphens = "--";
@@ -47,7 +53,9 @@ public class WebService extends AsyncTask<String, String, String> {
                 int bytesRead, bytesAvailable, bufferSize;
                 byte[] buffer;
                 int maxBufferSize = 1 * 1024 * 1024;
-                File sourceFile = new File(sourceFileUri + "/"+arg0[1]+".txt");
+//                File sourceFile = new File(sourceFileUri + "/" + arg0[1] + ".txt");
+                File sourceFile = new File(sourceFileUri , arg0[1] + ".txt");
+
 
                 Log.e("file path", "web service " + sourceFile.toString());
 
@@ -78,7 +86,7 @@ public class WebService extends AsyncTask<String, String, String> {
                         dos = new DataOutputStream(conn.getOutputStream());
 
                         dos.writeBytes(twoHyphens + boundary + lineEnd);
-                        dos.writeBytes("Content-Disposition: form-data; name=" + arg0[1]+ ";filename=\""
+                        dos.writeBytes("Content-Disposition: form-data; name=" + arg0[1] + ";filename=\""
                                 + sourceFileUri + "\"" + lineEnd);
 
                         dos.writeBytes(lineEnd);
@@ -198,6 +206,40 @@ public class WebService extends AsyncTask<String, String, String> {
             responseString = "no net";
         }*/
         return responseString;
+    }
+
+    private String getFileUri() {
+        try {
+            String fileName = "badmintonLogs.txt";
+            File root = new File(Environment.getExternalStorageDirectory(), "Badminton");
+
+            //
+            String name = "Badminton";
+            File sdcard; /*= Environment.getExternalStorageDirectory();*/
+            if (mContext.getResources().getBoolean(R.bool.internalstorage)) {
+                sdcard = mContext.getFilesDir();
+            } else if (!mContext.getResources().getBoolean(R.bool.standalone)) {
+                sdcard = new File(Environment.getExternalStoragePublicDirectory(name).toString());
+            } else {
+                if ("goldfish".equals(Build.HARDWARE)) {
+                    sdcard = mContext.getFilesDir();
+                } else {
+                    // sdcard/Android/<app_package_name>/AWARE/ (not shareable, deletes when uninstalling package)
+                    sdcard = new File(ContextCompat.getExternalFilesDirs(mContext, null)[0] + "/" + name);
+                }
+            }
+            if (!sdcard.exists()) {
+                sdcard.mkdirs();
+            }
+            return sdcard.toString();
+//            return new File(sdcard, fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+
+        return null;
     }
 
     protected void onPostExecute(String results) {

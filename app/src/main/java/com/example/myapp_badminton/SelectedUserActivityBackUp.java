@@ -206,7 +206,7 @@ public class SelectedUserActivityBackUp extends AppCompatActivity implements Dat
                     ImagePlayer = playerBundle.getString("Image");
                     tv_userId.setText(playerId);
                     tvUser.setText(playerName);
-                    ActivityTracker.writeActivityLogs(this.getLocalClassName(), playerId);
+                    ActivityTracker.writeActivityLogs(this.getLocalClassName(), playerId,getApplicationContext());
 
                     //getting image from db
 

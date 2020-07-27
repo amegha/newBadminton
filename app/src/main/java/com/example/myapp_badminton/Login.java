@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -11,7 +12,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +26,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.File;
 
@@ -60,12 +64,11 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     public void Register(View view) {
         verifyStoragePermissions(this);
         if (permissionGiven) {
-            if(isConnected()) {
+            if (isConnected()) {
                 Intent intent = new Intent(Login.this, MainActivity.class);
                 startActivity(intent);
 
-            }
-            else{
+            } else {
                 Toast.makeText(this, "You are offline", Toast.LENGTH_LONG).show();
             }
         } else {
@@ -114,10 +117,14 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_login_new);
-
+            etName = findViewById(R.id.username_signin);
+            etPassword = findViewById(R.id.password_signin);
+            btn_signIn = findViewById(R.id.btn_signIn);
+            reset = findViewById(R.id.btn_reset);
+            deleteFile();
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             if (settings.getString("logged", "").equals("logged")) {
-                ActivityTracker.writeActivityLogs(this.getLocalClassName(), settings.getString("Id", ""));
+//                ActivityTracker.writeActivityLogs(this.getLocalClassName(), settings.getString("Id", ""), getApplicationContext());
 
                 Intent intent = new Intent(Login.this, HomePage.class);
                 //            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -125,13 +132,9 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                 finish();
             }
             //delete badminton database which existes after signing of previous user!
-            deleteFile();
 
 //        networkAvailability = new NetworkAvailability();
-            etName = findViewById(R.id.username_signin);
-            etPassword = findViewById(R.id.password_signin);
-            btn_signIn = findViewById(R.id.btn_signIn);
-            reset = findViewById(R.id.btn_reset);
+
 //        Registration = findViewById(R.id.signUp_text);
 //        password_forgot = findViewById(R.id.forgot_pass);
 
@@ -164,8 +167,11 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
     private void deleteFile() {
         try {
-            String sourceFileUri = "/storage/emulated/0/Badminton";
-            File sourceFile = new File(sourceFileUri + "/badminton.db");
+            System.out.println("Delete file: " );
+
+            String sourceFileUri = getFileUri(getApplicationContext());
+            File sourceFile = new File(sourceFileUri +"/databases"+ "/badminton.db");
+
             if (sourceFile.exists()) {
                 if (sourceFile.delete()) {
                     System.out.println("file Deleted :" + sourceFile.getPath());
@@ -175,7 +181,40 @@ public class Login extends AppCompatActivity implements AsyncResponse {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Login :" +e.getMessage() );
+
+
         }
+    }
+    private String getFileUri(Context mContext) {
+        try {
+     /*       String fileName = "badmintonLogs.txt";
+            File root = new File(Environment.getExternalStorageDirectory(), "Badminton");*/
+
+            //
+            String name = "Badminton";
+            File sdcard; /*= Environment.getExternalStorageDirectory();*/
+            if (mContext.getResources().getBoolean(R.bool.internalstorage)) {
+                sdcard = mContext.getFilesDir();
+            } else if (!mContext.getResources().getBoolean(R.bool.standalone)) {
+                sdcard = new File(Environment.getExternalStoragePublicDirectory(name).toString());
+            } else {
+                if ("goldfish".equals(Build.HARDWARE)) {
+                    sdcard = mContext.getFilesDir();
+                } else {
+                    // sdcard/Android/<app_package_name>/AWARE/ (not shareable, deletes when uninstalling package)
+                    sdcard = new File(ContextCompat.getExternalFilesDirs(mContext, null)[0] + "/" + name);
+                }
+            }
+            if (!sdcard.exists()) {
+                sdcard.mkdirs();
+            }
+            return sdcard.toString();
+//            return new File(sdcard, fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     //to save in xml file called "myPrefs"
@@ -223,7 +262,8 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                 case "103": {
                     etPassword.setError("wrong!");
                     break;
-                }case "203": {
+                }
+                case "203": {
                     etOTP.setError("wrong!");
                     break;
                 }

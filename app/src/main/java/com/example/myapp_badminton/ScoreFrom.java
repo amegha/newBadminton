@@ -1,10 +1,13 @@
 package com.example.myapp_badminton;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -12,6 +15,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -96,7 +100,7 @@ public class ScoreFrom extends AppCompatActivity implements AsyncResponse {
                 lastScoreEntryDate = BPlayer.getString("lastScoreDate");
                 Score = BPlayer.getString("ScoreLast");
                 ImagePlayer = BPlayer.getString("Image");
-                ActivityTracker.writeActivityLogs(this.getLocalClassName(), PId);
+                ActivityTracker.writeActivityLogs(this.getLocalClassName(), PId,getApplicationContext());
 
             } else {
                 Intent i = getIntent();
@@ -407,7 +411,8 @@ public class ScoreFrom extends AppCompatActivity implements AsyncResponse {
 
     private void deleteFile() {
         try {
-            String sourceFileUri = "/storage/emulated/0/Badminton";
+//            String sourceFileUri = "/storage/emulated/0/Badminton";
+            String sourceFileUri = getFileUri(getApplicationContext());
             File sourceFile = new File(sourceFileUri + "/badmintonLogs.txt");
             if (sourceFile.exists()) {
                 if (sourceFile.delete()) {
@@ -419,5 +424,35 @@ public class ScoreFrom extends AppCompatActivity implements AsyncResponse {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private String getFileUri(Context mContext) {
+        try {
+     /*       String fileName = "badmintonLogs.txt";
+            File root = new File(Environment.getExternalStorageDirectory(), "Badminton");*/
+
+            //
+            String name = "Badminton";
+            File sdcard; /*= Environment.getExternalStorageDirectory();*/
+            if (mContext.getResources().getBoolean(R.bool.internalstorage)) {
+                sdcard = mContext.getFilesDir();
+            } else if (!mContext.getResources().getBoolean(R.bool.standalone)) {
+                sdcard = new File(Environment.getExternalStoragePublicDirectory(name).toString());
+            } else {
+                if ("goldfish".equals(Build.HARDWARE)) {
+                    sdcard = mContext.getFilesDir();
+                } else {
+                    // sdcard/Android/<app_package_name>/AWARE/ (not shareable, deletes when uninstalling package)
+                    sdcard = new File(ContextCompat.getExternalFilesDirs(mContext, null)[0] + "/" + name);
+                }
+            }
+            if (!sdcard.exists()) {
+                sdcard.mkdirs();
+            }
+            return sdcard.toString();
+//            return new File(sdcard, fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -1,6 +1,11 @@
 package com.example.myapp_badminton;
 
+import android.content.Context;
+import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
+
+import androidx.core.content.ContextCompat;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,14 +16,45 @@ import java.util.Date;
 import java.util.Locale;
 
 public class ActivityTracker {
-    public static void writeActivityLogs(String string, String pid) {
+    public static void writeActivityLogs(String string, String pid, Context mContext) {
+       /* DBHandler dbHandler=new DBHandler(mContext);
+        dbHandler.storeLog(getDate() + "_" + string + "_" + pid + "/");*/
+
         try {
             String fileName = "badmintonLogs.txt";
             File root = new File(Environment.getExternalStorageDirectory(), "Badminton");
-            if (!root.exists()) {
-                root.mkdirs();
+
+            //
+            String name="Badminton";
+            File sdcard; /*= Environment.getExternalStorageDirectory();*/
+            if(mContext.getResources().getBoolean(R.bool.internalstorage)){
+                sdcard= mContext.getFilesDir();
             }
-            File textFile = new File(root, fileName);
+            else  if (!mContext.getResources().getBoolean(R.bool.standalone)) {
+                sdcard = new File(Environment.getExternalStoragePublicDirectory(name).toString());
+            } else {
+                if ("goldfish".equals(Build.HARDWARE)) {
+                    sdcard = mContext.getFilesDir();
+                } else {
+                    // sdcard/Android/<app_package_name>/AWARE/ (not shareable, deletes when uninstalling package)
+                    sdcard = new File(ContextCompat.getExternalFilesDirs(mContext, null)[0] + "/"+name);
+                }
+            }
+            if (!sdcard.exists()) {
+                sdcard.mkdirs();
+            }
+            File textFile = new File(sdcard, fileName);
+
+
+            /*String ssdcard = sdcard.getAbsolutePath() + File.separator + name + File.separator +fileName;
+            if (!ssdcard.endsWith(".txt")) {
+                ssdcard += ".txt";
+            }
+            File textFile = new File(ssdcard);*/
+
+
+            Log.e("Activity Tracker ","text file name :"+textFile.toString());
+//            File textFile = new File(sdcard, fileName);
 
             BufferedWriter out = new BufferedWriter(
                     new FileWriter(textFile, true));

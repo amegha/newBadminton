@@ -36,7 +36,7 @@ public class SubmitAnswer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        ActivityTracker.writeActivityLogs(this.getLocalClassName(), settings.getString("Id", ""));
+        ActivityTracker.writeActivityLogs(this.getLocalClassName(), settings.getString("Id", ""),getApplicationContext());
         setContentView(R.layout.activity_submit_answer);
         viewPager = findViewById(R.id.pager);
 

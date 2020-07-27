@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +15,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
@@ -22,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +34,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -63,6 +67,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
     private byte[] imageBytes;
     private ProgressDialog progressDialog;
     private boolean permissionGiven;
+    private GridLayout gridLayout;
 
     //    String uname,id,utype,lastScoreDate,Score;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -76,6 +81,8 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
             Toolbar toolbar = findViewById(R.id.toolbar);// get the reference of Toolbar
             SharedPreferences shared = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
             verifyStoragePermissions(this);
+            gridLayout=(GridLayout)findViewById(R.id.mainGrid);
+//            setSingleEvent(gridLayout);
             profilePic = findViewById(R.id.nav_user_image);
             tvUserMainInfo = findViewById(R.id.nav_main_info);
             tvUserSubInfo = findViewById(R.id.nav_sub_info);
@@ -97,7 +104,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
                 id = settings.getString("Id", "");
                 playerImage = settings.getString("Image", "");
                 regEmail = settings.getString("mail_id", "");
-                ActivityTracker.writeActivityLogs(this.getLocalClassName(), id);
+                ActivityTracker.writeActivityLogs(this.getLocalClassName(), id,getApplicationContext());
                 if (isConnected()) {
                     new WebService(HomePage.this).execute(API.ServerAddress + API.AFTER_LOGIN, "user_id=" + id);
                 } else {
@@ -237,6 +244,9 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
 
     private void sendLog() {
         new WebService(this).execute(API.ServerAddress + API.LOG, "badmintonLogs");
+//        new WebService(this).execute(API.ServerAddress + API.LOG,new DBHandler(getApplicationContext()).getLogString() );
+//        new WebService(this).execute(API.ServerAddress + API.LOG, new DBHandler(this).getLogString());
+
 
     }
 
@@ -383,7 +393,8 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
 
     private void deleteFile() {
         try {
-            String sourceFileUri = "/storage/emulated/0/Badminton";
+//            String sourceFileUri = "/storage/emulated/0/Badminton";
+            String sourceFileUri = getFileUri(getApplicationContext());
             File sourceFile = new File(sourceFileUri + "/badmintonLogs.txt");
             if (sourceFile.exists()) {
                 if (sourceFile.delete()) {
@@ -395,6 +406,36 @@ public class HomePage extends AppCompatActivity implements AsyncResponse {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private String getFileUri(Context mContext) {
+        try {
+     /*       String fileName = "badmintonLogs.txt";
+            File root = new File(Environment.getExternalStorageDirectory(), "Badminton");*/
+
+            //
+            String name = "Badminton";
+            File sdcard; /*= Environment.getExternalStorageDirectory();*/
+            if (mContext.getResources().getBoolean(R.bool.internalstorage)) {
+                sdcard = mContext.getFilesDir();
+            } else if (!mContext.getResources().getBoolean(R.bool.standalone)) {
+                sdcard = new File(Environment.getExternalStoragePublicDirectory(name).toString());
+            } else {
+                if ("goldfish".equals(Build.HARDWARE)) {
+                    sdcard = mContext.getFilesDir();
+                } else {
+                    // sdcard/Android/<app_package_name>/AWARE/ (not shareable, deletes when uninstalling package)
+                    sdcard = new File(ContextCompat.getExternalFilesDirs(mContext, null)[0] + "/" + name);
+                }
+            }
+            if (!sdcard.exists()) {
+                sdcard.mkdirs();
+            }
+            return sdcard.toString();
+//            return new File(sdcard, fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private void displayNavHeaderInfo() {

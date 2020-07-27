@@ -512,7 +512,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         try {
             DatePickerDialog datePickerDialog = new DatePickerDialog(
                     this,
-                    R.style.DialogTheme,
                     this,
                     Calendar.getInstance().get(Calendar.YEAR),
                     Calendar.getInstance().get(Calendar.MONTH),

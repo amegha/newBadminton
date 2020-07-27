@@ -93,7 +93,7 @@ public class SearchActivity extends AppCompatActivity implements UsersAdapter.Se
                 Score = playerBundle.getString("ScoreLast");
                 playerImage = playerBundle.getString("Image");
                 MainCategory_name = playerBundle.getString("check_id");
-                ActivityTracker.writeActivityLogs(this.getLocalClassName(), playerId);
+                ActivityTracker.writeActivityLogs(this.getLocalClassName(), playerId,getApplicationContext());
 
             }
 

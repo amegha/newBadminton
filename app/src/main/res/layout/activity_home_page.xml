@@ -20,29 +20,44 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:weightSum="2">
+                android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/image_tip"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/tip" />
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:weightSum="3">
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:padding="5dp"
-                    android:layout_marginBottom="20dp"
-                    android:src="@drawable/ads" />
+                    <LinearLayout
+                        android:id="@+id/dashboard_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-            </LinearLayout>
+                        <include layout="@layout/layout_dashboard" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/image_tip"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/tip" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_weight="1"
+                        android:padding="5dp"
+                        android:src="@drawable/ads" />
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
         </FrameLayout>
 
     </LinearLayout>

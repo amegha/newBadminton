@@ -389,7 +389,7 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
             uidPlay = Bplayers.getString("Pid");
             Pdate = Bplayers.getString("lastScoreDate");
             PScore = Bplayers.getString("ScoreLast");
-            ActivityTracker.writeActivityLogs(this.getLocalClassName(), uidPlay);
+            ActivityTracker.writeActivityLogs(this.getLocalClassName(), uidPlay,getApplicationContext());
             if (type.equalsIgnoreCase("Player")) {
 //                new WebService(PlayerPerformance.this).execute("http://stage1.optipacetech.com/badminton/api/get_all_score.php", "module=player&player_id=" + uidPlay);
                 new WebService(PlayerPerformance.this).execute(API.ServerAddress + API.GET_ALL_SCORE, "module=player&player_id=" + uidPlay);

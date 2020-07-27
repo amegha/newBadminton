@@ -137,7 +137,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
                     tv_userId.setText(playerId);
                     tvUser.setText(playerName);
 
-                    ActivityTracker.writeActivityLogs(this.getLocalClassName(), playerId);
+                    ActivityTracker.writeActivityLogs(this.getLocalClassName(), playerId,getApplicationContext());
                     imageString = ImagePlayer;
                     imageBytes = Base64.decode(imageString, Base64.DEFAULT);
                     Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
@@ -319,7 +319,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
 
     private void writeToTxtFile(String text) {
         try {
-            String filename = "scoreUpload.txt";
+            /*String filename = "scoreUpload.txt";
             File root = new File(getExternalStorageDirectory(), "Badminton");
             if (!root.exists()) {
                 root.mkdirs();
@@ -330,9 +330,9 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
             writer = new FileWriter(textFile);
             writer.append(text);
             writer.flush();
-            writer.close();
+            writer.close();*/
 
-            uploadScoreXml();
+            uploadScoreXml(text);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -341,8 +341,9 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
         }
     }
 
-    private void uploadScoreXml() {
-        new WebService(this).execute(API.ServerAddress + API.UPLOAD_SCORE, "scoreUpload");
+    private void uploadScoreXml(String scoreXml) {
+        new WebService(this).execute(API.ServerAddress + API.UPLOAD_SCORE, scoreXml);
+//        new WebService(this).execute(API.ServerAddress + API.UPLOAD_SCORE, "scoreUpload");
     }
 
     private String getNextDate(String inputDate, int i) {

@@ -38,7 +38,7 @@ public class ViewAnswers extends Activity implements AsyncResponse {
             super.onCreate(savedInstanceState);
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             pid = settings.getString("Id", "");
-            ActivityTracker.writeActivityLogs(this.getLocalClassName(), pid);
+            ActivityTracker.writeActivityLogs(this.getLocalClassName(), pid,getApplicationContext());
 
             setContentView(R.layout.activity_view_answer);
             bundle = getIntent().getExtras();
