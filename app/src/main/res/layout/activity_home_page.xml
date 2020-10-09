@@ -32,17 +32,17 @@
                     android:weightSum="3">
 
                     <LinearLayout
-                        android:id="@+id/dashboard_layout"
+                        android:id="@+id/player_dashboard_ll_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
-                        <include layout="@layout/layout_dashboard" />
+                        <include layout="@layout/layout_dashboard_player" />
                     </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/image_tip"
+                    <!--<ImageView
+                        android:id="@+id/play_game"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
@@ -54,7 +54,7 @@
                         android:layout_marginBottom="20dp"
                         android:layout_weight="1"
                         android:padding="5dp"
-                        android:src="@drawable/ads" />
+                        android:src="@drawable/ads" />-->
 
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>

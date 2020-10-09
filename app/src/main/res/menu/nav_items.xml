@@ -9,11 +9,24 @@
         <item
             android:id="@+id/first"
             android:icon="@drawable/ic_mode_edit_black_24dp"
-            android:title="Score Entry" />
+            android:title="Score Entry"
+            app:showAsAction="ifRoom|withText"/>
         <item
             android:id="@+id/second"
             android:icon="@drawable/performance_grapg"
-            android:title="Performance" />
+            android:title="Performance">
+            <!--<menu>
+                <item
+                    android:id="@+id/filter1"
+                    android:title="Fitness" />
+                <item
+                    android:id="@+id/filter2"
+                    android:title="Grip" />
+                <item
+                    android:id="@+id/filter3"
+                    android:title="On court" />
+            </menu>-->
+        </item>
         <item
             android:id="@+id/third"
             android:icon="@drawable/ic_poll_black_24dp"
@@ -31,6 +44,10 @@
             android:id="@+id/five1"
             android:icon="@drawable/ic_sync_gray_24dp"
             android:title="Sync Data" />
+        <item
+            android:id="@+id/five2"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Change Profile Pic" />
         <item
             android:id="@+id/six"
             android:icon="@drawable/ic_info_black"

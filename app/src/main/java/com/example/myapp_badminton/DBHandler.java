@@ -75,7 +75,7 @@ public class DBHandler extends SQLiteOpenHelper {
         try {
             db.insertOrThrow(ACADEMY_INFO, null, values);
         } catch (SQLiteConstraintException e) {
-            // TODO Auto-generated catch block
+            // TODO Auto-generated catch slice
             return;
         }
 
@@ -90,7 +90,7 @@ public class DBHandler extends SQLiteOpenHelper {
             db.insertOrThrow(PLAYER_LOG, null, values);
         } catch (SQLiteConstraintException e) {
            System.out.println(e.getMessage());
-            // TODO Auto-generated catch block
+            // TODO Auto-generated catch slice
             return;
         }
 

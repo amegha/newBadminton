@@ -384,7 +384,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
 
             // System.out.println(date);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            // TODO Auto-generated catch slice
             e.printStackTrace();
             System.out.println(e.getMessage());
 
@@ -443,7 +443,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
             boolean reachable = (returnVal == 0);
             return reachable;
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            // TODO Auto-generated catch slice
             e.printStackTrace();
         }
         return false;

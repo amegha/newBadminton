@@ -20,7 +20,7 @@ import java.util.Collections;
 public class Coach extends AppCompatActivity implements AsyncResponse {
 
     public String[] academy = {};
-    String Academy, aid, date, coach_id, coach_name, city, levels, type, fragment_module, graph_cid;
+    String Academy, aid, date, coach_id, coach_name, city, levels, type, fragment_module, graph_cid,scoreFilter;
     Button click, btn_city, btn_academy;
     Cursor cursor;
     databaseConnectionAdapter datahelper;
@@ -117,9 +117,10 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
             coach_name = bundle1.getString("x");
             coach_id = bundle1.getString("userid");
             type = bundle1.getString("type");
+            scoreFilter = bundle1.getString("scoreFilter");
 
             fragment_module = bundle1.getString("Module");
-            if (fragment_module.equalsIgnoreCase("LineGraph") || fragment_module.equalsIgnoreCase("BarGraph")) {
+            if (fragment_module.equalsIgnoreCase("LineGraph") || fragment_module.equalsIgnoreCase("playGameScore")) {
                 coach_id = bundle1.getString("id");
             } else {
                 coach_id = bundle1.getString("userid");
@@ -142,7 +143,7 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
             boolean reachable = (returnVal == 0);
             return reachable;
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            // TODO Auto-generated catch slice
             e.printStackTrace();
         }
         return false;
@@ -259,12 +260,13 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
                 b.putString("level", level_spinner.getSelectedItem().toString());
                 b.putString("Academy", academy_spinner.getSelectedItem().toString());
                 b.putString("type", type);
+                b.putString("scoreFilter",scoreFilter);
                 b.putString("aid", aid);
                 b.putString("module", fragment_module);
                 Intent i1 = new Intent(Coach.this, DisplayPlayer.class).putExtras(b);
                 startActivity(i1);
     //            datahelper.allDataHelper.delete();
-            } else if (fragment_module.equalsIgnoreCase("BarGraph")) {
+            } else if (fragment_module.equalsIgnoreCase("playGameScore")) {
                 Bundle b = new Bundle();
                 b.putString("coach_id", coach_id);
                 b.putString("coachname", coach_name);

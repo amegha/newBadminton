@@ -12,11 +12,15 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class WebService extends AsyncTask<String, String, String> {
@@ -156,7 +160,7 @@ public class WebService extends AsyncTask<String, String, String> {
 
                 } else {
                     responseString = "404";
-                } // End else block
+                } // End else slice
 
 
             } catch (Exception ex) {
@@ -165,7 +169,7 @@ public class WebService extends AsyncTask<String, String, String> {
                 ex.printStackTrace();
             }
             return responseString;
-        } else
+        } else if(!arg0[1].equals("downloadVideo")) {
             try {
                 URL obj = new URL(arg0[0]);//arg0[0]=url
                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -202,11 +206,50 @@ public class WebService extends AsyncTask<String, String, String> {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }else{
+            downloadfile(arg0[0]);
+        }
       /*  } else {
-            responseString = "no net";
+            responseString = "no crossCourtBlock";
         }*/
         return responseString;
     }
+    private void downloadfile(String vidurl) {
+
+        SimpleDateFormat sd = new SimpleDateFormat("yymmhh");
+        String date = sd.format(new Date());
+        String name = "video.mp4";
+
+        try {
+            /*String rootDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                    + File.separator + "My_Video";*/
+            String rootDir = mContext.getCacheDir()
+                    + File.separator + "My_Video";
+            File rootFile = new File(rootDir);
+            rootFile.mkdir();
+            URL url = new URL(vidurl);
+            HttpURLConnection c = (HttpURLConnection) url.openConnection();
+            c.setRequestMethod("GET");
+            c.setDoOutput(true);
+            c.connect();
+            FileOutputStream f = new FileOutputStream(new File(rootFile,
+                    name));
+            InputStream in = c.getInputStream();
+            byte[] buffer = new byte[1024];
+            int len1 = 0;
+            while ((len1 = in.read(buffer)) > 0) {
+                f.write(buffer, 0, len1);
+            }
+//            encrypt(rootDir+"/"+name);
+            responseString="done";
+            f.close();
+        } catch (Exception e) {
+            Log.d("Error....", e.toString());
+        }
+    }
+
+
+
 
     private String getFileUri() {
         try {

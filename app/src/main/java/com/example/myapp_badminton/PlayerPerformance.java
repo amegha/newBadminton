@@ -13,12 +13,15 @@ import androidx.core.content.ContextCompat;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.IMarker;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,13 +38,16 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
     databaseConnectionAdapter helper;
     SQLiteDatabase db;
     Cursor cursor, cursor1;
-    String uid, uidPlay, uname, cid, type, Pdate, PScore, fragment_module, Coachname;
+    String uid, uidPlay, uname, cid, type, Pdate, PScore, PScoreFilter, fragment_module, Coachname;
     String[] score_date;
     //  EditText editTextId;
     // Button ok;
 
     List<String> list1 = new ArrayList<String>();
     List<Float> list2 = new ArrayList<Float>();
+    List<String> list3 = new ArrayList<>();
+    YourMarkerView yourMarkerView;
+    private String pCoach;
 
     /*@Override
     public void onBackPressed() {
@@ -128,7 +134,7 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
     public void callServer(String data) {
         //new WebService(getApplicationContext()).execute(API.ServerAddress + "get_all_score.php", "module=coach&coach_id="+score_uid+"&player_id="+pid);
 //        new WebService(PlayerPerformance.this).execute("http://stage1.optipacetech.com/badminton/api/get_all_score.php", "module=coach&coach_id=" + cid + "&player_id=" + data);
-        new WebService(PlayerPerformance.this).execute(API.ServerAddress + API.GET_ALL_SCORE, "module=coach&coach_id=" + cid + "&player_id=" + data);
+        new WebService(PlayerPerformance.this).execute(API.ServerAddress + API.GET_ALL_SCORE, "module=coach&coach_id=" + cid + "&player_id=" + data+ "&scoreFilter=" + PScoreFilter);
 
 
     }
@@ -152,7 +158,7 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
             String locationXml;
 //        Log.e("ViewUserDetails", " arrRes[0] " + arrRes[0] + " arrRes[1]  " +  arrRes[1] + "  arrRes[2]" + arrRes[2]);
 
-            arrRes = result.split("/");
+            arrRes = result.split(">");
             for (int i = 1; i < arrRes.length; i++) {
                 getCorrected(arrRes[i]);
             }
@@ -204,6 +210,27 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
                                 lineChart.setNoDataText("No Chart is Available!");
                             } else {
                                 lineEntries.add(new Entry(Float.valueOf(i), Float.valueOf(list2.get(i))));
+                                lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                                    @Override
+                                    public void onValueSelected(Entry e, Highlight h) {
+
+                                        //String datey= String.valueOf(e.getY());
+
+                                        // Toast.makeText(getApplicationContext(), "Score :" + e.getY() + "\nDate :" + score_date[(int) e.getX()],Toast.LENGTH_LONG).show();
+                                        //  lineChart.highlightValue(new Highlight(h.getX(),h.getDataSetIndex(),-1));
+                                        // highlight the entry and x-position 50 in the first (0) DataSet
+                                        // Highlight highlight = new Highlight(20f,0f,0);
+                                        IMarker marker = new YourMarkerView(getApplicationContext(), R.layout.chartdialog, list3);//used to display bubble
+                                        //yourMarkerView.setCategory(list3);
+                                        lineChart.setMarker(marker);//used to set bubble
+                                        //lineChart.highlightValue(highlight, false);
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected() {
+
+                                    }
+                                });
                             }
 
                         }
@@ -277,6 +304,27 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
                                 lineChart.setVisibility(View.GONE);
                             } else {
                                 lineEntries.add(new Entry(Float.valueOf(i), Float.valueOf(list2.get(i))));
+                                lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                                    @Override
+                                    public void onValueSelected(Entry e, Highlight h) {
+
+                                        //String datey= String.valueOf(e.getY());
+
+                                        // Toast.makeText(getApplicationContext(), "Score :" + e.getY() + "\nDate :" + score_date[(int) e.getX()],Toast.LENGTH_LONG).show();
+                                        //  lineChart.highlightValue(new Highlight(h.getX(),h.getDataSetIndex(),-1));
+                                        // highlight the entry and x-position 50 in the first (0) DataSet
+                                        // Highlight highlight = new Highlight(20f,0f,0);
+                                        IMarker marker = new YourMarkerView(getApplicationContext(), R.layout.chartdialog, list3);//used to display bubble
+                                        //yourMarkerView.setCategory(list3);
+                                        lineChart.setMarker(marker);//used to set  bubble to chart
+                                        //lineChart.highlightValue(highlight, false);
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected() {
+
+                                    }
+                                });
                             }
 
                         }
@@ -290,7 +338,7 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
                     lineChart.setVerticalScrollBarEnabled(true);
 
 
-                    XAxis xAxis = lineChart.getXAxis();
+                    /*XAxis xAxis = lineChart.getXAxis();
                     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
                     xAxis.setAvoidFirstLastClipping(true);
 
@@ -309,7 +357,7 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
                     //yAxisRight.setEnabled(false);
 
                     YAxis yAxisLeft = lineChart.getAxisLeft();
-                    yAxisLeft.setGranularity(1f);
+                    yAxisLeft.setGranularity(1f);*/
 
                     LineData data = new LineData(lineDataSet);
                     lineChart.setData(data);
@@ -324,7 +372,7 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
 
     }
 
-    private void LocationInfo(String s, ArrayList<String> scoredate, ArrayList<String> score) {
+    private void LocationInfo(String s, ArrayList<String> scoredate, ArrayList<String> score, ArrayList<String> category) {
         try {
             if (s.equals(null) || s.equals("") || s.isEmpty() == true) {
                 lineChart.setNoDataText("No Data Available!");
@@ -333,6 +381,7 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
             Log.d("Total Module Size", String.valueOf(locInfo.length));
             scoredate.add(locInfo[0]);
             score.add(locInfo[1]);
+            category.add(locInfo[2]);
             ArrayList<String> convertedDate = new ArrayList<>();
             for (int i = 0; i < scoredate.size(); i++) {
                 String properDate = scoredate.get(i);
@@ -354,6 +403,7 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
                 floatValues[i] = Float.parseFloat(score.get(i));
                 list2.add(i, floatValues[i]);
             }
+            list3 = category;
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
@@ -365,11 +415,12 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
             String[] academyResponse;
             ArrayList<String> Scores = new ArrayList();
             ArrayList<String> ScoreDate = new ArrayList();
+            ArrayList<String> category = new ArrayList();
 
 
             academyResponse = s.split(";");
             for (int i = 0; i < academyResponse.length; i++) {
-                LocationInfo(academyResponse[i], ScoreDate, Scores);
+                LocationInfo(academyResponse[i], ScoreDate, Scores, category);
                 Log.d("Total Entry Size", String.valueOf(academyResponse.length));
             }
             System.out.println("all the cities " + Collections.singletonList(ScoreDate));
@@ -389,10 +440,16 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
             uidPlay = Bplayers.getString("Pid");
             Pdate = Bplayers.getString("lastScoreDate");
             PScore = Bplayers.getString("ScoreLast");
-            ActivityTracker.writeActivityLogs(this.getLocalClassName(), uidPlay,getApplicationContext());
+            PScoreFilter = Bplayers.getString("scoreFilter");
+            pCoach = Bplayers.getString("pCoach");
+            ActivityTracker.writeActivityLogs(this.getLocalClassName(), uidPlay, getApplicationContext());
             if (type.equalsIgnoreCase("Player")) {
+                if (!pCoach.equals("pCoach")) {
 //                new WebService(PlayerPerformance.this).execute("http://stage1.optipacetech.com/badminton/api/get_all_score.php", "module=player&player_id=" + uidPlay);
-                new WebService(PlayerPerformance.this).execute(API.ServerAddress + API.GET_ALL_SCORE, "module=player&player_id=" + uidPlay);
+                    new WebService(PlayerPerformance.this).execute(API.ServerAddress + API.GET_ALL_SCORE, "module=player&player_id=" + uidPlay + "&scoreFilter=" + PScoreFilter);
+                } else {
+                    new WebService(PlayerPerformance.this).execute(API.ServerAddress + API.GET_ALL_SCORE, "module=coach_player&player_id=" + uidPlay + "&scoreFilter=" + PScoreFilter );
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -407,6 +464,8 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
             cid = bundle.getString("coach_id");
             uname = bundle.getString("coachname");
             type = bundle.getString("type");
+            PScoreFilter = bundle.getString("scoreFilter");
+
             ExampleItem exampleItem = intent.getParcelableExtra("Player Details");
             fragment_module = bundle.getString("module");
 

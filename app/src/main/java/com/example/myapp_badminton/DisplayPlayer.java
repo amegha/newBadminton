@@ -40,6 +40,7 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
     private ExampleAdapter adapter;
     private List<ExampleItem> exampleList;
     private ArrayList<String> Ids, names, image, lastdate,regDate;
+    private String scoreFilter;
 
 
     @Override
@@ -63,6 +64,7 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
             level = bundle.getString("level");
             academy = bundle.getString("Academy");
             type = bundle.getString("type");
+            scoreFilter = bundle.getString("scoreFilter");
             AID = bundle.getString("aid");
             fragment_module = bundle.getString("module");
 
@@ -151,6 +153,8 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
                         b.putString("level", level);
                         b.putString("Academy", academy);
                         b.putString("type", type);
+                        b.putString("scoreFilter",scoreFilter);
+
                         b.putString("aid", AID);
                         b.putString("module", fragment_module);
                         b.putParcelable("Player Details", exampleList.get(position));
@@ -169,6 +173,20 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
                         b.putString("module", fragment_module);
                         b.putParcelable("Player Details", exampleList.get(position));
                         Intent intent = new Intent(DisplayPlayer.this, GraphDisplay.class).putExtras(b);
+                        //  intent.putExtra("Player Details", exampleList.get(position));
+                        startActivity(intent);
+                    }else if (fragment_module.equalsIgnoreCase("playGameScore")) {
+                        Bundle b = new Bundle();
+                        b.putString("coach_id", cid);
+                        b.putString("coachname", coach_name);
+                        b.putString("date", lastdate.get(position));
+                        b.putString("level", level);
+                        b.putString("Academy", academy);
+                        b.putString("type", type);
+                        b.putString("aid", AID);
+                        b.putString("module", fragment_module);
+                        b.putParcelable("Player Details", exampleList.get(position));
+                        Intent intent = new Intent(DisplayPlayer.this, DisplayPlayerDashboardForCoach.class).putExtras(b);
                         //  intent.putExtra("Player Details", exampleList.get(position));
                         startActivity(intent);
                     }

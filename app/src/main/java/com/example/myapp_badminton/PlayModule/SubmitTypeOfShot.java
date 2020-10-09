@@ -27,7 +27,7 @@ import android.support.v4.app.Fragment;*/
  */
 
 public class SubmitTypeOfShot extends Fragment implements View.OnLongClickListener {
-    Button b1, b2, b3, b4, b5, b6, b7;
+    Button b1, b2, b3, b4, b5, b6, b7, b8, b9, b10;
 
     @Nullable
     @Override
@@ -38,13 +38,16 @@ public class SubmitTypeOfShot extends Fragment implements View.OnLongClickListen
             String s = b.getString("location");
             Log.e("shot", "onSaveInstanceState: " + s);
         }
-        b1 = (Button) v.findViewById(R.id.smash);
-        b2 = (Button) v.findViewById(R.id.drop);
-        b3 = (Button) v.findViewById(R.id.block);
-        b4 = (Button) v.findViewById(R.id.clear);
-        b5 = (Button) v.findViewById(R.id.net);
-        b6 = (Button) v.findViewById(R.id.drive);
-        b7 = (Button) v.findViewById(R.id.push);
+        b1 = v.findViewById(R.id.dd);
+        b2 = v.findViewById(R.id.long_defence);
+        b3 = v.findViewById(R.id.smash);
+        b4 = v.findViewById(R.id.straight_block);
+        b5 = v.findViewById(R.id.cross_court_block);
+        b6 = v.findViewById(R.id.spin_net);
+        b7 = v.findViewById(R.id.cross_court_net);
+        b8 = v.findViewById(R.id.slice);
+        b9 = v.findViewById(R.id.reverse_slice);
+        b10 = v.findViewById(R.id.straight_slice);
 
 
         b1.setOnLongClickListener(this);
@@ -54,6 +57,9 @@ public class SubmitTypeOfShot extends Fragment implements View.OnLongClickListen
         b5.setOnLongClickListener(this);
         b6.setOnLongClickListener(this);
         b7.setOnLongClickListener(this);
+        b8.setOnLongClickListener(this);
+        b9.setOnLongClickListener(this);
+        b10.setOnLongClickListener(this);
 
         return v;
     }
@@ -93,39 +99,48 @@ public class SubmitTypeOfShot extends Fragment implements View.OnLongClickListen
 
     @Override
     public boolean onLongClick(View v) {
-        switch (v.getId()) {
-            case R.id.smash:
-                shotName(v, "smash");
-                break;
-            case R.id.drop:
-                shotName(v, "drop");
+        try {
+            switch (v.getId()) {
+                case R.id.dd:
+                    shotName(v, "driveDefence", "drive");
+                    break;
+                case R.id.long_defence:
+                    shotName(v, "longDefence", "all_shots");
+                    break;
+                case R.id.smash:
+                    shotName(v, "smash", "smash");
+                    break;
 
-                break;
-            case R.id.block:
-                shotName(v, "block");
-                break;
-
-            case R.id.clear:
-                shotName(v, "clear");
-
-                break;
-            case R.id.net:
-                shotName(v, "net");
-
-                break;
-            case R.id.drive:
-                shotName(v, "drive");
-
-                break;
-            case R.id.push:
-                shotName(v, "push");
-
-                break;
+                case R.id.straight_block:
+                    shotName(v, "straightBlock", "all_shots");
+                    break;
+                case R.id.cross_court_block:
+                    shotName(v, "crossCourtBlock", "all_shots");
+                    break;
+                case R.id.spin_net:
+                    shotName(v, "spinNet", "net");
+                    break;
+                case R.id.slice:
+                    shotName(v, "slice", "all_shots");
+                    break;
+                case R.id.reverse_slice:
+                    shotName(v, "reverseSlice", "reverse_slice");
+                    break;
+                case R.id.straight_slice:
+                    shotName(v, "straightSlice", "all_shots");
+                    break;
+                case R.id.cross_court_net:
+//                    shotName(v, "smash", "smash");
+                    shotName(v, "crossCourtNet", "all_shots");
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return false;
     }
 
-    private void shotName(View v, String shotType) {
+    private void shotName(View v, String shotType, String resName) {
         LinearLayout layout = new LinearLayout(v.getContext());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         layout.setLayoutParams(params);
@@ -133,16 +148,35 @@ public class SubmitTypeOfShot extends Fragment implements View.OnLongClickListen
         layout.setOrientation(LinearLayout.VERTICAL);
 
         ImageView iv = new ImageView(v.getContext());
-        iv.setImageResource(R.drawable.all_shots);
+        switch (resName) {
+            case "drive":
+                iv.setImageResource(R.drawable.drive);
+                break;
+            case "smash":
+                iv.setImageResource(R.drawable.smash);
+                break;
+            case "net":
+                iv.setImageResource(R.drawable.net);
+                break;
+            case "reverse_slice":
+                iv.setImageResource(R.drawable.reverse_slice);
+                break;
+            case "all_shots":
+                iv.setImageResource(R.drawable.all_shots);
+
+        }
+
+//        iv.setImageResource(resourceId);
+//        iv.setImageResource(R.drawable.all_shots);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-               500,1f);
+                500, 1f);
         iv.setLayoutParams(lp);
 
         TextView textview = new TextView(v.getContext());
         LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,1f);
+                ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
         textview.setLayoutParams(lp1);
         int resId = getResources().getIdentifier(shotType, "string", getActivity().getPackageName());
         String data = getResources().getString(resId);

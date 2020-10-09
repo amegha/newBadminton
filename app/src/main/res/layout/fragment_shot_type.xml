@@ -33,36 +33,40 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/smash"
+                android:id="@+id/dd"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/button_space"
                 android:background="@drawable/round_button"
-                android:onClick="smash"
-                android:text="smash"
+                android:textSize="12dp"
+                
+                android:onClick="driveDefence"
+                android:text="Drive defence"
                 android:textColor="@color/button_text_color" />
             <!--            @style/Widget.Holo.Light.Button-->
 
             <Button
-                android:id="@+id/drop"
+                android:id="@+id/long_defence"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/button_space"
                 android:background="@drawable/round_button"
-                android:onClick="drop"
-                android:text="drop"
+                android:textSize="12dp"
+                android:onClick="longDefence"
+                android:text=" Long defence"
                 android:textColor="@color/button_text_color" />
 
             <Button
-                android:id="@+id/block"
+                android:id="@+id/smash"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/round_button"
-                android:onClick="block"
-                android:text="block"
+                android:textSize="12dp"
+                android:onClick="smash"
+                android:text="smash"
                 android:textColor="@color/button_text_color" />
         </LinearLayout>
 
@@ -75,35 +79,49 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/clear"
+                android:id="@+id/straight_block"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/button_space"
                 android:background="@drawable/round_button"
-                android:onClick="clear"
-                android:text="clear"
+                android:textSize="12dp"
+                android:onClick="straightBlock"
+                android:text=" Straight Block "
                 android:textColor="@color/button_text_color" />
 
             <Button
-                android:id="@+id/net"
+                android:id="@+id/cross_court_block"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/button_space"
                 android:background="@drawable/round_button"
-                android:onClick="net"
-                android:text="net"
+                android:textSize="12dp"
+                android:onClick="crossCourtBlock"
+                android:text=" Cross Court block "
                 android:textColor="@color/button_text_color" />
 
             <Button
-                android:id="@+id/drive"
+                android:id="@+id/spin_net"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/round_button"
-                android:onClick="drive"
-                android:text="drive"
+                android:textSize="12dp"
+                android:onClick="spinNet"
+                android:layout_marginBottom="@dimen/button_space"
+                android:text=" Spin net "
+                android:textColor="@color/button_text_color" />
+            <Button
+                android:id="@+id/cross_court_net"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/round_button"
+                android:textSize="12dp"
+                android:onClick="crossCourtNet"
+                android:text=" Cross court net "
                 android:textColor="@color/button_text_color" />
         </LinearLayout>
 
@@ -115,29 +133,53 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/push"
+                android:id="@+id/slice"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/button_space"
+                android:background="@drawable/round_button"
+                android:textSize="12dp"
+                android:onClick="slice"
+                android:text=" Slice "
+                android:textColor="@color/button_text_color" />
+
+            <Button
+                android:id="@+id/reverse_slice"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/button_space"
+                android:background="@drawable/round_button"
+                android:textSize="12dp"
+                android:onClick="reverseSlice"
+                android:text=" Reverse Slice "
+                android:textColor="@color/button_text_color"/>
+
+            <Button
+                android:id="@+id/straight_slice"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/round_button"
-                android:onClick="push"
-                android:text="push"
+                android:textSize="12dp"
+                android:onClick="straightSlice"
+                android:text=" Straight Slice "
                 android:textColor="@color/button_text_color" />
         </LinearLayout>
 
     </LinearLayout>
 
     <Button
-        android:layout_width="match_parent"
+        style="@style/Button1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        style="@style/Button1"
-        android:onClick="submit"
-        android:layout_marginRight="@dimen/button_space"
         android:layout_marginLeft="@dimen/button_space"
-        android:text="SUBMIT"
-         />
-<!--    android:backgroundTint="@color/light_blue"-->
+        android:layout_marginRight="@dimen/button_space"
+        android:onClick="submit"
+        android:text="SUBMIT" />
+    <!--    android:backgroundTint="@color/light_blue"-->
 
 
 </LinearLayout>

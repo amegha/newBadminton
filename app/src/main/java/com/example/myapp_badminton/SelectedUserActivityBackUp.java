@@ -472,7 +472,7 @@ public class SelectedUserActivityBackUp extends AppCompatActivity implements Dat
 
             // System.out.println(date);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            // TODO Auto-generated catch slice
             e.printStackTrace();
             inputDate = "";
         }
@@ -795,7 +795,7 @@ public class SelectedUserActivityBackUp extends AppCompatActivity implements Dat
             boolean reachable = (returnVal == 0);
             return reachable;
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            // TODO Auto-generated catch slice
             e.printStackTrace();
         }
         return false;

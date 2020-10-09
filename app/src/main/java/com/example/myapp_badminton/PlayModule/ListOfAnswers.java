@@ -91,7 +91,7 @@ public class ListOfAnswers extends Activity {
                     (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             vv.setLayoutParams(layoutParams);
             mediaController.setAnchorView(vv);
-            Toast.makeText(this, "Loading...", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Loading...", Toast.LENGTH_LONG).show();
             vv.setMediaController(null);
             vv.setVideoURI(video);
             vv.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {

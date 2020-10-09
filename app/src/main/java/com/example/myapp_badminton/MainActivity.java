@@ -353,8 +353,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             fname = findViewById(R.id.et_fname);
             phoneNumber = findViewById(R.id.et_phone_number);
             email = findViewById(R.id.et_email);
-            state_rank = findViewById(R.id.et_stateRank);
-            national_rank = findViewById(R.id.tv_nationalrank);
+           /* state_rank = findViewById(R.id.et_stateRank);
+            national_rank = findViewById(R.id.tv_nationalrank);*/
 
 
         /*fname.addTextChangedListener(loginTextWatcher);
@@ -644,7 +644,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         }
     }
 
-    private void convertTobase64(Bitmap image) {
+    public void convertTobase64(Bitmap image) {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             image.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
@@ -744,8 +744,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 final String name = fname.getText().toString();
                 final String phone_user = phoneNumber.getText().toString();
                 final String mailId = email.getText().toString();
-                String stateRank = state_rank.getText().toString();
-                String nationalRank = national_rank.getText().toString();
+                String stateRank = "";//state_rank.getText().toString();
+                String nationalRank = "";//national_rank.getText().toString();
                 final String image_uri = this.image_uri;
                 final String image_uri_data = imageString;
                 final String age = age_a;
@@ -756,12 +756,12 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 final String locationSpinner = location_spinner.getSelectedItem().toString();
                 final String academySpinner = academy_spinner.getSelectedItem().toString();
 
-                if (stateRank.isEmpty()) {
+                /*if (stateRank.isEmpty()) {
                     stateRank = "none";
                 }
                 if (nationalRank.isEmpty()) {
                     nationalRank = "none";
-                }
+                }*/
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 final String timestamp1 = sdf.format(new Date());
                 String state;
@@ -818,7 +818,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                                  timestamp1) {
         try {
             Log.e("getdata", "entered form xml: ");
-
             String xml = "<user_details>\n" +
                     "<userName>" + name + "</userName>\n" +
                     "<phoneNumber>" + phone + "</phoneNumber>\n" + //                "<etPassword>" + radio_playerType + "</etPassword>\n" +
@@ -916,8 +915,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         email.setText("");
         showDate.setText("");
         dob.setText("");
-        state_rank.setText("");
-        national_rank.setText("");
+//        state_rank.setText("");
+//        national_rank.setText("");
         imageView.setImageResource(android.R.color.white);
     }
     /*private void signIn(String regEmail, String password) {

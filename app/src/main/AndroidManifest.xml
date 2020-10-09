@@ -41,6 +41,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ScoreFrom" />
         <activity android:name=".SelectedUserActivity" />
+        <activity android:name=".DisplayPlayerDashboardForCoach" />
 
         <!--  <provider
               android:name="androidx.core.content.FileProvider"

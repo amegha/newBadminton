@@ -5062,3 +5062,1312 @@ SELECT DISTINCT `V_ID` FROM `ANSWERS` WHERE `V_ID` NOT IN(select `V_ID` from USE
 
 
 SELECT V_ID FROM VIDEOS WHERE V_TYPE='level2' and `V_ID` NOT IN(select `V_ID` from USER_LOG WHERE U_ID='1099')order by RAND() limit 1
+
+
+
+<userName>Megha k</userName>
+    <phoneNumber>achyuth@gmail</phoneNumber>
+    <uAge>6</uAge>
+    <uDob>2014-08-12</uDob>
+    <usex>Male</usex>
+    <ueducation>School</ueducation>
+    <umailid>achyuth@gmail.com</umailid>
+    <state>Karnataka</state>
+    <city>Bangalore</city>
+    <location>JP Nagar</location>
+    <academyName>JP Academy</academyName>
+     <uothers>no Center</uothers>
+    <ustateRanking></ustateRanking>
+    <unationalRank></unationalRank>
+    <uphoto>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
+    y
+
+
+
+
+
+
+
+    <userName>Megha k</userName>
+        <phoneNumber>+919019062505</phoneNumber>
+        <uAge>48</uAge>
+        <uDob>1972-08-12</uDob>
+        <usex>Male</usex>
+        <ueducation>School</ueducation>
+        <umailid>m······@optipace.in</umailid>
+        <state>Karnataka</state>
+        <city>Bangalore</city>
+        <location>JP Nagar</location>
+        <academyName>JP Academy</academyName>
+         <uothers>no Center</uothers>
+        <ustateRanking>1</ustateRanking>
+        <unationalRank>2</unationalRank>
+        <uphoto>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
+
+
+
+_________________________________________________________________________________________________________________________________________
+the preper pic change
+
+
+package com.example.myapp_badminton;
+
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ExpandableListView;
+import android.widget.GridLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.example.myapp_badminton.PlayModule.PlayVideo;
+import com.google.android.material.navigation.NavigationView;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class HomePage extends AppCompatActivity implements AsyncResponse, NavigationView.OnNavigationItemSelectedListener {
+    public static final String PREFS_NAME = "LoginPrefs";
+    private static final int REQUEST_RUNTIME_PERMISSIONS = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA,
+    };
+    DrawerLayout dLayout;
+    MainActivity mainActivity;
+    String date, uname, id, utype, lastScoreDate, Score, playerImage, scoreFilter;
+    AlertDialog alertDialog;
+    CircleImageView profilePic;
+    ImageView tipsImage;
+    String sNewPass, sNewPassConfirm, regEmail;
+    TextView tvUserMainInfo, tvUserSubInfo, totVid, playedVid, correctAns, wrongAns;
+    NetworkAvailability networkAvailability;
+    NavigationView navView; // initiate a Navigation View
+    SharedPreferences settings;
+    SharedPreferences.Editor editor;
+    List<MenuModel> headerList;
+    HashMap<MenuModel, List<MenuModel>> childList;
+    private EditText newPass, confirmNewPass;
+    private byte[] imageBytes;
+    private ProgressDialog progressDialog;
+    private boolean permissionGiven;
+    private GridLayout gridLayout;
+    private String imageString;
+    private boolean scoreFilterFlag;
+    private ExpandableListView expandableListView;
+    private ExpandableListAdapter expandableListAdapter;
+    private Fragment frag;
+    private boolean expandListviewFlag = false;
+    private Bitmap selectedImage;
+
+    //    String uname,id,utype,lastScoreDate,Score;
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_home_page1);
+
+
+            Log.e("onCreate: ", "***from activity***" + this.getLocalClassName());
+            networkAvailability = NetworkAvailability.getInstance(this);
+            Toolbar toolbar = findViewById(R.id.toolbar);// get the reference of Toolbar
+            verifyStoragePermissions(this);
+//            mainActivity=new MainActivity();
+            gridLayout = findViewById(R.id.mainGrid);
+//            setSingleEvent(gridLayout);
+            profilePic = findViewById(R.id.nav_user_image);
+            tvUserMainInfo = findViewById(R.id.nav_main_info);
+            tvUserSubInfo = findViewById(R.id.nav_sub_info);
+
+            totVid = findViewById(R.id.tot_video);
+            playedVid = findViewById(R.id.played_video);
+            correctAns = findViewById(R.id.right_answers);
+            wrongAns = findViewById(R.id.wrong_answers);
+
+            tipsImage = findViewById(R.id.image_tip);
+//            setNavigationDrawer();
+            setSupportActionBar(toolbar);
+            settings = getSharedPreferences(PREFS_NAME, 0);
+            editor = settings.edit();
+
+            utype = settings.getString("type", "");
+            if (utype.equals("coach")) {
+                uname = settings.getString("Name", "");
+                id = settings.getString("Id", "");
+                regEmail = settings.getString("mail_id", "");
+                tipsImage.setVisibility(View.GONE);
+
+                expandableListView = findViewById(R.id.expandableListView);
+                prepareMenuData();
+                populateExpandableList();
+
+                setNavigationDrawer();
+                //            displayNavHeaderInfo();
+//                setNavigationDrawer();
+            } else {
+                uname = settings.getString("Name", "");
+                id = settings.getString("Id", "");
+                playerImage = settings.getString("Image", "");
+                Log.e("oncreate image", "image " + playerImage);
+                regEmail = settings.getString("mail_id", "");
+                lastScoreDate = settings.getString("DateLastScore", "");
+                Score = settings.getString("lastScore", "");
+
+                expandableListView = findViewById(R.id.expandableListView);
+                prepareMenuData();
+                populateExpandableList();
+
+
+                ActivityTracker.writeActivityLogs(this.getLocalClassName(), id, getApplicationContext());
+                if (isConnected()) {
+                    new WebService(HomePage.this).execute(API.ServerAddress + API.AFTER_LOGIN, "user_id=" + id);
+                } else {
+                    setNavigationDrawer();
+                }
+            }
+           /* expandableListView = findViewById(R.id.expandableListView);
+            prepareMenuData();
+            populateExpandableList();*/
+
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if ((permissionGiven)/* && isConnected()*/) {
+                        dLayout.openDrawer(Gravity.LEFT);
+                        displayNavHeaderInfo();
+
+                       /* expandableListView = findViewById(R.id.expandableListView);
+                        if (!expandListviewFlag) {
+                            prepareMenuData();
+                            populateExpandableList();
+                            expandListviewFlag = true;
+                        }*/
+
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "You are offline or Grant permissions", Toast.LENGTH_LONG).show();
+                    }
+                    tvUserMainInfo = findViewById(R.id.nav_main_info);
+                    tvUserSubInfo = findViewById(R.id.nav_sub_info);
+                    tvUserMainInfo.setText(uname);
+                    tvUserSubInfo.setText(regEmail);
+
+                }
+            });
+            setNavigationDrawer();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void populateExpandableList() {
+
+        expandableListAdapter = new ExpandableListAdapter(this, headerList, childList);
+        expandableListView.setAdapter(expandableListAdapter);
+
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+
+                if (headerList.get(groupPosition).isGroup) {
+                    if (!headerList.get(groupPosition).hasChildren) {
+
+                           /* WebView webView = findViewById(R.id.webView);
+                            webView.loadUrl(headerList.get(groupPosition).url);
+                            onBackPressed();*/
+
+                        frag = headerList.get(groupPosition).frag;
+                        if (frag != null) {
+                            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                            transaction.replace(R.id.frame, frag); // replace a Fragment with Frame Layout
+                            transaction.commit(); // commit the changes
+                            dLayout.closeDrawers(); // close the all open Drawer Views
+                        }
+                    }
+                }
+
+                return false;
+            }
+        });
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+                if (childList.get(headerList.get(groupPosition)) != null) {
+                    MenuModel model = childList.get(headerList.get(groupPosition)).get(childPosition);
+                    switch (model.menuName) {
+                        case "Change Profile Pic":
+                            if (isConnected())
+                                changeProfilePic();
+//                                changeProfilePic1();
+                            else {
+                                Toast.makeText(HomePage.this, "No internet!", Toast.LENGTH_SHORT).show();
+                            }
+                            break;
+                        case "Reset Password":
+                            createResetPasswordAlertDialog();
+                            break;
+                        case "Sync Data":
+                            if (isConnected())
+                                sendLog();
+                            else {
+                                Toast.makeText(HomePage.this, "No internet!", Toast.LENGTH_SHORT).show();
+                            }
+                            break;
+                        case "Sign Out":
+                            showLogoutDialog();
+                            break;
+
+                        case "Privacy":
+                            break;
+
+                    }
+
+                    frag = model.frag;
+
+                    if (frag != null) {
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame, model.frag); // replace a Fragment with Frame Layout
+                        transaction.commit(); // commit the changes
+                        dLayout.closeDrawers(); // close the all open Drawer Views
+                    }
+
+                    /*if (model.url.length() > 0) {
+                     *//*WebView webView = findViewById(R.id.webView);
+                        webView.loadUrl(model.url);
+                        onBackPressed();*//*
+                    }*/
+                }
+
+                return false;
+            }
+        });
+    }
+
+    private void changeProfilePic1() {
+
+        try {
+            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            Toast.makeText(this, "Please wait..", Toast.LENGTH_SHORT).show();
+            startActivityForResult(cameraIntent, 111);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private void prepareMenuData() {
+        MenuModel menuModel, childModel;
+        List<MenuModel> childModelsList;//Menu of Android Tutorial. No sub menus
+        headerList = new ArrayList<>();
+        childModelsList = null;
+        childList = new HashMap<>();
+        if (utype.equals("player")) {
+            menuModel = new MenuModel("Score Entry", true, false, new ScoreEntry_fragment(uname, id, utype, lastScoreDate, Score, playerImage));
+            headerList.add(menuModel);
+        } else {
+            menuModel = new MenuModel("Score Entry", true, false, new ScoreEntry_fragment(uname, id, utype))
+            ; //Menu of Android Tutorial. No sub menus
+            headerList.add(menuModel);
+        }
+        if (!menuModel.hasChildren) {
+            childList.put(menuModel, null);
+        }
+
+        if (utype.equals("player")) {
+            menuModel = new MenuModel("Player Performance", true, true, null); //Menu of Java Tutorials
+            headerList.add(menuModel);
+
+            childModelsList = new ArrayList<>();
+            scoreFilter = "Fitness";
+            childModel = new MenuModel("Fitness", false, false, new Performance_fragment(uname, id, utype, lastScoreDate, Score, scoreFilter, "player"));
+            childModelsList.add(childModel);
+
+            scoreFilter = "Grip";
+            childModel = new MenuModel("Grip", false, false, new Performance_fragment(uname, id, utype, lastScoreDate, Score, scoreFilter, "player"));
+            childModelsList.add(childModel);
+
+            scoreFilter = "On Court Skills";
+            childModel = new MenuModel("On Court Skills", false, false, new Performance_fragment(uname, id, utype, lastScoreDate, Score, scoreFilter, "player"));
+            childModelsList.add(childModel);
+            if (menuModel.hasChildren) {
+                Log.d("API123", "here");
+                childList.put(menuModel, childModelsList);
+            }
+        } else {
+            menuModel = new MenuModel("Player Performance", true, false, new Performance_fragment(uname, id, utype));
+            headerList.add(menuModel);
+            if (!menuModel.hasChildren) {
+                childList.put(menuModel, null);
+            }
+        }
+
+        if (utype.equals("player")) {
+
+            menuModel = new MenuModel("Coach Score", true, true, null); //Menu of Java Tutorials
+            headerList.add(menuModel);
+
+            childModelsList = new ArrayList<>();
+            scoreFilter = "Fitness";
+            childModel = new MenuModel("Fitness", false, false, new Performance_fragment(uname, id, utype, lastScoreDate, Score, scoreFilter, "pCoach"));
+            childModelsList.add(childModel);
+
+            scoreFilter = "Grip";
+            childModel = new MenuModel("Grip", false, false, new Performance_fragment(uname, id, utype, lastScoreDate, Score, scoreFilter, "pCoach"));
+            childModelsList.add(childModel);
+
+            scoreFilter = "On Court Skills";
+            childModel = new MenuModel("On Court Skills", false, false, new Performance_fragment(uname, id, utype, lastScoreDate, Score, scoreFilter, "pCoach"));
+            childModelsList.add(childModel);
+            if (menuModel.hasChildren) {
+                childList.put(menuModel, childModelsList);
+            }
+        } else {
+            menuModel = new MenuModel("Coach Score", true, false, new ScoreObtained_fragment(uname, id, utype));
+            headerList.add(menuModel);
+            if (!menuModel.hasChildren) {
+                childList.put(menuModel, null);
+            }
+        }
+        if (utype.equals("player")) {
+
+            menuModel = new MenuModel("Settings", true, true, null); //Menu of Python Tutorials
+            headerList.add(menuModel);
+
+            childModelsList = new ArrayList<>();
+
+            childModel = new MenuModel("Change Profile Pic", false, false, null);
+            childModelsList.add(childModel);
+
+            childModel = new MenuModel("Reset Password", false, false, null);
+            childModelsList.add(childModel);
+
+            childModel = new MenuModel("Sync Data", false, false, null);
+            childModelsList.add(childModel);
+
+            childModel = new MenuModel("About", false, false, new About());
+            childModelsList.add(childModel);
+
+            childModel = new MenuModel("Privacy", false, false, null);
+            childModelsList.add(childModel);
+
+            childModel = new MenuModel("Sign Out", false, false, null);
+            childModelsList.add(childModel);
+
+            if (menuModel.hasChildren) {
+                childList.put(menuModel, childModelsList);
+            }
+        } else {
+            menuModel = new MenuModel("Settings", true, true, null); //Menu of Python Tutorials
+            headerList.add(menuModel);
+
+            childModelsList = new ArrayList<>();
+
+
+            childModel = new MenuModel("Reset Password", false, false, null);
+            childModelsList.add(childModel);
+
+            childModel = new MenuModel("About", false, false, new About());
+            childModelsList.add(childModel);
+
+            childModel = new MenuModel("Privacy", false, false, null);
+            childModelsList.add(childModel);
+            childModel = new MenuModel("Sign Out", false, false, null);
+            childModelsList.add(childModel);
+        }
+
+    }
+
+
+    public void verifyStoragePermissions(Activity activity) {
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            Log.e("verify", "permission not given ");
+
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_RUNTIME_PERMISSIONS
+
+            );
+        } else {
+            Log.e("verify", "permission given ");
+            permissionGiven = true;
+        }
+    }
+
+    /*@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.filter1:
+                scoreFilter = "Fitness";
+                return true;
+            case R.id.filter2:
+                scoreFilter = "Grip";
+                return true;
+            case R.id.filter3:
+                scoreFilter = "On Court Skills";
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }*/
+
+    private void setNavigationDrawer() {
+        try {
+            profilePic = findViewById(R.id.nav_user_image);
+            tvUserMainInfo = findViewById(R.id.nav_main_info);
+            tvUserSubInfo = findViewById(R.id.nav_sub_info);
+            Bitmap bmp = null;
+            dLayout = findViewById(R.id.drawer_layout); // initiate a DrawerLayout
+
+            navView = findViewById(R.id.navigation);
+//            displayNavHeaderInfo();
+           /* Menu menu = navView.getMenu();
+            if (utype.equalsIgnoreCase("coach")) {
+                menu.findItem(R.id.five).setVisible(false);11
+                menu.findItem(R.id.five1).setVisible(false);
+                menu.findItem(R.id.five2).setVisible(false);
+            }*/
+            navView.setNavigationItemSelectedListener(this);
+
+//            navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//                @Override
+//                public boolean onNavigationItemSelected(MenuItem menuItem) {
+//                    frag = null;
+//                    int itemId = menuItem.getItemId();
+//
+//                    // get selected menu item's id
+//                    if (itemId == R.id.first) { //Score entry
+//                        if (utype.equals("coach")) {
+//                            frag = new ScoreEntry_fragment(uname, id, utype);
+//                        } else {
+//                            frag = new ScoreEntry_fragment(uname, id, utype, lastScoreDate, Score, playerImage);
+//                        }
+//                    } else if (itemId == R.id.second) {//performace
+//                        if (utype.equalsIgnoreCase("Player")) {
+///*
+//                            if (itemId == R.id.filter1) {
+//                                scoreFilter = "Fitness";
+//                            } else if (itemId == R.id.filter2) {
+//                                scoreFilter = "Grip";
+//                            } else if (itemId == R.id.filter3) {
+//                                scoreFilter = "On Court Skills";
+//                        }*/
+////                            frag = new Performance_fragment(uname, id, utype, lastScoreDate, Score, scoreFilter);
+//
+//                            scoreFilter = createScoreFilterDialogBox();
+////                            if (scoreFilterFlag) {
+////                            frag = new Performance_fragment(uname, id, utype, lastScoreDate, Score, scoreFilter);
+////                            } else {
+//                            Toast.makeText(HomePage.this, "select the categoty", Toast.LENGTH_SHORT).show();
+////                            }
+//                        } else {
+//                            frag = new Performance_fragment(uname, id, utype);
+//                        }
+//
+//                    } else if (itemId == R.id.third) {//score obtained
+//                        if (utype.equalsIgnoreCase("Player")) {
+//                            frag = new ScoreObtained_fragment(uname, id, utype, lastScoreDate, Score);
+//                        } else {
+//                            frag = new ScoreObtained_fragment(uname, id, utype);
+//                        }
+//                    } else if (itemId == R.id.four) { //rest password
+//                        createResetPasswordAlertDialog();
+//
+//                        //                    frag = new ForgotPasswordFragment();
+//                    } else if (itemId == R.id.five) { //playvideo
+//                        if (utype.equalsIgnoreCase("Player")) {
+////                            sendLog();
+//                            if (isConnected())
+//                                startActivity(new Intent(getApplicationContext(), PlayVideo.class));
+//                            else
+//                                Toast.makeText(getApplicationContext(), "You are offline", Toast.LENGTH_SHORT).show();
+//                        }
+//                        //                    else{
+//                        //                        menu.findItem(itemId).setVisible(false);
+//                        //                    }
+//                    } else if (itemId == R.id.five1) { //sync
+//                        if (utype.equalsIgnoreCase("Player")) {
+//                            if (isConnected())
+//                                sendLog();
+//                            else {
+//                                Toast.makeText(HomePage.this, "No internet!", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                    } else if (itemId == R.id.five2) { //chage profile pic
+//                        if (utype.equalsIgnoreCase("Player")) {
+//                            if (isConnected())
+//                                changeProfilePic();
+//                            else {
+//                                Toast.makeText(HomePage.this, "No internet!", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                    } else if (itemId == R.id.six)//refer to about
+//                    {
+//                        frag = new About();
+//                    } else if (itemId == R.id.seven)//refer to signout
+//                    {
+//                        showLogoutDialog();
+//                        //                    frag = new Signout();
+//                    }
+//                    if (frag != null) {
+//                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//                        transaction.replace(R.id.frame, frag); // replace a Fragment with Frame Layout
+//                        transaction.commit(); // commit the changes
+//                        dLayout.closeDrawers(); // close the all open Drawer Views
+//                        return true;
+//                    }
+//                    return false;
+//                }
+//            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String createScoreFilterDialogBox() {
+        final CharSequence[] options = {"Fitness", "Grip", "On court", "All"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select the category");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (options[item].equals("Fitness")) {
+                    scoreFilter = "Fitness";
+                    submenuClicked("fitness");
+                } else if (options[item].equals("Grip")) {
+                    scoreFilter = "Grip";
+                    submenuClicked("grip");
+                } else if (options[item].equals("On court")) {
+                    scoreFilter = "On Court Skills";
+                    submenuClicked("onCourt");
+                } /*else if (options[item].equals("All")) {
+                        scoreFilter = "All";
+                    }*/
+                scoreFilterFlag = true;
+            }
+        });
+        builder.show();
+        return scoreFilter;
+    }
+
+    private void submenuClicked(String subMenuName) {
+        Toast.makeText(HomePage.this, " categoty selected!!", Toast.LENGTH_SHORT).show();
+        Performance_fragment frag = new Performance_fragment(uname, id, utype, lastScoreDate, Score, scoreFilter);
+
+        if (frag != null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame, frag); // replace a Fragment with Frame Layout
+            transaction.commit(); // commit the changes
+            dLayout.closeDrawers(); // close the all open Drawer Views
+        }
+
+
+    }
+
+    private void changeProfilePic() {
+        Log.e("changeProfilePic", "permission " + permissionGiven);
+        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose your profile picture");
+
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (options[item].equals("Take Photo")) {
+                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(takePicture, 0);
+
+                } else if (options[item].equals("Choose from Gallery")) {
+                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(pickPhoto, 1);//one can be replaced with any action code
+
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode != RESULT_CANCELED) {
+            Bitmap photo;
+
+            switch (requestCode) {
+                case 111:
+                    if (requestCode == 111 && resultCode == Activity.RESULT_OK) {
+                        photo = (Bitmap) data.getExtras().get("data");
+                        profilePic.setImageBitmap(selectedImage);
+
+                        convertTobase641(photo);
+                        break;
+                    }
+                case 0:
+                    if (resultCode == RESULT_OK && data != null) {
+                        selectedImage = (Bitmap) data.getExtras().get("data");
+                        profilePic.setImageBitmap(selectedImage);
+
+
+
+                        convertTobase64(selectedImage);
+                        /*profilePic.setImageBitmap(selectedImage);
+                        convertTobase64(selectedImage);*/
+
+                    }
+
+                    break;
+                case 1:
+                    if (resultCode == RESULT_OK && data != null) {
+                        Uri selectedImage = data.getData();
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        if (selectedImage != null) {
+                            Cursor cursor = getContentResolver().query(selectedImage,
+                                    filePathColumn, null, null, null);
+                            if (cursor != null) {
+                                cursor.moveToFirst();
+
+                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                                String picturePath = cursor.getString(columnIndex);
+
+                                /*Bitmap bm = BitmapFactory.decodeFile(picturePath);
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); // bm is the bitmap object
+                                byte[] b = baos.toByteArray();
+
+                                String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+                                Log.e("pickimage", "path image" + encodedImage);*/
+
+                                profilePic.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                                convertTobase64(BitmapFactory.decodeFile(picturePath));
+                                cursor.close();
+                            }
+                        }
+
+                    }
+                    break;
+            }
+        }
+    }
+
+    private void convertTobase641(Bitmap image) {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+            byte[] b = baos.toByteArray();
+            imageString = Base64.encodeToString(b, Base64.DEFAULT);
+            Log.e("imagePooja ", "convertTobase641: " + imageString);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void convertTobase64(Bitmap image) {
+        try {
+
+
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+            byte[] b = baos.toByteArray();
+            imageString = Base64.encodeToString(b, Base64.DEFAULT);
+
+            /*editor.putString("Image", imageString);
+            editor.apply();*/
+
+            Log.e("image string", "homePage" + Base64.encodeToString(b, Base64.DEFAULT) + "User id " + id);
+            String xml = "<change_pic>\n" +
+                    "<user_id>" + id + "</user_id>\n" +
+                    "<image>" + imageString + "</image>\n" +
+                    "</change_pic>\n";
+
+//            new WebService(this).execute("http://stage1.optipacetech.com/badminton/api/" + API.PROFILE_PIC_UPDATE, xml);
+            new WebService(this).execute(API.ServerAddress + API.PROFILE_PIC_UPDATE, "user_id=" + id + "&image=" + imageString);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private void sendLog() {
+        new WebService(this).execute(API.ServerAddress + API.LOG, "badmintonLogs");
+//        new WebService(this).execute(API.ServerAddress + API.LOG,new DBHandler(getApplicationContext()).getLogString() );
+//        new WebService(this).execute(API.ServerAddress + API.LOG, new DBHandler(this).getLogString());
+
+
+    }
+
+    private void createResetPasswordAlertDialog() {
+        try {
+            LayoutInflater li = LayoutInflater.from(this);
+            View confirmDialog = li.inflate(R.layout.activity_reset_password, null);
+            newPass = confirmDialog.findViewById(R.id.pass_new);
+            confirmNewPass = confirmDialog.findViewById(R.id.pass_confirm);
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setView(confirmDialog);
+            alertDialog = alert.create();
+            alertDialog.show();
+//        alertDialog.setCanceledOnTouchOutside(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void resetPasswordOrPin(View view) {
+        try {
+            progressDialog = ProgressDialog.show(this, "Password Resetting", "Please wait..", false, false);
+//        alertDialog.dismiss();
+            sNewPass = newPass.getText().toString();
+            sNewPassConfirm = confirmNewPass.getText().toString();
+            if (!sNewPass.equals("")) {
+                if (sNewPass.equals(sNewPassConfirm)) {
+                    alertDialog.dismiss();
+                    if (isConnected()) {
+                        new WebService(this).execute(API.ServerAddress + API.RESET_PASSWORD, "module=password_reset" + "&mail_id=" + regEmail + "&new_pin=" + sNewPass);
+
+                    } else {
+                        Toast.makeText(this, "You are offline", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    confirmNewPass.setError("password mismatch");
+
+                }
+            } else {
+                newPass.setError("can't be empty");
+
+            }
+            progressDialog.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showLogoutDialog() {
+        try {
+            AlertDialog.Builder alert = new AlertDialog.Builder(HomePage.this);
+            alert.setMessage("Are you sure?")
+                    .setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                            editor = settings.edit();
+                            editor.putString("logged", "not");
+                            editor.apply();
+                            logout(); // Last step. Logout function
+
+                        }
+                    }).setNegativeButton("Cancel", null);
+
+            AlertDialog alert1 = alert.create();
+            alert1.show();
+            alert1.setCanceledOnTouchOutside(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void logout() {
+        startActivity(new Intent(this, Login.class));
+        finish();
+    }
+
+    @Override
+    public void onTaskComplete(String result) {
+        try {
+            Log.e("onTaskComplete: ", "res " + result);
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
+
+
+            setNavigationDrawer();
+            switch (result) {
+                case "00": {
+                    Toast.makeText(this, "Invalid Request", Toast.LENGTH_LONG).show();
+                    break;
+                }
+                case "01":
+                case "02": {
+                    Toast.makeText(this, "Server busy!", Toast.LENGTH_LONG).show();
+                    break;
+                }
+                case "03": {
+                    Toast.makeText(this, "User not found!", Toast.LENGTH_LONG).show();
+                    break;
+                }
+                case "404": {
+                    Toast.makeText(this, "Nothing to sync!", Toast.LENGTH_LONG).show();
+
+                }
+                case "502": {
+                    Toast.makeText(this, "Try again!", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                case "password_reset/0": {
+                    Toast.makeText(this, "Password reset successfully", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                case "file-0": { //sync data
+                    Toast.makeText(this, "Sync successful", Toast.LENGTH_SHORT).show();
+                    deleteFile();
+
+                    break;
+                }
+                case "pic_update-0": { //profile pic update
+                    Toast.makeText(this, "Pic update successful", Toast.LENGTH_SHORT).show();
+
+                    editor.putString("Image", imageString);
+                    editor.apply();
+
+                    break;
+                }
+                default: { // after login
+
+
+                    String[] arrRes = result.split(",");
+
+                    if (arrRes.length < 3) {
+                        Toast.makeText(this, "Request not processed!", Toast.LENGTH_SHORT).show();
+                    } else if (arrRes.length == 4) { // dashboard data
+                        totVid.setText(arrRes[0]);
+                        playedVid.setText(arrRes[1]);
+                        correctAns.setText(arrRes[2]);
+                        wrongAns.setText(arrRes[3]);
+
+                    } else /*if (arrRes.length == 3) */ {
+                        lastScoreDate = arrRes[1];
+                        Score = arrRes[2];
+
+                        editor.putString("DateLastScore", lastScoreDate);
+                        editor.putString("lastScore", Score);
+                        editor.apply();
+                        expandableListView = findViewById(R.id.expandableListView);
+
+                        if (!expandListviewFlag) {
+                            prepareMenuData();
+                            populateExpandableList();
+                            expandListviewFlag = true;
+                        }
+                        setNavigationDrawer();
+                        new WebService(HomePage.this).execute(API.ServerAddress + API.PLAYER_DASHBOARD, "user_id=" + id);
+                        /* displayNavHeaderInfo();*/
+                    }
+
+
+
+                    /*else {
+                        imageBytes = Base64.decode(result, Base64.DEFAULT);
+                        Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                        profilePic.setImageBitmap(decodedImage);
+
+                    }*/
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void deleteFile() {
+        try {
+//            String sourceFileUri = "/storage/emulated/0/Badminton";
+            String sourceFileUri = getFileUri(getApplicationContext());
+            File sourceFile = new File(sourceFileUri + "/badmintonLogs.txt");
+            if (sourceFile.exists()) {
+                if (sourceFile.delete()) {
+                    System.out.println("file Deleted :" + sourceFile.getPath());
+                } else {
+                    System.out.println("file not Deleted :" + sourceFile.getPath());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getFileUri(Context mContext) {
+        try {
+     /*       String fileName = "badmintonLogs.txt";
+            File root = new File(Environment.getExternalStorageDirectory(), "Badminton");*/
+
+            //
+            String name = "Badminton";
+            File sdcard; /*= Environment.getExternalStorageDirectory();*/
+            if (mContext.getResources().getBoolean(R.bool.internalstorage)) {
+                sdcard = mContext.getFilesDir();
+            } else if (!mContext.getResources().getBoolean(R.bool.standalone)) {
+                sdcard = new File(Environment.getExternalStoragePublicDirectory(name).toString());
+            } else {
+                if ("goldfish".equals(Build.HARDWARE)) {
+                    sdcard = mContext.getFilesDir();
+                } else {
+                    // sdcard/Android/<app_package_name>/AWARE/ (not shareable, deletes when uninstalling package)
+                    sdcard = new File(ContextCompat.getExternalFilesDirs(mContext, null)[0] + "/" + name);
+                }
+            }
+            if (!sdcard.exists()) {
+                sdcard.mkdirs();
+            }
+            return sdcard.toString();
+//            return new File(sdcard, fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void displayNavHeaderInfo() {
+        try {
+            profilePic = findViewById(R.id.nav_user_image);
+            tvUserMainInfo = findViewById(R.id.nav_main_info);
+            tvUserSubInfo = findViewById(R.id.nav_sub_info);
+
+            if (utype.equals("player")) {
+
+                imageBytes = Base64.decode(playerImage, Base64.DEFAULT);
+                Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                profilePic.setImageBitmap(decodedImage);
+
+                profilePic.setVisibility(View.VISIBLE);
+
+                tvUserMainInfo.setText(uname);
+                tvUserSubInfo.setText(regEmail);
+            } else {
+                tvUserMainInfo.setText(uname);
+                tvUserSubInfo.setText(regEmail);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_RUNTIME_PERMISSIONS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                    permissionGiven = true;
+                } else {
+                    permissionGiven = false;
+                    Toast.makeText(this, "Grant permissions!!", Toast.LENGTH_LONG).show();
+                    Log.i("Permission", "onRequestPermissionsResult: Permission Denied");
+                }
+            }
+        }
+    }
+
+    boolean isConnected() {
+        try {
+            boolean haveConnectedWifi = false;
+            boolean haveConnectedMobile = false;
+
+            ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+            NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+            for (NetworkInfo ni : netInfo) {
+                if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                    if (ni.isConnected())
+                        haveConnectedWifi = true;
+                if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                    if (ni.isConnected())
+                        haveConnectedMobile = true;
+            }
+            return haveConnectedWifi || haveConnectedMobile;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        return false;
+    }
+
+    public void playVideo(View view) {
+        if (isConnected())
+            startActivity(new Intent(getApplicationContext(), PlayVideo.class));
+        else
+            Toast.makeText(getApplicationContext(), "You are offline", Toast.LENGTH_SHORT).show();
+    }
+}
+___________________________________________________________________________________________________________________________________________________________
+while forming the base-64
+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
+
+ ___________________________________________________________________________________________________________________________________________________________
+    //while uploading to server
+    /9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB
+        AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEB
+        AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAEEAMMDASIA
+        AhEBAxEB/8QAHwAAAQQDAQEBAQAAAAAAAAAABgUHCAkABAoDAgEL/8QAOhAAAwACAgIBBAIBBAEE
+        AAILAQIDBAUREgYTBwAUISIIMSMJFTJBURYkM0IKFzRSYSU1gUNTYnGR/8QAHQEAAAcBAQEAAAAA
+        AAAAAAAAAgMEBQYHCAEJAP/EAEARAAICAQIEBQEFBgUDAwUBAAECAxEEEiEABTFBBhMiUWFxBxQy
+        gZEjQmKhsfAIFVLB0TOC4UOS8SQ0Y3Kiw//aAAwDAQACEQMRAD8ArvwsbmK0YKAjcTPdHZQFCkS6
+        8VUU9iuWo5Xn9f260IKYQgAaIQRxN1Vh+O3HBAFAT26j9hJ14oikn8AsnYcAoUJM8gn8owAUqU57
+        qnXhgeTR+Cf+ZYAccrmOrA/5lKhf2IQoCQD+G5U8knijDrQkngk9m5OWGBNGhZWwenqrua2rYX7V
+        fTjRq3Z3JA2sdD+Xc/N378bmHNphFAaYBaqkguF4bgzUPww/pwCX6qDyoDN60WUFOWk1acKeOCey
+        BexPVkp1VgVA6BeCWPPbsOTow9Z/cFgVbqC47Eft+CRRgf8AwGZGYlSCSR2+lCbyT8UUAB2UlCF/
+        CkflSQnVzwAQtAGKkfkEgfRLdE0OhBvSAex7bbH3BPS+DRIRfeq9ybse+1V8/wC/HuQZj1orMVPc
+        qG7V6MFHIUdouFK/sqKB+OxYEct6Rrar+qC2u7AKEAQmac9j2ojKT145/Kgjg8jsQ5Rs/b/b0K46
+        sHYgBeEcpzyezOgBYsAo9bFXB/5EAgfXom5bTQF2/JtRReqKosvtserBnb8lUZgRweVV2XvyQY14
+        m8WrymM4uCyyZz2g1EeXBsCWYEmyfagATZPbg+NjOSoAPS2NnpVAbfG3bguXByK0n2zHg5XqyNJS
+        GckuqGi0WwKgEA9gp/srQcj6+sjXXVfYt/zNevDTYhaKAhLutWB5/PAWZ4dVI57MQPLuamqq8ykJ
+        TR/dz+etQ6mg5cP3moVqergEcjg9iqruuyDal+pforFps1iFojhS5YHj9noCoViB2KryCC31UGX4
+        88RR2682dRoBJ8vHYjUaA0mEVfUW529tOyv/AC4PRb1WQDQIuwO4BsfJ6DsLrj7pj502WOJWNqes
+        n19qJxxx2LOVoAWH4/UcDsylOByutOuYhd8jHrCqEk+gtkyZnUqBK4E2Rgo4ZTLr+wCsQSfomxMq
+        OZlcDHTgS7zHXlyxXsiBVK91BU/k/n+yxH5cKk8GU3cTNJP6+fWOKAE9f7R0ZiOoKgAqTyVBPIVj
+        cP7XOd4bgZLYmYqprKyosbFQFFhoWC3q/d9ybVhVfHk8Z/ChVyQAQLYDY11GwrrRv4q+AMbIlnmX
+        /C8HqeVp2Kf0AQOOOB+VIA7AMDx+f2uWSq14HqdVDFVBCOe3Jc/qU/AH5Ut+xYH/AMk1yddG+YJv
+        KDzM0IchQyM4DzmQADx/QB4HUqoHJPJGLaCb5YCN6kAdn9Tv/jTjlH4JVHXn/wAKSVPcHkH6n3L/
+        ALauWSoFyuWzoQgZ3xpklVboMojkWI2L/DYse51Umk5RLZCsl9BqsWaHfp/M0buuEiiSZQf8ikKC
+        79QUoG/PPfhuU/7HDf2T+o7E/SHsMSfqPR0DgHhWCTfjgBf77zdSeGYcL+pII5J5LK+PZCMqRuyT
+        YjqzBWIXnllqFVSpY/qOeeBxzzyOGt+RdJ8hS0dU8Rxp5GwZps1VaVaxlNwcicoZKgLS8/1k5FZz
+        YnlWJRjKMD7TfCfMtMScwXElOkCLORsXUxoUHa4iQdjqdfodwE8fJsuSeKMaFDuA0jsDFGCfxsT0
+        Wt9r9hvtwzfk2ntbKsryIDtRiGSbgHkk8dG/KstFAI/E/wDkRwx+mp3XhXvU8SnU8DmbEE9QQwdA
+        XbnkcEcfleACvHH1taP5G8rxAcXznw7yHW/Zxa2w23260lhzDxQZObJnFISU5EZvOvF1o6zSZKn6
+        eXBphbfDwszCyEzMbMmt40kiMCtQKKaBe5UMo5JAHHHX8Mo4f4s/zDrikDVX/TlSQBTRsGJih+Ce
+        ux4cM3kOZg0mTChQkqssel4noWKaMsAStHS+lqFhaFCFu7+LIZDUS+N6wzklVmachwSTSLDsVY8f
+        nkzA5Yk8cs0+y/jNo9pR6wK4NqMwZoq0itCOAAnPr/PAb9lDD8L/AHwVstp49HKXh5ME6ghxy/Ru
+        QFHVgQeVP5AXj/iykfjjXXwiVmCD1lE/B7D/AInkdF7juwIHDc9QDyQRx+A8wc9yIFpZhtsDZF3u
+        bGy7X7E7cMT8qhMnmlWVlN2pIYH06QD1ruRfQ7cVV3/ibs+/XF2wYBh2DzLFfyxUHnogJJCkfngD
+        8BwSVcvwb+OP/pxly8ir5uf1BWzy7Tx1YKP8aj8d2D/mvLfhSisqn9rG8X46ShUTVkKtwW7tzwSW
+        cKHC0U8NwerEMqsV5J4+jzW/GVD62BlRQ5VyOGZQOCqtRWDEKT+T0f8AsH/rj67J4oyXDL6DW7GP
+        Tqoe3t2Iur32ocC8iVIyv3mYoRRVnIRhtsQAfTV7EkH268QLxvhI5wFBi9i5U0mqL1IYKPYgZGIH
+        IPKt15UFuA/4+nc8J/i34/XKx8zO0eJSoKsrfbTV05PIIZJfuHAJb/KDx2YLw3Bnbovj6OOESmu9
+        oCEgpF0fhiQhFAFZ+FJCibUUFeSjHkh7vGvDMCIkEWsWLEhGggKuoIHdq+lmHUAuGPY9R+wb8fTR
+        k+JMhlKxZDoSDYLsNI2sbkAkkC6PUEVXBMPL4tayGEEitwL2odK3W+p23qhXXhlvjb4b0+jlFcbW
+        pizQp19ceDyhHYBgiEFuxdRzUdQoJA6N9TF8U8Ux5ep0bhgOhRpdWZQW7eyk2dyCp/JAVvwfyFKh
+        VbQ+PQ7RZIwYqvchwYOhHIYBv2VmbsAHm4ZmA6sFDAulrtMqOqX7QoWmFSglefTjso7nrb9vwFZT
+        +pA4RSp7NS5MkxDaixZrJezZOkk7NXcgDauw4cwqxqAV0XVACqG1bEWaH0B6Ue/xHSQWSqtUAXsO
+        GUgqQxBUgSYfqeR+GP8AX/8AL6z6cuOi4kg9dH4HHabZDofyf+LdP6H9cEAqQVIBH1n0Z93HUlwe
+        4Bm2O2wrbbtW2wr4TGUajT7XsdUQ2ta2O47bHf8AUcUVQXuiGbPPhe3IWhCkkhSG4XuyvwryYcEE
+        qeo6gLMpCj8Fpmk+BRgHRuykMjDgKSrAfheaDqF6EsGY/cI95/4iA5VXPeX5UclXfkoWoo5HZgGH
+        447hUP0qGDleA00YJ0ClSwp16q4igIPHPDD8kqGY8H88qZT0RaPpFkbhu3Wx06ncVddCTwJaGonY
+        E7HuLI3N70fm/euPmTSIyC4M+OofgsW/cEigAVVAcMO3cABuQeQfpB3W8xtaPR1NMx0X1Dr/AIm9
+        jfqW6t1PLhQeeOGPYdQCoW9jm4upxzTJsZM/E5yZKq1naZKLNHA4b9W/bkcHoCT2mS3es02w2mxO
+        TsPfLHs7FZqr0YD89B3c9fUAA/AKt2oP2/RuYv4l57FyfDNSRJkOp0FiBpUb2Qb6mgNj2+o+jVpH
+        CpdbdrNdLr+x368e+cNkwkuvNRlOJ5GUgZeylge0xZAGRzwOBPsvVCrfr27nU8L7yeJTJklViEpc
+        ckmeRNQJ0iwPBVgxoOP3HFkPbvx9fejxY42yx8cRZsSS5U7XuLKRVXU4/RpvSbAt7Uf8Fz2TnqC6
+        /RMYMWj9si0gzsrFQX47lUAYTL

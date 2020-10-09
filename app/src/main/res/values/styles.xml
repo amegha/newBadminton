@@ -25,7 +25,7 @@
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+        <item name="windowNoTitle">false</item>
     </style>
 
     <style name="Button1" parent="Widget.AppCompat.Button.Colored">

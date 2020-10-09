@@ -5,6 +5,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -40,6 +41,7 @@ import com.example.myapp_badminton.API;
 import com.example.myapp_badminton.HomePage;
 import com.example.myapp_badminton.R;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -59,13 +61,14 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.ACCESS_FINE_LOCATION
     };
+    Context context;
     String html = "<iframe width=\"560\" height=\"315\" src=\"http://www.youtube.com/watch?v=cRFnsOUoHmM\" frameborder=\"0\" allowfullscreen></iframe>\"";
     String url = "<iframe src='https://www.youtube.com/watch?v=cRFnsOUoHmM?fs=0' width='100%' height='100%' style='border: none;'></iframe>";
-    int initPos, currPos, watchAgainCount, pauseAt, REQUEST_ANSWER = 1, answerCount, score;
+    int initPos, currPos, watchAgainCount, pauseAt, REQUEST_ANSWER = 1, answerCount, score, livePlay;
     Button watchAgain, answerQuestions;
     MediaController mediaController;
     Bundle bundle = new Bundle();
-//    TextView ctv;
+    TextView ctv;
     Handler handler;
     String[] correctAnswers;
     String[] answerContents;
@@ -125,9 +128,22 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
 
         }
     };
+    Thread downloadVideo = new Thread() {
+        public void run() {
+//            Toast.makeText(context, "Downloading", Toast.LENGTH_SHORT).show();
+
+            new WebService(context).execute(API.VIDEO_LINK_DOWNLOAD + "" + videoName, "downloadVideo");
+        }
+    };
     private GetAnswers getAnswers;
     private boolean isReceiverRegistered = false;
     private VideoView vv;
+    Thread liveStream = new Thread() {
+        public void run() {
+//            Toast.makeText(context, "live streaming", Toast.LENGTH_SHORT).show();
+            connectionAndVideoStream();
+        }
+    };
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             NetworkInfo info = getNetworkInfo(context);
@@ -142,6 +158,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
     private boolean shdStop = false;
     private long start, playerTime;
     private String p_id;
+    private ProgressDialog progressDialog;
 
     public void verifyStoragePermissions(Activity activity) {
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)//required for blutooth scan
@@ -167,11 +184,16 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
 
     private void checkDBAndGetCorrectAnswer() {
         if (db.isDataEmpty()) {
-            getAnswers = new GetAnswersImpl1(this, new WebService(this), p_id);
-            getAnswers.getCorrectAnswersFromServer();
-//            connectionAndVideoStream();
-        } else {
+            if (isConnectingToInternet(this)) {
 
+                getAnswers = new GetAnswersImpl1(this, new WebService(this), p_id);
+                getAnswers.getCorrectAnswersFromServer();
+//            connectionAndVideoStream();
+            } else {
+                Toast.makeText(this, "You are offline!", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            livePlay = 1;
             String res = db.getAllData();
             correctAnswers = res.split(",");
 //            videoName = correctAnswers[correctAnswers.length - 1];
@@ -191,7 +213,9 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
 
             }
             videoName = correctAnswers[correctAnswers.length - 1];
-            link = API.VIDEO_LINK + videoName;
+//            link = API.VIDEO_LINK + videoName;
+            link = this.getCacheDir()
+                    + File.separator + "My_Video/video.mp4";
             connectionAndVideoStream();
         }
     }
@@ -253,7 +277,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         p_id = settings.getString("Id", "");
         vv = findViewById(R.id.video_view);
-//        ctv = findViewById(R.id.count_down);
+        ctv = findViewById(R.id.count_down);
         progressBar = findViewById(R.id.progressbar);
         db = new DBHandler(this);
         watchAgain = findViewById(R.id.watch_again);
@@ -261,14 +285,23 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
 //        link = "http://stage1.optipacetech.com/badminton/videos/training.mp4";
 //        link = "android.resource://" + getPackageName() + "/" + R.raw.training;
         verifyStoragePermissions(this);
+        context = this;
         handler = new Handler();
 //        getAnswers = new GetAnswersImpl1(this, new WebService(this));
 //        getAnswers.getCorrectAnswersFromServer();
 
     }
 
-
     private void connectionAndVideoStream() {
+       /* link = this.getCacheDir()
+                + File.separator + "My_Video/video.mp4";*/
+        if (livePlay == 1) {
+            link = this.getCacheDir()
+                    + File.separator + "My_Video/video.mp4";
+        } else {
+            link = API.VIDEO_LINK + videoName;
+            System.out.println("Live streaming!!");
+        }
         if (isConnectingToInternet(this)) {
             try {
                 if (mediaController == null) {
@@ -277,7 +310,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
                 mediaController.setAnchorView(vv);
                 Uri video = Uri.parse(link);
 //                Toast.makeText(this, link, Toast.LENGTH_LONG).show();
-                Toast.makeText(this, "Loading!!", Toast.LENGTH_LONG).show();
+//                Toast.makeText(this, "Loading!!", Toast.LENGTH_LONG).show();
 
                 vv.setMediaController(null);
                 vv.setVideoURI(video);
@@ -293,13 +326,14 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             myPlayBackParams = new PlaybackParams();
 //                            myPlayBackParams.setSpeed(0.2f); //you can set speed here
-                            mp.setVolume(0f,0f);
+                            mp.setVolume(0f, 0f);
                             mp.setPlaybackParams(myPlayBackParams);
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                                 mp.seekTo(initPos, MediaPlayer.SEEK_CLOSEST);
                             else
                                 mp.seekTo(initPos);
                             mp.start();
+                            Log.e("connect and stream ", "link " + link);
                             mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
                                 @Override
                                 public void onVideoSizeChanged(MediaPlayer mp, int arg1,
@@ -329,23 +363,6 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
         }
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
-    private void autoPauseVideo(final int pauseAt, int nonTimer) {
-        vv.pause();
-        currPos = vv.getCurrentPosition();
-        buttonEnable();
-        watchAgainCount = 0;
-        Log.e("autoPauseVideo:", " timer " + pauseAt + "\n video time " + nonTimer);
-//        handler.postDelayed(stopPlayerTask, vv.getCurrentPosition()/+ (secondsCompleted+1000)/);//pauses at 9 secs
-//        handler.post(stopPlayerTask);
-    }
-
    /* @Override
     protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
@@ -365,6 +382,23 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
         currPos = savedInstanceState.getInt("Position");
         vv.seekTo(currPos);
     }*/
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private void autoPauseVideo(final int pauseAt, int nonTimer) {
+        vv.pause();
+        currPos = vv.getCurrentPosition();
+        buttonEnable();
+        watchAgainCount = 0;
+        Log.e("autoPauseVideo:", " timer " + pauseAt + "\n video time " + nonTimer);
+//        handler.postDelayed(stopPlayerTask, vv.getCurrentPosition()/+ (secondsCompleted+1000)/);//pauses at 9 secs
+//        handler.post(stopPlayerTask);
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void answerQuestions(View view) {
@@ -434,6 +468,13 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
     protected void onStart() {
 
         super.onStart();
+        if (livePlay == 1) {
+            link = this.getCacheDir()
+                    + File.separator + "My_Video/video.mp4";
+        } else {
+            link = API.VIDEO_LINK + videoName;
+            System.out.println("Live streaming!!");
+        }
 
     }
 
@@ -468,14 +509,13 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
         }
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
-//        registerReceiver(receiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+//        registerReceiver(receiver, new IntentFilter("android.crossCourtBlock.conn.CONNECTIVITY_CHANGE"));
         if (!isReceiverRegistered) {
             isReceiverRegistered = true;
-            registerReceiver(receiver, new IntentFilter("android.net.wifi.STATE_CHANGE"));
+            registerReceiver(receiver, new IntentFilter("android.crossCourtBlock.wifi.STATE_CHANGE"));
             vv.resume();
         }
     }
@@ -533,6 +573,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
                     answerCount++;
                     Log.e("onActivityResult2", "curr pos " + currPos + "\n init pos " + initPos);
                 }
+                connectionAndVideoStream();
 
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
@@ -559,72 +600,67 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
                 case "00":
                 case "01":
                 case "02":
-                case "03":
+                case "103":
                     Toast.makeText(this, "Completed all the levels!!", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(this, HomePage.class));
                     finish();
                     break;
+                case "done":
+//                    progressDialog.dismiss();
+                    livePlay = 1;
+//                    connectionAndVideoStream();
+                    break;
                 default:
                     parseCorrectAnswers(result);
+                    break;
             }
         else
             Toast.makeText(this, "server down!!", Toast.LENGTH_SHORT).show();
     }
 
     private void parseCorrectAnswers(String result) {
-
+        try {
 //        if (db.isDataEmpty()) {
-        correctAnswers = result.split(",");
-        videoName = correctAnswers[correctAnswers.length - 1];
-        link = API.VIDEO_LINK + videoName;
-        pauses = new int[correctAnswers.length - 1];
-        correctShotLoc = new String[correctAnswers.length - 1];
-        correctShotType = new String[correctAnswers.length - 1];
-        videoId = new String[correctAnswers.length - 1];
-        maxTime = new int[correctAnswers.length - 1];
-        for (int i = 0; i < correctAnswers.length - 1; i++) {  //correctAnswer.length-1 coz it fetches the video name also at the end which is appended to result, seperated by ','
-            answerContents = correctAnswers[i].split(":");
-//            for (int j = 0; j < answerContents.length; j++) {
-            videoId[i] = answerContents[0];
-            correctShotLoc[i] = answerContents[1];
-            correctShotType[i] = answerContents[2];
-            pauses[i] = Integer.parseInt(answerContents[3]);
-            maxTime[i] = Integer.parseInt(answerContents[4]);
+            if (result.split(">").length > 1) {
+                String[] playAnswers = result.split(">");
+                result = playAnswers[1];
 
-            db.storeCorrectAnswers(videoId[i], correctShotLoc[i], correctShotType[i], pauses[i], maxTime[i], videoName);
-            Log.e("playVideo", "pauses are " + pauses[i] + " ");
-        }
-        System.out.println("correct ansers" + correctAnswers);
-//            System.out.println("ansers contents " + answerContents);
-        System.out.println("pauses" + pauses.toString());
-
-//            }
-//            if (i < correctAnswers.length)
-//                Log.e("playVideo", "pauses are " + pauses[i] + " ");
-        /*} else {
-            String res = db.getAllData();
-            correctAnswers = res.split(",");
-//            videoName = correctAnswers[correctAnswers.length - 1];
-//            link = link +videoName;
+            correctAnswers = result.split(",");
+            videoName = correctAnswers[correctAnswers.length - 1];
+            link = API.VIDEO_LINK + videoName;
             pauses = new int[correctAnswers.length - 1];
             correctShotLoc = new String[correctAnswers.length - 1];
             correctShotType = new String[correctAnswers.length - 1];
             videoId = new String[correctAnswers.length - 1];
             maxTime = new int[correctAnswers.length - 1];
-            for (int i = 0; i < correctAnswers.length - 1; i++) {
+            for (int i = 0; i < correctAnswers.length - 1; i++) {  //correctAnswer.length-1 coz it fetches the video name also at the end which is appended to result, seperated by ','
                 answerContents = correctAnswers[i].split(":");
+                //            for (int j = 0; j < answerContents.length; j++) {
                 videoId[i] = answerContents[0];
                 correctShotLoc[i] = answerContents[1];
                 correctShotType[i] = answerContents[2];
                 pauses[i] = Integer.parseInt(answerContents[3]);
                 maxTime[i] = Integer.parseInt(answerContents[4]);
 
+                db.storeCorrectAnswers(videoId[i], correctShotLoc[i], correctShotType[i], pauses[i], maxTime[i], videoName);
+                Log.e("playVideo", "pauses are " + pauses[i] + " ");
             }
-            videoName = correctAnswers[correctAnswers.length - 1];
-            link = link + videoName;
-        }*/
-        connectionAndVideoStream();
+            System.out.println("correct ansers" + correctAnswers);
+            System.out.println("pauses" + pauses.toString());
+            connectionAndVideoStream();
+            downloadVideo.start();
 
+//        progressDialog = ProgressDialog.show(this, "Loading the games for you!", "Please wait..", false, false);
+//        new WebService(this).execute(API.VIDEO_LINK_DOWNLOAD + "" + videoName, "downloadVideo");
+
+//            downloadVideo.start();
+//            liveStream.start();
+           /* downloadVideo.join();
+            liveStream.join();*/
+        }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void answersFromServer(String[] shotLoc, String[] shotType, int[] pauses, int length) {

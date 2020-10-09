@@ -14,21 +14,35 @@ import android.view.ViewGroup;
  */
 public class Performance_fragment extends Fragment {
 
-    String username,userid,utype,lastdate,score;
-    public Performance_fragment(String name,String id,String type) {
+    String username,userid,utype,lastdate,score,scoreFilter,pCoach;
+    public Performance_fragment(String name,String id,String type,String scoreFilter) {
         // Required empty public constructor
         this.username=name;
         this.userid=id;
         this.utype=type;
+        this.scoreFilter=scoreFilter;
     }
-    public Performance_fragment(String name,String id,String type,String lastdate,String Score) {
+    public Performance_fragment(String name,String id,String type,String lastdate,String score,String scoreFilter) {
         // Required empty public constructor
         this.username=name;
         this.userid=id;
         this.utype=type;
         this.lastdate=lastdate;
-        this.score=Score;
+        this.score=score;
+        this.scoreFilter=scoreFilter;
     }
+
+    public Performance_fragment(String name, String id, String type, String lastdate, String score, String scoreFilter, String pCoach) {
+        this.username=name;
+        this.userid=id;
+        this.utype=type;
+        this.lastdate=lastdate;
+        this.score=score;
+        this.scoreFilter=scoreFilter;
+        this.pCoach=pCoach;
+    }
+
+
 
 
     @Override
@@ -53,6 +67,7 @@ public class Performance_fragment extends Fragment {
             b1.putString("x", username);
             b1.putString("id",userid);
             b1.putString("type",utype);
+            b1.putString("scoreFilter",scoreFilter);
             b1.putString("Module","LineGraph");
             Intent intentCoach = new Intent(this.getActivity(), Coach.class).putExtras(b1);
             startActivity(intentCoach);
@@ -64,6 +79,8 @@ public class Performance_fragment extends Fragment {
             bundle1.putString("type",utype);
             bundle1.putString("lastScoreDate",lastdate);
             bundle1.putString("ScoreLast",score);
+            bundle1.putString("scoreFilter",scoreFilter);
+            bundle1.putString("pCoach",pCoach);
             Intent intentPlayer = new Intent(this.getActivity(), PlayerPerformance.class).putExtras(bundle1).putExtra("From",bundle1);
             startActivity(intentPlayer);
         }

@@ -36,7 +36,7 @@ public class SubmitAnswer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        ActivityTracker.writeActivityLogs(this.getLocalClassName(), settings.getString("Id", ""),getApplicationContext());
+        ActivityTracker.writeActivityLogs(this.getLocalClassName(), settings.getString("Id", ""), getApplicationContext());
         setContentView(R.layout.activity_submit_answer);
         viewPager = findViewById(R.id.pager);
 
@@ -91,7 +91,7 @@ public class SubmitAnswer extends AppCompatActivity {
 
 
     public void outLeft(View view) {
-        Toast.makeText(this, "out left is clicked!!!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Out left clicked!", Toast.LENGTH_SHORT).show();
         answerLoc = "Out left";
         viewPager.setCurrentItem(2);
         //        viewPager.setCurrentItem(2); automatically switches to shotType fragment
@@ -100,7 +100,7 @@ public class SubmitAnswer extends AppCompatActivity {
     }
 
     public void outRight(View view) {
-        Toast.makeText(this, "out right is clicked!!!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Out right clicked!", Toast.LENGTH_SHORT).show();
         answerLoc = "Out right";
         viewPager.setCurrentItem(2);
 
@@ -108,102 +108,108 @@ public class SubmitAnswer extends AppCompatActivity {
 
 
     public void topLeft(View view) {
-        Toast.makeText(this, "top left is clicked!!!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Top left clicked!", Toast.LENGTH_SHORT).show();
         answerLoc = "Top left";
         viewPager.setCurrentItem(2);
 
     }
 
     public void topMiddle(View view) {
-        Toast.makeText(this, "top middle is clicked!!!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Top middle clicked!", Toast.LENGTH_SHORT).show();
         answerLoc = "Top middle";
         viewPager.setCurrentItem(2);
 
     }
 
     public void topRight(View view) {
-        Toast.makeText(this, "top right is clicked!!!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Top right clicked!", Toast.LENGTH_SHORT).show();
         answerLoc = "Top right";
         viewPager.setCurrentItem(2);
 
     }
 
     public void middleLeft(View view) {
-        Toast.makeText(this, "middle left is clicked!!!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Middle left clicked!", Toast.LENGTH_SHORT).show();
         answerLoc = "Middle left";
         viewPager.setCurrentItem(2);
 
     }
 
     public void middleMiddle(View view) {
-        Toast.makeText(this, "middle middle is clicked!!!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Middle middle clicked!", Toast.LENGTH_SHORT).show();
         answerLoc = "Middle middle";
         viewPager.setCurrentItem(2);
 
     }
 
     public void middleRight(View view) {
-        Toast.makeText(this, "middle right is clicked!!!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Middle right clicked!", Toast.LENGTH_SHORT).show();
         answerLoc = "Middle right";
         viewPager.setCurrentItem(2);
 
     }
 
     public void bottomLeft(View view) {
-        Toast.makeText(this, "bottom left is clicked!!!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Bottom left clicked!", Toast.LENGTH_SHORT).show();
         answerLoc = "Bottom left";
         viewPager.setCurrentItem(2);
 
     }
 
     public void bottomMiddle(View view) {
-        Toast.makeText(this, "bottom middle is clicked!!!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Bottom middle clicked!", Toast.LENGTH_SHORT).show();
         answerLoc = "Bottom middle";
         viewPager.setCurrentItem(2);
 
     }
 
     public void bottomRight(View view) {
-        Toast.makeText(this, "bottom right is clicked!!!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Bottom right clicked!", Toast.LENGTH_SHORT).show();
         answerLoc = "Bottom right";
         viewPager.setCurrentItem(2);
 
     }
 
+    public void outNet(View view) {
+        Toast.makeText(this, "Out net clicked!", Toast.LENGTH_SHORT).show();
+        answerLoc = " Out Net";
+        viewPager.setCurrentItem(2);
+    }
+
     //shot type
-    public void drive(View view) {
-        Toast.makeText(this, "drive clicked", Toast.LENGTH_SHORT).show();
-        answerType = "Drive";
+    public void spinNet(View view) {
+        Toast.makeText(this, "Spin net clicked!", Toast.LENGTH_SHORT).show();
+        answerType = "spinNet";
     }
 
-    public void push(View view) {
-        Toast.makeText(this, "push clicked", Toast.LENGTH_SHORT).show();
-        answerType = "Push";
+    public void slice(View view) {
+        Toast.makeText(this, "Slice clicked!", Toast.LENGTH_SHORT).show();
+        answerType = "slice";
     }
 
-    public void net(View view) {
-        Toast.makeText(this, "net clicked", Toast.LENGTH_SHORT).show();
-        answerType = "Net";
+    public void crossCourtBlock(View view) {
+        Toast.makeText(this, "Cross court block clicked!", Toast.LENGTH_SHORT).show();
+        answerType = "crossCourtBlock";
     }
 
-    public void clear(View view) {
-        Toast.makeText(this, "clear clicked", Toast.LENGTH_SHORT).show();
-        answerType = "Clear";
+    public void straightBlock(View view) {
+        Toast.makeText(this, "Straight block clicked!", Toast.LENGTH_SHORT).show();
+        answerType = "straightBlock";
     }
 
-    public void block(View view) {
-        Toast.makeText(this, "block clicked", Toast.LENGTH_SHORT).show();
+    /*public void slice(View view) {
+        Toast.makeText(this, "slice clicked!", Toast.LENGTH_SHORT).show();
         answerType = "Block";
+    }*/
+
+    public void longDefence(View view) {
+        Toast.makeText(this, "Long defence clicked!", Toast.LENGTH_SHORT).show();
+        answerType = "longDefence";
     }
 
-    public void drop(View view) {
-        Toast.makeText(this, "drop clicked", Toast.LENGTH_SHORT).show();
-        answerType = "Drop";
-    }
-
-    public void smash(View view) {
-        Toast.makeText(this, "smash clicked", Toast.LENGTH_SHORT).show();
-        answerType = "Smash";
+    public void driveDefence(View view) {
+        Toast.makeText(this, "Drive defence clicked!", Toast.LENGTH_SHORT).show();
+        answerType = "driveDefence";
     }
 
     public void submit(View view) {
@@ -228,6 +234,29 @@ public class SubmitAnswer extends AppCompatActivity {
         }
 
     }
+
+    public void smash(View view) {
+        Toast.makeText(this, "Smash clicked!", Toast.LENGTH_SHORT).show();
+        answerType = "smash";
+    }
+
+    public void crossCourtNet(View view) {
+        Toast.makeText(this, "Cross court net clicked!", Toast.LENGTH_SHORT).show();
+        answerType = "crossCourtNet";
+    }
+
+    public void reverseSlice(View view) {
+        Toast.makeText(this, "Reverse slice clicked!", Toast.LENGTH_SHORT).show();
+        answerType = "reverseSlice";
+
+    }
+
+    public void straightSlice(View view) {
+        Toast.makeText(this, "Straight slice clicked!", Toast.LENGTH_SHORT).show();
+        answerType = "straightSlice";
+    }
+
+
 }
 
 
