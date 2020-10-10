@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -147,6 +148,15 @@ public class SubmitTypeOfShot extends Fragment implements View.OnLongClickListen
         layout.setWeightSum(2);
         layout.setOrientation(LinearLayout.VERTICAL);
 
+        /*//scroll view
+        ScrollView sv =new ScrollView(v.getContext());
+        LinearLayout.LayoutParams svParam = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                500, 1f);
+        sv.setLayoutParams(svParam);
+
+        layout.addView(sv);*/
+
         ImageView iv = new ImageView(v.getContext());
         switch (resName) {
             case "drive":
@@ -168,11 +178,13 @@ public class SubmitTypeOfShot extends Fragment implements View.OnLongClickListen
 
 //        iv.setImageResource(resourceId);
 //        iv.setImageResource(R.drawable.all_shots);
+        //IMAGE VIEW
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 500, 1f);
         iv.setLayoutParams(lp);
 
+        //TEXT VIEW
         TextView textview = new TextView(v.getContext());
         LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,

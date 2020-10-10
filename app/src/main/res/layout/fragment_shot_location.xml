@@ -10,11 +10,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
         android:rotation="90"
-        android:weightSum="3">
+        android:weightSum="2">
         <!--4-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,80 +42,35 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-
-            <!--<RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="30dp">-->
-
-            <Button
-                android:id="@+id/out_left_left"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="20dp"
-                android:layout_weight="1"
-                android:alpha="0.7"
-                android:background="@drawable/raised_button"
-                android:onClick="outLeft"
-
-                android:rotation="270"
-                android:text="out(left)"
-                android:textColor="@color/shot_loc_button_text_color"
-                android:textSize="10sp" />
-
-            <!--<Button
-                android:layout_width="@dimen/button_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_weight="1"
-                android:alpha="0.7"
-                android:background="@drawable/raised_button"
-                android:rotation="270"
-                android:textColor="@color/shot_loc_button_text_color"
-                android:textSize="10sp"
-                android:visibility="invisible" />-->
-
-            <Button
-                android:layout_width="@dimen/button_width"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:layout_weight="1"
-                android:alpha="0.7"
-                android:background="@drawable/raised_button"
-                android:onClick="outRight"
-                android:rotation="270"
-                android:text="out(right)"
-                android:textColor="@color/shot_loc_button_text_color"
-                android:textSize="10sp" />
-            <!--        </RelativeLayout>-->
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="left"
+            android:gravity="center"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:weightSum="3">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="right"
+                android:weightSum="4"
                 android:orientation="vertical">
                 <!--                -->
+
+                <Button
+                    android:layout_width="@dimen/button_width"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:alpha="0.7"
+                    android:layout_gravity="left"
+                    android:background="@drawable/raised_button"
+                    android:onClick="outLeft"
+                    android:rotation="270"
+                    android:text="@string/top_left"
+                    android:textColor="@color/shot_loc_button_text_color"
+                    android:textSize="10sp" />
 
                 <Button
                     android:id="@+id/top_left_left"
@@ -133,7 +88,6 @@
 
 
                 <Button
-                    android:id="@+id/middle_left_left"
                     android:layout_width="@dimen/button_width"
                     android:layout_height="0dp"
                     android:layout_marginBottom="20dp"
@@ -172,6 +126,17 @@
                 android:gravity="center"
                 android:orientation="vertical">
                 <!--                -->
+                <Button
+                    android:layout_width="@dimen/button_width"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:alpha="0.7"
+                    android:background="@drawable/raised_button"
+                    android:rotation="270"
+                    android:textColor="@color/shot_loc_button_text_color"
+                    android:textSize="10sp" />
 
                 <Button
                     android:id="@+id/top_middle_left"
@@ -232,6 +197,20 @@
                 android:orientation="vertical">
 
                 <Button
+                    android:layout_width="@dimen/button_width"
+                    android:layout_height="0dp"
+                    android:layout_gravity="right"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:alpha="0.7"
+                    android:background="@drawable/raised_button"
+                    android:onClick="outRight"
+                    android:rotation="270"
+                    android:text="@string/top_right"
+                    android:textColor="@color/shot_loc_button_text_color"
+                    android:textSize="10sp" />
+
+                <Button
                     android:id="@+id/top_right_left"
                     android:layout_width="@dimen/button_width"
                     android:layout_height="0dp"
@@ -278,26 +257,23 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
         android:rotation="270"
-        android:weightSum="3">
-
+        android:weightSum="2">
+        <!--4-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
             android:layout_weight="1"
             android:orientation="horizontal"
             android:weightSum="1">
 
             <Button
-                android:id="@+id/out_net_right"
                 android:layout_width="@dimen/button_width"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -314,87 +290,39 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-
-            <!--<RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="30dp">-->
-
-            <Button
-                android:id="@+id/out_left_right"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="20dp"
-                android:layout_weight="1"
-                android:alpha="0.7"
-                android:background="@drawable/raised_button"
-                android:onClick="outLeft"
-
-                android:rotation="90"
-                android:text="out(left)"
-                android:textColor="@color/shot_loc_button_text_color"
-                android:textSize="10sp" />
-
-            <!-- <Button
-                 android:layout_width="@dimen/button_width"
-                 android:layout_height="wrap_content"
-                 android:layout_gravity="bottom"
-                 android:layout_weight="1"
-                 android:alpha="0.7"
-                 android:background="@drawable/raised_button"
-                 android:rotation="90"
-                 android:textColor="@color/shot_loc_button_text_color"
-                 android:textSize="10sp"
-                 android:visibility="invisible" />-->
-
-            <Button
-                android:layout_width="@dimen/button_width"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:layout_weight="1"
-                android:alpha="0.7"
-                android:background="@drawable/raised_button"
-                android:onClick="outRight"
-                android:rotation="90"
-                android:text="out(right)"
-                android:textColor="@color/shot_loc_button_text_color"
-                android:textSize="10sp" />
-            <!--        </RelativeLayout>-->
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="left"
+            android:gravity="center"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:weightSum="3">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-
-                android:layout_weight="1"
                 android:gravity="right"
+                android:layout_weight="1"
+                android:weightSum="4"
                 android:orientation="vertical">
                 <!--                -->
 
                 <Button
-                    android:id="@+id/top_left_right"
                     android:layout_width="@dimen/button_width"
                     android:layout_height="0dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:alpha="0.7"
+                    android:layout_gravity="left"
+                    android:background="@drawable/raised_button"
+                    android:onClick="outLeft"
+                    android:rotation="90"
+                    android:text="@string/top_left"
+                    android:textColor="@color/shot_loc_button_text_color"
+                    android:textSize="10sp" />
+
+                <Button
+                    android:layout_width="@dimen/button_width"
+                    android:layout_height="0dp"
                     android:layout_marginBottom="20dp"
                     android:layout_weight="1"
                     android:alpha="0.7"
@@ -407,23 +335,22 @@
 
 
                 <Button
-                    android:id="@+id/middle_left_right"
+                    android:id="@+id/middle_left_left"
                     android:layout_width="@dimen/button_width"
                     android:layout_height="0dp"
                     android:layout_marginBottom="20dp"
-                    android:layout_weight="1"
 
+                    android:layout_weight="1"
                     android:alpha="0.7"
 
                     android:background="@drawable/raised_button"
                     android:onClick="middleLeft"
-                    android:rotation="90"
+                    android:rotation="270"
                     android:text="middle left"
                     android:textColor="@color/shot_loc_button_text_color"
                     android:textSize="10sp" />
 
                 <Button
-                    android:id="@+id/bottom_left_right"
                     android:layout_width="@dimen/button_width"
                     android:layout_height="0dp"
                     android:layout_marginBottom="10dp"
@@ -446,13 +373,22 @@
                 android:gravity="center"
                 android:orientation="vertical">
                 <!--                -->
-
                 <Button
-                    android:id="@+id/top_middle_right"
                     android:layout_width="@dimen/button_width"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:alpha="0.7"
+                    android:background="@drawable/raised_button"
+                    android:rotation="90"
+                    android:textColor="@color/shot_loc_button_text_color"
+                    android:textSize="10sp" />
+
+                <Button
+                    android:layout_width="@dimen/button_width"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
                     android:layout_marginBottom="20dp"
                     android:layout_weight="1"
 
@@ -465,7 +401,6 @@
                     android:textSize="10sp" />
 
                 <Button
-                    android:id="@+id/middle_middle_right"
                     android:layout_width="@dimen/button_width"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
@@ -481,7 +416,6 @@
                     android:textSize="10sp" />
 
                 <Button
-                    android:id="@+id/bottom_middle_right"
                     android:layout_width="@dimen/button_width"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
@@ -500,17 +434,27 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-
                 android:layout_weight="1"
                 android:gravity="left"
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/top_right_right"
                     android:layout_width="@dimen/button_width"
                     android:layout_height="0dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_gravity="right"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:alpha="0.7"
+                    android:background="@drawable/raised_button"
+                    android:onClick="outRight"
+                    android:rotation="90"
+                    android:text="@string/top_right"
+                    android:textColor="@color/shot_loc_button_text_color"
+                    android:textSize="10sp" />
+
+                <Button
+                    android:layout_width="@dimen/button_width"
+                    android:layout_height="0dp"
                     android:layout_marginBottom="20dp"
                     android:layout_weight="1"
 
@@ -523,12 +467,11 @@
                     android:textSize="10sp" />
 
                 <Button
-                    android:id="@+id/middle_right_right"
                     android:layout_width="@dimen/button_width"
                     android:layout_height="0dp"
                     android:layout_marginBottom="20dp"
-                    android:layout_weight="1"
 
+                    android:layout_weight="1"
                     android:alpha="0.7"
                     android:background="@drawable/raised_button"
                     android:onClick="middleRight"
@@ -538,7 +481,6 @@
                     android:textSize="10sp" />
 
                 <Button
-                    android:id="@+id/bottom_right_right"
                     android:layout_width="@dimen/button_width"
                     android:layout_height="0dp"
                     android:layout_marginBottom="10dp"
@@ -554,5 +496,6 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
 </LinearLayout><!--    </ScrollView>-->
     <!--</LinearLayout>-->
