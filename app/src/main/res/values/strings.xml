@@ -2,9 +2,20 @@
     <string name="app_name">CoachAISA</string>
     <string name="cannotopencamera">Camera Permission Denied.</string>
     <string name="player_error">Error initializing YouTube player:</string>
+
     <string name="top_middle">top\nmiddle</string>
     <string name="top_left">top\nleft</string>
     <string name="top_right">top\nright</string>
+    <string name="out_net">out\nnet</string>
+    <string name="out_left">out\nleft</string>
+    <string name="out_right">out\nright</string>
+    <string name="middle_left">middle\nleft</string>
+    <string name="middle_middle">middle\nmiddle</string>
+    <string name="middle_right">middle\nright</string>
+    <string name="bottom_left">bottom\nleft</string>
+    <string name="bottom_middle">bottom\nmiddle</string>
+    <string name="bottom_right">bottom\nright</string>
+
     <string name="question_info">Click on the type of shot you think is about to take place as well as the location!</string>
     <string name="confirm_answer">Please Confirm Your answer</string>
     <string name="clear">The attacking clear is used to get your opponent out of position to return a weak shot. If you\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>

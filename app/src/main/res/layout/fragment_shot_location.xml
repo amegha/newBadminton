@@ -34,9 +34,8 @@
                 android:background="@drawable/raised_button"
                 android:onClick="outNet"
                 android:rotation="270"
-                android:text="Out(net)"
+                android:text="@string/out_net"
                 android:textColor="@color/shot_loc_button_text_color"
-
                 android:textSize="10sp" />
         </LinearLayout>
 
@@ -44,8 +43,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="horizontal"
             android:weightSum="3">
 
@@ -54,21 +53,21 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:weightSum="4"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:weightSum="4">
                 <!--                -->
 
                 <Button
                     android:layout_width="@dimen/button_width"
                     android:layout_height="0dp"
+                    android:layout_gravity="center"
                     android:layout_marginBottom="20dp"
                     android:layout_weight="1"
                     android:alpha="0.7"
-                    android:layout_gravity="left"
                     android:background="@drawable/raised_button"
                     android:onClick="outLeft"
                     android:rotation="270"
-                    android:text="@string/top_left"
+                    android:text="@string/out_left"
                     android:textColor="@color/shot_loc_button_text_color"
                     android:textSize="10sp" />
 
@@ -98,7 +97,7 @@
                     android:background="@drawable/raised_button"
                     android:onClick="middleLeft"
                     android:rotation="270"
-                    android:text="middle left"
+                    android:text="@string/middle_left"
                     android:textColor="@color/shot_loc_button_text_color"
                     android:textSize="10sp" />
 
@@ -113,7 +112,7 @@
                     android:background="@drawable/raised_button"
                     android:onClick="bottomLeft"
                     android:rotation="270"
-                    android:text="bottom left"
+                    android:text="@string/bottom_left"
                     android:textColor="@color/shot_loc_button_text_color"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -136,7 +135,8 @@
                     android:background="@drawable/raised_button"
                     android:rotation="270"
                     android:textColor="@color/shot_loc_button_text_color"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"
+                    android:visibility="invisible" />
 
                 <Button
                     android:id="@+id/top_middle_left"
@@ -166,7 +166,7 @@
                     android:background="@drawable/raised_button"
                     android:onClick="middleMiddle"
                     android:rotation="270"
-                    android:text="middle middle"
+                    android:text="@string/middle_middle"
                     android:textColor="@color/shot_loc_button_text_color"
                     android:textSize="10sp" />
 
@@ -182,7 +182,7 @@
                     android:background="@drawable/raised_button"
                     android:onClick="bottomMiddle"
                     android:rotation="270"
-                    android:text="bottom middle"
+                    android:text="@string/bottom_middle"
                     android:textColor="@color/shot_loc_button_text_color"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -199,14 +199,14 @@
                 <Button
                     android:layout_width="@dimen/button_width"
                     android:layout_height="0dp"
-                    android:layout_gravity="right"
+                    android:layout_gravity="center"
                     android:layout_marginBottom="20dp"
                     android:layout_weight="1"
                     android:alpha="0.7"
                     android:background="@drawable/raised_button"
                     android:onClick="outRight"
                     android:rotation="270"
-                    android:text="@string/top_right"
+                    android:text="@string/out_right"
                     android:textColor="@color/shot_loc_button_text_color"
                     android:textSize="10sp" />
 
@@ -236,7 +236,7 @@
                     android:background="@drawable/raised_button"
                     android:onClick="middleRight"
                     android:rotation="270"
-                    android:text="middle right"
+                    android:text="@string/middle_right"
                     android:textColor="@color/shot_loc_button_text_color"
                     android:textSize="10sp" />
 
@@ -251,12 +251,13 @@
                     android:background="@drawable/raised_button"
                     android:onClick="bottomRight"
                     android:rotation="270"
-                    android:text="bottom right"
+                    android:text="@string/bottom_right"
                     android:textColor="@color/shot_loc_button_text_color"
                     android:textSize="10sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -282,7 +283,7 @@
                 android:background="@drawable/raised_button"
                 android:onClick="outNet"
                 android:rotation="90"
-                android:text="Out(net)"
+                android:text="@string/out_net"
                 android:textColor="@color/shot_loc_button_text_color"
 
                 android:textSize="10sp" />
@@ -292,31 +293,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="horizontal"
             android:weightSum="3">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="right"
                 android:layout_weight="1"
-                android:weightSum="4"
-                android:orientation="vertical">
+                android:gravity="right"
+                android:orientation="vertical"
+                android:weightSum="4">
                 <!--                -->
 
                 <Button
                     android:layout_width="@dimen/button_width"
                     android:layout_height="0dp"
+                    android:layout_gravity="center"
                     android:layout_marginBottom="20dp"
                     android:layout_weight="1"
                     android:alpha="0.7"
-                    android:layout_gravity="left"
                     android:background="@drawable/raised_button"
                     android:onClick="outLeft"
                     android:rotation="90"
-                    android:text="@string/top_left"
+                    android:text="@string/out_left"
                     android:textColor="@color/shot_loc_button_text_color"
                     android:textSize="10sp" />
 
@@ -346,7 +347,7 @@
                     android:background="@drawable/raised_button"
                     android:onClick="middleLeft"
                     android:rotation="270"
-                    android:text="middle left"
+                    android:text="@string/middle_left"
                     android:textColor="@color/shot_loc_button_text_color"
                     android:textSize="10sp" />
 
@@ -360,7 +361,7 @@
                     android:background="@drawable/raised_button"
                     android:onClick="bottomLeft"
                     android:rotation="90"
-                    android:text="bottom left"
+                    android:text="@string/bottom_left"
                     android:textColor="@color/shot_loc_button_text_color"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -383,7 +384,8 @@
                     android:background="@drawable/raised_button"
                     android:rotation="90"
                     android:textColor="@color/shot_loc_button_text_color"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"
+                    android:visibility="invisible" />
 
                 <Button
                     android:layout_width="@dimen/button_width"
@@ -411,7 +413,7 @@
                     android:background="@drawable/raised_button"
                     android:onClick="middleMiddle"
                     android:rotation="90"
-                    android:text="middle middle"
+                    android:text="@string/middle_middle"
                     android:textColor="@color/shot_loc_button_text_color"
                     android:textSize="10sp" />
 
@@ -426,7 +428,7 @@
                     android:background="@drawable/raised_button"
                     android:onClick="bottomMiddle"
                     android:rotation="90"
-                    android:text="bottom middle"
+                    android:text="@string/bottom_middle"
                     android:textColor="@color/shot_loc_button_text_color"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -441,14 +443,14 @@
                 <Button
                     android:layout_width="@dimen/button_width"
                     android:layout_height="0dp"
-                    android:layout_gravity="right"
+                    android:layout_gravity="center"
                     android:layout_marginBottom="20dp"
                     android:layout_weight="1"
                     android:alpha="0.7"
                     android:background="@drawable/raised_button"
                     android:onClick="outRight"
                     android:rotation="90"
-                    android:text="@string/top_right"
+                    android:text="@string/out_right"
                     android:textColor="@color/shot_loc_button_text_color"
                     android:textSize="10sp" />
 
@@ -476,7 +478,7 @@
                     android:background="@drawable/raised_button"
                     android:onClick="middleRight"
                     android:rotation="90"
-                    android:text="middle right"
+                    android:text="@string/middle_right"
                     android:textColor="@color/shot_loc_button_text_color"
                     android:textSize="10sp" />
 
@@ -490,7 +492,7 @@
                     android:background="@drawable/raised_button"
                     android:onClick="bottomRight"
                     android:rotation="90"
-                    android:text="bottom right"
+                    android:text="@string/bottom_right"
                     android:textColor="@color/shot_loc_button_text_color"
                     android:textSize="10sp" />
             </LinearLayout>
