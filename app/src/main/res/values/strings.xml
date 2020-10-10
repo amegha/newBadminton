@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">CoachAISA</string>
     <string name="cannotopencamera">Camera Permission Denied.</string>
+    <string name="player_error">Error initializing YouTube player:</string>
     <string name="top_middle">top\nmiddle</string>
     <string name="top_left">top\nleft</string>
     <string name="top_right">top\nright</string>
@@ -14,7 +15,16 @@
     <string name="block">The attacking block is used to get your opponent out of position to return a weak shot. If you\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
     <string name="drive">The attacking drive is used to get your opponent out of position to return a weak shot. If you\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
     <string name="test">The attacking test is used to get your opponent out of position to return a weak shot. If you\\\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
-    <string name="player_error">Error initializing YouTube player:</string>
+
+    <string name="driveDefence">The attacking Drive Defence is used to get your opponent out of position to return a weak shot. If you\\\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
+    <string name="longDefence">The attacking Long Defence is used to get your opponent out of position to return a weak shot. If you\\\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
+    <string name="straightBlock">The attacking Straight Block is used to get your opponent out of position to return a weak shot. If you\\\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
+    <string name="crossCourtBlock">The attacking Cross Court Block is used to get your opponent out of position to return a weak shot. If you\\\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
+    <string name="spinNet">The attacking Spin Net is used to get your opponent out of position to return a weak shot. If you\\\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
+    <string name="slice">The attacking Slice is used to get your opponent out of position to return a weak shot. If you\\\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
+    <string name="reverseSlice">The attacking Reverse Slice is used to get your opponent out of position to return a weak shot. If you\\\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
+    <string name="straightSlice">The attacking Straight Slice is used to get your opponent out of position to return a weak shot. If you\\\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
+    <string name="crossCourtNet">The attacking Cross Court Net is used to get your opponent out of position to return a weak shot. If you\\\'re fast enough, the attacking clear can surprise your opponent and help you win a rally!</string>
 
 
     <string-array name="state">

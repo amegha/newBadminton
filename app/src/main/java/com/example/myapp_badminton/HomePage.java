@@ -69,7 +69,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
     AlertDialog alertDialog;
     CircleImageView profilePic;
     //    ImageView playGameImgButton;
-    LinearLayout playGameLayout, playerDashboardLayout,coachDashboardLayout;
+    LinearLayout playGameLayout, playerDashboardLayout, coachDashboardLayout;
     String sNewPass, sNewPassConfirm, regEmail;
     TextView tvUserMainInfo, tvUserSubInfo, totVid, playedVid, correctAns, wrongAns;
     NetworkAvailability networkAvailability;
@@ -362,15 +362,15 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
 
             childModelsList = new ArrayList<>();
             scoreFilter = "Fitness";
-            childModel = new MenuModel("Fitness", false, false, new Performance_fragment(uname, id, utype,scoreFilter));
+            childModel = new MenuModel("Fitness", false, false, new Performance_fragment(uname, id, utype, scoreFilter));
             childModelsList.add(childModel);
 
             scoreFilter = "Grip";
-            childModel = new MenuModel("Grip", false, false, new Performance_fragment(uname, id, utype,scoreFilter));
+            childModel = new MenuModel("Grip", false, false, new Performance_fragment(uname, id, utype, scoreFilter));
             childModelsList.add(childModel);
 
             scoreFilter = "On Court Skills";
-            childModel = new MenuModel("On Court Skills", false, false, new Performance_fragment(uname, id, utype,scoreFilter));
+            childModel = new MenuModel("On Court Skills", false, false, new Performance_fragment(uname, id, utype, scoreFilter));
             childModelsList.add(childModel);
             if (menuModel.hasChildren) {
                 Log.d("API123", "here");
@@ -702,41 +702,18 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
                 profilePic.setImageBitmap(photo);
 
                 convertTobase64(photo);
-            }else
-            switch (requestCode) {
-                case 111:
-                    if (requestCode == 111 && resultCode == Activity.RESULT_OK) {
-                        photo = (Bitmap) data.getExtras().get("data");
-                        profilePic.setImageBitmap(selectedImage);
+            } else if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+                {
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                    if (selectedImage != null) {
+                        Cursor cursor = getContentResolver().query(selectedImage,
+                                filePathColumn, null, null, null);
+                        if (cursor != null) {
+                            cursor.moveToFirst();
 
-                        convertTobase641(photo);
-                        break;
-                    }
-                case 0:
-                    if (resultCode == RESULT_OK && data != null) {
-                        selectedImage = (Bitmap) data.getExtras().get("data");
-                        profilePic.setImageBitmap(selectedImage);
-
-
-                        convertTobase64(selectedImage);
-                        /*profilePic.setImageBitmap(selectedImage);
-                        convertTobase64(selectedImage);*/
-
-                    }
-
-                    break;
-                case 1:
-                    if (resultCode == RESULT_OK && data != null) {
-                        Uri selectedImage = data.getData();
-                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                        if (selectedImage != null) {
-                            Cursor cursor = getContentResolver().query(selectedImage,
-                                    filePathColumn, null, null, null);
-                            if (cursor != null) {
-                                cursor.moveToFirst();
-
-                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                                String picturePath = cursor.getString(columnIndex);
+                            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                            String picturePath = cursor.getString(columnIndex);
 
                                 /*Bitmap bm = BitmapFactory.decodeFile(picturePath);
                                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -746,15 +723,66 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
                                 String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
                                 Log.e("pickimage", "path image" + encodedImage);*/
 
-                                profilePic.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                                convertTobase64(BitmapFactory.decodeFile(picturePath));
-                                cursor.close();
-                            }
+                            profilePic.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                            convertTobase64(BitmapFactory.decodeFile(picturePath));
+                            cursor.close();
+                        }
+                    }
+
+                }
+            } else
+                switch (requestCode) {
+                    case 111:
+                        if (requestCode == 111 && resultCode == Activity.RESULT_OK) {
+                            photo = (Bitmap) data.getExtras().get("data");
+                            profilePic.setImageBitmap(selectedImage);
+
+                            convertTobase641(photo);
+                            break;
+                        }
+                    case 0:
+                        if (resultCode == RESULT_OK && data != null) {
+                            selectedImage = (Bitmap) data.getExtras().get("data");
+                            profilePic.setImageBitmap(selectedImage);
+
+
+                            convertTobase64(selectedImage);
+                        /*profilePic.setImageBitmap(selectedImage);
+                        convertTobase64(selectedImage);*/
+
                         }
 
-                    }
-                    break;
-            }
+                        break;
+                    case 1:
+                        if (resultCode == RESULT_OK && data != null) {
+                            Uri selectedImage = data.getData();
+                            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                            if (selectedImage != null) {
+                                Cursor cursor = getContentResolver().query(selectedImage,
+                                        filePathColumn, null, null, null);
+                                if (cursor != null) {
+                                    cursor.moveToFirst();
+
+                                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                                    String picturePath = cursor.getString(columnIndex);
+
+                                /*Bitmap bm = BitmapFactory.decodeFile(picturePath);
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); // bm is the bitmap object
+                                byte[] b = baos.toByteArray();
+
+                                String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+                                Log.e("pickimage", "path image" + encodedImage);*/
+
+                                    profilePic.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                                    convertTobase64(BitmapFactory.decodeFile(picturePath));
+                                    cursor.close();
+                                }
+                            }
+
+                        }
+                        break;
+                }
         }
     }
 
@@ -794,9 +822,12 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
                 "<user_id>" + id + "</user_id>\n" +
                 "<image>" + playerImage + "</image>\n" +
                 "</change_pic>\n";
-        Log.i("HomePage", "uploadProfilePicToServer:XML "+ xml );
+        Log.i("HomePage", "uploadProfilePicToServer:XML " + xml);
 
-            new WebService(this).execute(API.ServerAddress +API.PROFILE_PIC_UPDATE, xml);
+        progressDialog = ProgressDialog.show(this, "Updating picture", "Please wait..", false, false);
+
+        new WebService(this).execute(API.ServerAddress + API.PROFILE_PIC_UPDATE, xml);
+
 //        new WebService(this).execute(API.ServerAddress + API.PROFILE_PIC_UPDATE, "user_id=" + id + "&image=" + playerImage);
     }
 
@@ -944,7 +975,8 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
                         Toast.makeText(this, "Pic update successful", Toast.LENGTH_SHORT).show();
                         editor.putString("Image", playerImage);
                         editor.apply();
-
+                        prepareMenuData();//  the imagestring shd get updated once pic gets updated.
+                        progressDialog.dismiss();
                         break;
                     }
                     case "done":

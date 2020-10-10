@@ -65,7 +65,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".PlayModule.SubmitAnswer"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="landscape" />
         <activity
             android:name=".PlayModule.ListOfAnswers"
             android:screenOrientation="portrait"

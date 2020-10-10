@@ -23,29 +23,30 @@ import java.util.Date;
 public class ScoreEntry_fragment extends Fragment {
 
     FrameLayout frameLayout;
-    String date,username,userid,usertype;
+    String date, username, userid, usertype;
     String imagePlayer;
     SQLiteDatabase db;
-    Cursor cursor,cursor_lastDate,cursor_sec_last_login,cursor_usertype,cursor_days_not_entered;
+    Cursor cursor, cursor_lastDate, cursor_sec_last_login, cursor_usertype, cursor_days_not_entered;
     databaseConnectionAdapter dbcAdapter;
-    String today,type,CId,CName,PName,PId,lastScoreEntryDate,Score;
+    String today, type, CId, CName, PName, PId, lastScoreEntryDate, Score;
     int x;
     AlertDialog.Builder alertbuilder;
 
 
-    public ScoreEntry_fragment( String uname, String id, String utype) {
+    public ScoreEntry_fragment(String uname, String id, String utype) {
         this.username = uname;
-        this.userid=id;
-        this.usertype=utype;
+        this.userid = id;
+        this.usertype = utype;
         // Required empty public constructor
     }
-    public ScoreEntry_fragment(String uname,String id,String utype,String lastDateScore,String score,String playerImage ) {
+
+    public ScoreEntry_fragment(String uname, String id, String utype, String lastDateScore, String score, String playerImage) {
         this.username = uname;
-        this.userid=id;
-        this.usertype=utype;
-        this.lastScoreEntryDate=lastDateScore;
-        this.Score=score;
-        this.imagePlayer=playerImage;
+        this.userid = id;
+        this.usertype = utype;
+        this.lastScoreEntryDate = lastDateScore;
+        this.Score = score;
+        this.imagePlayer = playerImage;
         // Required empty public constructor
     }
 
@@ -61,17 +62,15 @@ public class ScoreEntry_fragment extends Fragment {
         today = sdf.format(date1);
 
 
-
-
-        Intent intentCoach=getActivity().getIntent();
-        Bundle bundleCoach=intentCoach.getExtras();
+        Intent intentCoach = getActivity().getIntent();
+        Bundle bundleCoach = intentCoach.getExtras();
 
         /*type=bundleCoach.getString("type");
         CId=bundleCoach.getString("Id");
         CName=bundleCoach.getString("Name");*/
 
-        Intent intentPlayer=getActivity().getIntent();
-        Bundle bundlePlayer=intentPlayer.getExtras();
+        Intent intentPlayer = getActivity().getIntent();
+        Bundle bundlePlayer = intentPlayer.getExtras();
 
         /*type=bundlePlayer.getString("type");
         PId=bundlePlayer.getString("Id");
@@ -79,31 +78,30 @@ public class ScoreEntry_fragment extends Fragment {
         lastScoreEntryDate=bundlePlayer.getString("DateLastScore");
         Score=bundlePlayer.getString("lastScore");
         imagePlayer=bundlePlayer.getString("Image");*/
-        if(usertype.equalsIgnoreCase("Coach")){
-            Bundle bundle1=new Bundle();
-            bundle1.putString("date",today);
-            bundle1.putString("x",username);
-            bundle1.putString("userid",userid);
-            bundle1.putString("type",usertype);
-            bundle1.putString("Module","ScoreEntry");
+        if (usertype.equalsIgnoreCase("Coach")) {
+            Bundle bundle1 = new Bundle();
+            bundle1.putString("date", today);
+            bundle1.putString("x", username);
+            bundle1.putString("userid", userid);
+            bundle1.putString("type", usertype);
+            bundle1.putString("Module", "ScoreEntry");
             Intent intent = new Intent(this.getActivity(), Coach.class).putExtras(bundle1);
             startActivity(intent);
             getActivity().getFragmentManager().popBackStack();
 
-        }
-        else if(usertype.equalsIgnoreCase("Player")){
-            Bundle bundle1=new Bundle();
-            bundle1.putString("Pname",username);
-            bundle1.putString("Pid",userid);
-            bundle1.putString("type",usertype);
-            bundle1.putString("lastScoreDate",lastScoreEntryDate);
-            bundle1.putString("ScoreLast",Score);
-            bundle1.putString("Image",imagePlayer);
+        } else if (usertype.equalsIgnoreCase("Player")) {
+            Bundle bundle1 = new Bundle();
+            bundle1.putString("Pname", username);
+            bundle1.putString("Pid", userid);
+            bundle1.putString("type", usertype);
+            bundle1.putString("lastScoreDate", lastScoreEntryDate);
+            bundle1.putString("ScoreLast", Score);
+            bundle1.putString("Image", imagePlayer);
             Intent intent = new Intent(this.getActivity(), ScoreFrom.class).putExtras(bundle1);
             startActivity(intent);
         }
 
-return view;
+        return view;
     }
 
 
