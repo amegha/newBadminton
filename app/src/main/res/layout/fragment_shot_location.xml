@@ -346,7 +346,7 @@
 
                     android:background="@drawable/raised_button"
                     android:onClick="middleLeft"
-                    android:rotation="270"
+                    android:rotation="90"
                     android:text="@string/middle_left"
                     android:textColor="@color/shot_loc_button_text_color"
                     android:textSize="10sp" />
