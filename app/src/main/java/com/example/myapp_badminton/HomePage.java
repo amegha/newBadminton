@@ -105,6 +105,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
     private String link;
     private int[] pauses, maxTime;
     private String[] correctShotLoc, correctShotType, videoId, answerContents;
+    private byte[] b;
 
     //    String uname,id,utype,lastScoreDate,Score;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -320,7 +321,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
         childModelsList = null;
         childList = new HashMap<>();
         if (utype.equals("player")) {
-            menuModel = new MenuModel("Score Entry", true, false, new ScoreEntry_fragment(uname, id, utype, lastScoreDate, Score, playerImage));
+            menuModel = new MenuModel("Score Entry", true, false, new ScoreEntry_fragment(uname, id, utype, lastScoreDate, Score, b));
             headerList.add(menuModel);
         } else {
             menuModel = new MenuModel("Score Entry", true, false, new ScoreEntry_fragment(uname, id, utype))
@@ -802,7 +803,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             image.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
-            byte[] b = baos.toByteArray();
+            b = baos.toByteArray();
             playerImage = Base64.encodeToString(b, Base64.DEFAULT);
 
             /*editor.putString("Image", imageString);

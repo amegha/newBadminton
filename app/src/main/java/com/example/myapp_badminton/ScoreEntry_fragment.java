@@ -30,6 +30,7 @@ public class ScoreEntry_fragment extends Fragment {
     databaseConnectionAdapter dbcAdapter;
     String today, type, CId, CName, PName, PId, lastScoreEntryDate, Score;
     int x;
+    byte[] imageByte;
     AlertDialog.Builder alertbuilder;
 
 
@@ -48,6 +49,15 @@ public class ScoreEntry_fragment extends Fragment {
         this.Score = score;
         this.imagePlayer = playerImage;
         // Required empty public constructor
+    }
+
+    public ScoreEntry_fragment(String uname, String id, String utype, String lastDateScore, String score, byte[] imageByte) {
+        this.username = uname;
+        this.userid = id;
+        this.usertype = utype;
+        this.lastScoreEntryDate = lastDateScore;
+        this.Score = score;
+        this.imageByte = imageByte;
     }
 
     @Override
@@ -97,6 +107,7 @@ public class ScoreEntry_fragment extends Fragment {
             bundle1.putString("lastScoreDate", lastScoreEntryDate);
             bundle1.putString("ScoreLast", Score);
             bundle1.putString("Image", imagePlayer);
+            bundle1.putByteArray("imageByte",imageByte);
             Intent intent = new Intent(this.getActivity(), ScoreFrom.class).putExtras(bundle1);
             startActivity(intent);
         }
