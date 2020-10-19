@@ -408,6 +408,12 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
         }
         if (utype.equals("player")) {
 
+            menuModel = new MenuModel("View Video Comments", true, true, new VideoCommentFragment(id));
+            headerList.add(menuModel);
+
+        }
+        if (utype.equals("player")) {
+
             menuModel = new MenuModel("Settings", true, true, null); //Menu of Python Tutorials
             headerList.add(menuModel);
 
