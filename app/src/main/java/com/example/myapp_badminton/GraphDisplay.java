@@ -1,5 +1,6 @@
 package com.example.myapp_badminton;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -40,6 +41,7 @@ public class GraphDisplay extends AppCompatActivity implements AsyncResponse {
 
     List<String> list1 = new ArrayList<String>();
     List<Float> list2 = new ArrayList<Float>();
+    private ProgressDialog progressDialog;
 
 
   /*  @Override
@@ -85,6 +87,8 @@ public class GraphDisplay extends AppCompatActivity implements AsyncResponse {
     public void onTaskComplete(String result) {
         try {
             /* if(result.equals("Success")){*/
+            progressDialog.dismiss();
+
             Log.e("ViewUserDetails", "Upload status " + result);
             String[] arrRes;
             arrRes = result.split(",");
@@ -270,6 +274,8 @@ public class GraphDisplay extends AppCompatActivity implements AsyncResponse {
         try {
             //new WebService(getApplicationContext()).execute(API.ServerAddress + "get_all_score.php", "module=coach&coach_id="+score_uid+"&player_id="+pid);
 //            new WebService(GraphDisplay.this).execute("http://stage1.optipacetech.com/badminton/api/get_all_score.php", "module=coach&coach_id=" + cid + "&player_id=" + data);
+            progressDialog = ProgressDialog.show(this, "Loading!", "Please wait..", false, false);
+
             new WebService(GraphDisplay.this).execute(API.ServerAddress + API.GET_ALL_SCORE, "module=coach&coach_id=" + cid + "&player_id=" + data);
         } catch (Exception e) {
             e.printStackTrace();
@@ -319,6 +325,7 @@ public class GraphDisplay extends AppCompatActivity implements AsyncResponse {
             ActivityTracker.writeActivityLogs(this.getLocalClassName(), score_uidplay,getApplicationContext());
 
             if (type.equalsIgnoreCase("Player")) {
+                progressDialog = ProgressDialog.show(this, "Updating picture", "Please wait..", false, false);
                 new WebService(GraphDisplay.this).execute(API.ServerAddress + API.GET_ALL_SCORE, "module=player&player_id=" + score_uidplay);
             }
         } catch (Exception e) {

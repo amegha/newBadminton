@@ -107,6 +107,13 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
     private String[] correctShotLoc, correctShotType, videoId, answerContents;
     private byte[] b;
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        prepareMenuData();
+        populateExpandableList();
+    }
+
     //    String uname,id,utype,lastScoreDate,Score;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override

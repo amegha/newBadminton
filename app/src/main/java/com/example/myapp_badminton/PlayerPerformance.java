@@ -1,5 +1,6 @@
 package com.example.myapp_badminton;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -48,6 +49,7 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
     List<String> list3 = new ArrayList<>();
     YourMarkerView yourMarkerView;
     private String pCoach;
+    private ProgressDialog progressDialog;
 
     /*@Override
     public void onBackPressed() {
@@ -134,6 +136,7 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
     public void callServer(String data) {
         //new WebService(getApplicationContext()).execute(API.ServerAddress + "get_all_score.php", "module=coach&coach_id="+score_uid+"&player_id="+pid);
 //        new WebService(PlayerPerformance.this).execute("http://stage1.optipacetech.com/badminton/api/get_all_score.php", "module=coach&coach_id=" + cid + "&player_id=" + data);
+        progressDialog = ProgressDialog.show(this, "Updating picture", "Please wait..", false, false);
         new WebService(PlayerPerformance.this).execute(API.ServerAddress + API.GET_ALL_SCORE, "module=coach&coach_id=" + cid + "&player_id=" + data+ "&scoreFilter=" + PScoreFilter);
 
 
@@ -151,6 +154,7 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
     public void onTaskComplete(String result) {
 
         try {
+            progressDialog.dismiss();
             /* if(result.equals("Success")){*/
             Log.e("ViewUserDetails", "Upload status " + result);
             String[] arrRes;
@@ -446,8 +450,12 @@ public class PlayerPerformance extends AppCompatActivity implements AsyncRespons
             if (type.equalsIgnoreCase("Player")) {
                 if (!pCoach.equals("pCoach")) {
 //                new WebService(PlayerPerformance.this).execute("http://stage1.optipacetech.com/badminton/api/get_all_score.php", "module=player&player_id=" + uidPlay);
+                    progressDialog = ProgressDialog.show(this, "Updating picture", "Please wait..", false, false);
+
                     new WebService(PlayerPerformance.this).execute(API.ServerAddress + API.GET_ALL_SCORE, "module=player&player_id=" + uidPlay + "&scoreFilter=" + PScoreFilter);
                 } else {
+                    progressDialog = ProgressDialog.show(this, "Updating picture", "Please wait..", false, false);
+
                     new WebService(PlayerPerformance.this).execute(API.ServerAddress + API.GET_ALL_SCORE, "module=coach_player&player_id=" + uidPlay + "&scoreFilter=" + PScoreFilter );
                 }
             }
