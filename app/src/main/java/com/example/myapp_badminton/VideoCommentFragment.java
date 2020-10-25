@@ -7,10 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-
-import com.example.myapp_badminton.PlayModule.VideoCommentActivity;
-
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -30,14 +26,10 @@ public class VideoCommentFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_score_obtained_fragment, container, false);
         Intent intent1 = getActivity().getIntent();
 
-        if (utype.equalsIgnoreCase("Player")) {
             Bundle bundle1 = new Bundle();
             bundle1.putString("userId", user_id);
             Intent intentPlayer = new Intent(this.getActivity(), VideoCommentActivity.class).putExtras(bundle1);
             startActivity(intentPlayer);
-        }
-
-
         return view;
     }
 }

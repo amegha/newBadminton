@@ -24,6 +24,8 @@ public class API {
     public static String PLAYER_DETAILS = "player_details.php";
     public static String GET_ALL_SCORE = "get_all_score.php";
     public static String ANSWERS = "download_answers.php";
+    public static String COMMENTS = "get_comment.php";
+    public static String UPDATE_WATCH_FLAG = "update_watchflag.php";
 
 
 

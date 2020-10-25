@@ -407,10 +407,11 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
             }
         }
         if (utype.equals("player")) {
-
-            menuModel = new MenuModel("View Video Comments", true, true, new VideoCommentFragment(id));
+            menuModel = new MenuModel("View Video Comments", true, false, new VideoCommentFragment(id));
             headerList.add(menuModel);
-
+        }
+        if (!menuModel.hasChildren) {
+            childList.put(menuModel, null);
         }
         if (utype.equals("player")) {
 
@@ -924,9 +925,14 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
     protected void onResume() {
         super.onResume();
         if (utype.equals("player")) {
-            new WebService(HomePage.this).execute(API.ServerAddress + API.PLAYER_DASHBOARD, "user_id=" + id);
+            populateExpandableList();
+            getDashboardData();
         }
 
+    }
+
+    private void getDashboardData() {
+        new WebService(HomePage.this).execute(API.ServerAddress + API.PLAYER_DASHBOARD, "user_id=" + id);
     }
 
     @Override
@@ -1023,7 +1029,8 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
                             }
 //                        displayNavHeaderInfo();
                             setNavigationDrawer();
-                            new WebService(HomePage.this).execute(API.ServerAddress + API.PLAYER_DASHBOARD, "user_id=" + id);
+                            getDashboardData();
+//                            new WebService(HomePage.this).execute(API.ServerAddress + API.PLAYER_DASHBOARD, "user_id=" + id);
                             /* displayNavHeaderInfo();*/
                         }
 
