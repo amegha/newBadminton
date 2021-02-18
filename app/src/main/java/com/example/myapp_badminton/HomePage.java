@@ -1004,6 +1004,12 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
 //                        Toast.makeText(this, "DownLoadCompleted", Toast.LENGTH_SHORT).show();
 
                         break;
+                    case "803": {
+                        playGameLayout.setEnabled(false);
+//                        Toast.makeText(this, "DownLoadCompleted", Toast.LENGTH_SHORT).show();
+
+                        break;
+                    }
                     default: { // after login
 
 

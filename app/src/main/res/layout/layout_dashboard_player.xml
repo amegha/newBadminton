@@ -14,6 +14,7 @@
         android:id="@+id/play_game_layout"
         android:background="@drawable/button"
         android:gravity="center"
+        android:onClick="playVideo"
         android:orientation="vertical"
         android:weightSum="2">
 
@@ -23,7 +24,6 @@
             android:layout_height="100dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:onClick="playVideo"
             android:src="@drawable/play_game_color_img" />
 
         <TextView
