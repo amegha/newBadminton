@@ -195,6 +195,7 @@
     <string name="hint_username">Email ID</string>
     <string name="hint_password">Password</string>
     <string name="hint_confirm_password">Re-enter</string>
+    <string name="button_verify_portal">Verify</string>
     <string name="button_sign_in">Sign in</string>
     <string name="button_sign_up">Sign up</string>
     <string name="button_send">Send</string>
@@ -203,6 +204,8 @@
     <string name="version_info">Play game module below 8 starts playing from beginning after each pause.</string>
     <string name="text_forgot_password">Forgot password?</string>
     <string name="text_signin_message">Sign in</string>
+    <string name="text_change_url">Change Academy</string>
+    <string name="webportal_msg">Please enter webportal URL </string>
     <string name="text_signin_social_media">Or Sign in using social media</string>
     <string name="text_signup_social_media">Or Sign up using social media</string>
     <string name="text_signin_signup">Don\'t have an account? <b>Sign up</b></string>
@@ -234,6 +237,15 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+    <string name="title_activity_web_portal">WebPortal</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
 
 </resources>

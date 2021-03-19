@@ -36,7 +36,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     public static final String Password_pref = "passKey";
     public static final String Email_pref = "emailKey";
     private static final int REQUEST_RUNTIME_PERMISSIONS = 1;
-    private static String[] PERMISSIONS_STORAGE = {
+    private static final String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
     };
@@ -55,7 +55,8 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     String last_date, savedID, UserName, sec_lastDate, pending_day;
     NetworkAvailability networkAvailability;
     private boolean permissionGiven;
-    private int counter = 5, x;
+    private final int counter = 5;
+    private int x;
     private GetOTP getOTP;
     private ConfirmOTP confirmOTP;
 //    private ProgressDialog password_reset;
@@ -167,10 +168,10 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
     private void deleteFile() {
         try {
-            System.out.println("Delete file: " );
+            System.out.println("Delete file: ");
 
             String sourceFileUri = getFileUri(getApplicationContext());
-            File sourceFile = new File(sourceFileUri +"/databases"+ "/badminton.db");
+            File sourceFile = new File(sourceFileUri + "/databases" + "/badminton.db");
 
             if (sourceFile.exists()) {
                 if (sourceFile.delete()) {
@@ -181,11 +182,12 @@ public class Login extends AppCompatActivity implements AsyncResponse {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Login :" +e.getMessage() );
+            System.out.println("Login :" + e.getMessage());
 
 
         }
     }
+
     private String getFileUri(Context mContext) {
         try {
      /*       String fileName = "badmintonLogs.txt";
@@ -552,5 +554,17 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         return false;
     }
 
+
+    public void changeURL(View view) {
+        saveURL("");
+        startActivity(new Intent(this, WebPortal.class));
+        finish();
+    }
+    private void saveURL(String url) {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("baseURL", url);
+        editor.apply();
+    }
 
 }

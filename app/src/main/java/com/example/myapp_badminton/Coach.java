@@ -126,8 +126,8 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
                 coach_id = bundle1.getString("userid");
             }
             if (isConnected()) {
-//                new WebService(this).execute(API.ServerAddress + "get_academy.php", "module=coach&coach_id=" + coach_id);
-                new WebService(this).execute(API.ServerAddress + API.GET_ACADEMY_INFO, "module=coach&coach_id=" + coach_id);
+//                new WebService(this).execute( "get_academy.php", "module=coach&coach_id=" + coach_id);
+                new WebService(this).execute( API.GET_ACADEMY_INFO, "module=coach&coach_id=" + coach_id);
             } else {
                 Toast.makeText(this, "you are offline", Toast.LENGTH_SHORT).show();
             }

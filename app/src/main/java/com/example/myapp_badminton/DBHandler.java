@@ -64,6 +64,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public void storeLocationInfo(String info) {
+//        info="-Academy-,-State-,-city-,-location-"+info
         String[] locInfo = info.split(",");
 
         db = this.getWritableDatabase();

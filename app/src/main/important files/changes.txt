@@ -1,0 +1,4 @@
+changes in UI
+1. Registration page, Location dropdown default "-select- ?"
+2. Login page for perticular academy by giving the drop down to select the academy (since the base URL is gonna chage for the academies) by himself for his regitered id or to create different apps (not a feasible solution)
+3.

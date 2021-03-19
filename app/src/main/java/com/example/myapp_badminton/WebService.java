@@ -1,6 +1,7 @@
 package com.example.myapp_badminton;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
@@ -23,8 +24,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.example.myapp_badminton.Login.PREFS_NAME;
+
 public class WebService extends AsyncTask<String, String, String> {
-    String res;
+    String res,baseURL;
     String responseString;
     NetworkAvailability networkAvailability;
     List<String> nameValuePairs = new ArrayList<String>(2);
@@ -36,6 +39,12 @@ public class WebService extends AsyncTask<String, String, String> {
         mContext = context;
         this.mCallback = (AsyncResponse) context;
         networkAvailability = NetworkAvailability.getInstance(context);
+        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
+        baseURL=settings.getString("baseURL","");
+
+    }
+  private void getServerBaseURL(Context context) {
+
     }
 
     @Override
@@ -171,14 +180,14 @@ public class WebService extends AsyncTask<String, String, String> {
             return responseString;
         } else if(!arg0[1].equals("downloadVideo")) {
             try {
-                URL obj = new URL(arg0[0]);//arg0[0]=url
+                URL obj = new URL(baseURL+"/"+arg0[0]);//arg0[0]=url
                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
                 con.setRequestMethod("POST");//add request header
                 con.setConnectTimeout(7000);
                 con.setDoOutput(true);  //indicates POST request
                 con.setDoInput(true);   //indicates server returns response
                 con.setUseCaches(false);
-                Log.d("the postURL is", " " + arg0[0]);
+                Log.d("the postURL is", " " + baseURL+"/"+arg0[0]);
                 Log.d("the postData is", " " + arg0[1]);
                 OutputStreamWriter os = new OutputStreamWriter(con.getOutputStream());
             /*if(arg0.length==3){

@@ -4,11 +4,9 @@
     package="com.example.myapp_badminton">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-<!--    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />-->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" /> -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -23,6 +21,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".Login"/>
+
         <activity android:name=".Coach" />
         <activity
             android:name=".Mentor"
@@ -42,8 +43,8 @@
         <activity android:name=".ScoreFrom" />
         <activity android:name=".SelectedUserActivity" />
         <activity android:name=".DisplayPlayerDashboardForCoach" />
-
-        <!--  <provider
+        <!--
+  <provider
               android:name="androidx.core.content.FileProvider"
               android:authorities="com.example.myapp_badminton"
               android:exported="false"
@@ -51,9 +52,10 @@
               <meta-data
                   android:name="android.support.FILE_PROVIDER_PATHS"
                   android:resource="@xml/file_paths" />
-          </provider>-->
-
-        <activity android:name=".Login">
+          </provider>
+        -->
+        <activity
+            android:name=".WebPortal">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -78,9 +80,9 @@
             android:screenOrientation="landscape"
             android:supportsRtl="true" />
         <activity android:name=".DisplayPlayer" />
-        <activity android:name=".VideoCommentActivity"
+        <activity
+            android:name=".VideoCommentActivity"
             android:screenOrientation="landscape" />
-<!--        <activity android:name=".PlayModule.PlayVideo" />-->
     </application>
 
 </manifest>

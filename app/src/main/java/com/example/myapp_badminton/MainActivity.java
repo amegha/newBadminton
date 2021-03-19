@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
 
                 } else {
-                    Toast.makeText(this, "Grant permissions!!", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(this, "Grant permissions!!", Toast.LENGTH_LONG).show();
                     Log.i("Permission", "onRequestPermissionsResult: Permission Denied");
                 }
                 break;
@@ -505,6 +505,12 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     //date calculation as well as age calculation
@@ -1003,6 +1009,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     private void parseResponseSimple(String locationXml) {
         try {
             academyResponse = locationXml.split(";");
+
             for (int i = 0; i < academyResponse.length; i++) {
                 db.storeLocationInfo(academyResponse[i]);
             }

@@ -75,8 +75,8 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
             regDate=new ArrayList<>();
             exampleList = new ArrayList<>();
 
-//            new WebService(DisplayPlayer.this).execute(API.ServerAddress + "player_details.php", "academy_id=" + AID + "&level=" + level + "&coach_id=" + cid);
-            new WebService(DisplayPlayer.this).execute(API.ServerAddress + API.PLAYER_DETAILS, "academy_id=" + AID + "&level=" + level + "&coach_id=" + cid);
+//            new WebService(DisplayPlayer.this).execute(  "player_details.php", "academy_id=" + AID + "&level=" + level + "&coach_id=" + cid);
+            new WebService(DisplayPlayer.this).execute(  API.PLAYER_DETAILS, "academy_id=" + AID + "&level=" + level + "&coach_id=" + cid);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -9,6 +9,8 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,6 +23,16 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:orientation="vertical">
+            <Button
+                android:id="@+id/change_url"
+                style="@style/TextyButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="24dp"
+                android:onClick="changeURL"
+                android:padding="10dp"
+                android:text="@string/text_change_url" />
 
             <ImageView
                 android:layout_width="match_parent"
