@@ -41,6 +41,7 @@ public class WebService extends AsyncTask<String, String, String> {
         networkAvailability = NetworkAvailability.getInstance(context);
         SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
         baseURL=settings.getString("baseURL","");
+        Log.e("WebService ", "WebService: "+baseURL );
 
     }
   private void getServerBaseURL(Context context) {

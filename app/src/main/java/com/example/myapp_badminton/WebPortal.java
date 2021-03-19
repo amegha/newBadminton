@@ -80,6 +80,8 @@ public class WebPortal extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<WebPortalVerificationPOJO> call, Throwable t) {
+                startActivity(new Intent(getApplicationContext(), Login.class));
+                saveURL("");
                 Toast.makeText(WebPortal.this, "something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
@@ -89,7 +91,7 @@ public class WebPortal extends AppCompatActivity {
     private void saveURL(String url) {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString("baseURL", url);
+        editor.putString("baseURL", "https://awsb.drbadminton.com");
         editor.apply();
     }
 }
