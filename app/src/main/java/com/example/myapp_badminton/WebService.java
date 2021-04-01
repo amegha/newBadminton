@@ -217,7 +217,7 @@ public class WebService extends AsyncTask<String, String, String> {
                 e.printStackTrace();
             }
         }else{
-            downloadfile(arg0[0]);
+            downloadfile(baseURL+"/"+arg0[0]);
         }
       /*  } else {
             responseString = "no crossCourtBlock";
@@ -225,7 +225,8 @@ public class WebService extends AsyncTask<String, String, String> {
         return responseString;
     }
     private void downloadfile(String vidurl) {
-
+//        vidurl="http://demo.drbadminton.com/upload/k9.mp4";
+        vidurl = checkForHTTP(vidurl);
         SimpleDateFormat sd = new SimpleDateFormat("yymmhh");
         String date = sd.format(new Date());
         String name = "video.mp4";
@@ -258,7 +259,13 @@ public class WebService extends AsyncTask<String, String, String> {
         }
     }
 
-
+    private String checkForHTTP(String vidurl) {
+        if(vidurl.substring(0,8).equals("https://")) {
+            vidurl = vidurl.substring(0, 8).equals("https://") ? vidurl.substring(8) :  vidurl;
+            vidurl="http://" +vidurl;
+        }
+        return vidurl;
+    }
 
 
     private String getFileUri() {

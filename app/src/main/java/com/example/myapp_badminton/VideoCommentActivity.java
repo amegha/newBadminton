@@ -43,7 +43,7 @@ public class VideoCommentActivity extends Activity implements AsyncResponse {
     Context context;
 
     int[] pauses = {166, 798, 1713, 2101, 3426};
-    String[] comments = {"right leg front", "left hand up", "neck rotate", "do balle balle", "hip hoop"};
+    String[] comments = {"right leg front", "left hand up", "neck rotate", "hand rotate", "left Hand rotate"};
 
     int initPos, currPos, watchAgainCount, pauseAt, REQUEST_ANSWER = 1, answerCount, score, livePlay, watchNextComment;
     Button watchAgain, answerQuestions;

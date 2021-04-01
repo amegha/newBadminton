@@ -10,8 +10,8 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 public interface APIInterface {
-    String BASE_URL = "http://74.91.20.50:9000/api/";
-//    String BASE_URL = "http://demo.drbadmintom.com/";
+//    String BASE_URL = "http://74.91.20.50:9000/api/";
+    String BASE_URL = "https://demo.drbadminton.com/api/";
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(APIInterface.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())

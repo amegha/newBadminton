@@ -2,6 +2,7 @@ package com.example.myapp_badminton;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -67,6 +68,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
     private Date date;
     private SimpleDateFormat ymdDateFormat, dmyDateFormat;
     private String nextDate;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,7 +213,11 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
     //add data
     public void addUser(View view) {
         try {
+            et_score.setError(null);
             score = et_score.getText().toString();
+            if(DOScore.getText().equals("")){
+                DOScore.setError("select date");
+            }else
             if (score.equals("") || score.matches(".*[a-zA-Z]+.*") || (Double.parseDouble(score)) > 10.0) {
                 et_score.setError("Enter the score");
             } else if (selected.equals("DATE_NOTSET") ||((ymdDateFormat.parse(regDate).after(ymdDateFormat.parse(selected))))) {
@@ -342,6 +348,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
     }
 
     private void uploadScoreXml(String scoreXml) {
+        progressDialog = ProgressDialog.show(this, "Updating picture", "Please wait..", false, false);
         new WebService(this).execute(API.ServerAddress + API.UPLOAD_SCORE, scoreXml);
 //        new WebService(this).execute(API.ServerAddress + API.UPLOAD_SCORE, "scoreUpload");
     }
@@ -420,6 +427,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
             Log.e("onTaskComplete: ", "uploadtxt " + result);
 
             if (result.equals("0")) {
+                progressDialog.dismiss();
                 Toast.makeText(this, "sync Successful", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(SelectedUserActivity.this, HomePage.class);//.putExtras(bundle_score);
                 i.setFlags((Intent.FLAG_ACTIVITY_REORDER_TO_FRONT) | (Intent.FLAG_ACTIVITY_CLEAR_TOP));
@@ -463,6 +471,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
             String date = sdf.format(c.getTime());
             DOScore.setText(date);
             selected = ymdDateFormat.format(c.getTime());
+            DOScore.setError(null);
         } catch (Exception e) {
             System.out.println(e.getMessage());
 

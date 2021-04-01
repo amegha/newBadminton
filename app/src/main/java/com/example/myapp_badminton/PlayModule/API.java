@@ -7,7 +7,7 @@ package com.example.myapp_badminton.PlayModule;
 
 public class API {
 //    public static final String ServerAddress = "http://stage1.optipacetech.com/badminton/api/";
-    public static final String ServerAddress = "http://74.91.20.50:9000/api/";
+    public static final String ServerAddress = "";
 //    public static final String VIDEO_LINK = "http://stage1.optipacetech.com/badminton/";
     public static final String VIDEO_LINK = "http://74.91.20.50:9000/";
     public static String USER_LOGIN = "login.php";

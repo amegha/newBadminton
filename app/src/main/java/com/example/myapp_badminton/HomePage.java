@@ -99,7 +99,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
         public void run() {
 //            Toast.makeText(context, "Downloading", Toast.LENGTH_SHORT).show();
 
-            new WebService(context).execute(API.VIDEO_LINK_DOWNLOAD + "" + videoName, "downloadVideo");
+            new WebService(context).execute(API.ServerAddress + "" + videoName, "downloadVideo");
         }
     };
     private String link;
@@ -1023,7 +1023,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
                             correctAns.setText(arrRes[2]);
                             wrongAns.setText(arrRes[3]);
 
-                            checkDBAndGetCorrectAnswer();
+//                            checkDBAndGetCorrectAnswer();
 
                         } else /*if (arrRes.length == 3) */ {
                             lastScoreDate = arrRes[1];

@@ -9,14 +9,14 @@ import java.util.HashMap;
 
 public class GetAnswersImpl1 implements GetAnswers {
     private static final String TAG = "GetAnswersImpl1";
-    String serverAddress = API.ServerAddress + API.ANSWERS;
+    String serverAddress /*= API.ServerAddress + API.ANSWERS*/;
     private PlayVideo playVideo;
     private WebService webService;
     private String pid;
     private HashMap<Integer, String> map1 = new HashMap<>();
 
-    public GetAnswersImpl1(PlayVideo playVideo, WebService webService, String pid) {
-        this.serverAddress = serverAddress;
+    public GetAnswersImpl1(PlayVideo playVideo, WebService webService, String pid,String serverAddress) {
+        this.serverAddress = serverAddress+"/api/"+API.ANSWERS;
         this.playVideo = playVideo;
         this.webService = webService;
         this.pid = pid;

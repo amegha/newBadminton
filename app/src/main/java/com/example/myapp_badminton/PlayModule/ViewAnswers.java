@@ -145,7 +145,7 @@ public class ViewAnswers extends Activity implements AsyncResponse {
 
     public void sendResultToServer(String playerAnswers) {
 
-        new WebService(this).execute(API.ServerAddress + API.SYNC_TO_SERVER, playerAnswers);
+        new WebService(this).execute(PlayVideo.baseURL+"api/" + API.SYNC_TO_SERVER, playerAnswers);
 //        getAnswers = new GetAnswersImpl1(this, new WebService(this));
         //syncToServer
        /* JSONObject jsonObject = new JSONObject();

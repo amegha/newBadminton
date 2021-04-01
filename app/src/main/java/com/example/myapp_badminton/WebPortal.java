@@ -80,8 +80,8 @@ public class WebPortal extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<WebPortalVerificationPOJO> call, Throwable t) {
-                startActivity(new Intent(getApplicationContext(), Login.class));
-                saveURL("");
+//                startActivity(new Intent(getApplicationContext(), Login.class));
+//                saveURL("");
                 Toast.makeText(WebPortal.this, "something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
@@ -89,9 +89,13 @@ public class WebPortal extends AppCompatActivity {
     }
 
     private void saveURL(String url) {
+        if(!url.substring(0,8).equals("https://")) {
+            url = url.substring(0, 7).equals("http://") ? url.substring(7) :  url;
+            url="https://" +url;
+        }
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString("baseURL", "https://awsb.drbadminton.com");
+        editor.putString("baseURL", url);
         editor.apply();
     }
 }
