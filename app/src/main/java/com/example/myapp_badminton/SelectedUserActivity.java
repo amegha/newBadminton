@@ -348,7 +348,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
     }
 
     private void uploadScoreXml(String scoreXml) {
-        progressDialog = ProgressDialog.show(this, "Updating picture", "Please wait..", false, false);
+        progressDialog = ProgressDialog.show(this, "Uploading the score!", "Please wait..", false, false);
         new WebService(this).execute(API.ServerAddress + API.UPLOAD_SCORE, scoreXml);
 //        new WebService(this).execute(API.ServerAddress + API.UPLOAD_SCORE, "scoreUpload");
     }
