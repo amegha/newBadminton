@@ -53,7 +53,7 @@ public class ActivityTracker {
             File textFile = new File(ssdcard);*/
 
 
-            Log.e("Activity Tracker ","text file name :"+textFile.toString());
+            //Log.e("Activity Tracker ","text file name :"+textFile.toString());
 //            File textFile = new File(sdcard, fileName);
 
             BufferedWriter out = new BufferedWriter(
@@ -61,12 +61,12 @@ public class ActivityTracker {
             out.write(getDate() + "_" + string + "_" + pid + "/");
             out.close();
         } catch (IOException e) {
-            System.out.println("exception occoured" + e);
+            //System.out.println("exception occoured" + e);
         }
 
 
 
-        /*Log.e("String", " to be written " + string +" / ");
+        /*//Log.e("String", " to be written " + string +" / ");
         String filename = "badmintonLogs.txt";
 //        File root = new File("/storage/emulated/0/Badminton", filename);
         File root = new File(Environment.getExternalStorageDirectory(), "Badminton");

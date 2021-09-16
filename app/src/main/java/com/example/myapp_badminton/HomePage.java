@@ -54,7 +54,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
 public class HomePage extends AppCompatActivity implements AsyncResponse, NavigationView.OnNavigationItemSelectedListener {
     public static final String PREFS_NAME = "LoginPrefs";
     private static final int REQUEST_RUNTIME_PERMISSIONS = 1;
@@ -124,7 +123,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
 
             db = new DBHandler(this);
             context = this;
-            Log.e("onCreate: ", "***from activity***" + this.getLocalClassName());
+            //Log.e("onCreate: ", "***from activity***" + this.getLocalClassName());
             networkAvailability = NetworkAvailability.getInstance(this);
             Toolbar toolbar = findViewById(R.id.toolbar);// get the reference of Toolbar
             verifyStoragePermissions(this);
@@ -169,7 +168,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
                 uname = settings.getString("Name", "");
                 id = settings.getString("Id", "");
                 playerImage = settings.getString("Image", "");
-                Log.e("oncreate image", "image " + playerImage);
+                //Log.e("oncreate image", "image " + playerImage);
                 regEmail = settings.getString("mail_id", "");
                 lastScoreDate = settings.getString("DateLastScore", "");
                 Score = settings.getString("lastScore", "");
@@ -255,6 +254,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
             }
         });
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
@@ -272,6 +272,11 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
                         case "Reset Password":
                             createResetPasswordAlertDialog();
                             break;
+
+                        case "Refresh Game":
+                                refreshGameOrClearDBOnLogout();
+                            break;
+
                         case "Sync Data":
                             if (isConnected())
                                 sendLog();
@@ -307,6 +312,17 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
                 return false;
             }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void refreshGameOrClearDBOnLogout() {
+        if(!db.isDataEmpty()) {
+            db.deletePlayerAnswerData();
+        }
+        if(!PlayVideo.answersModelsArray.equals(null)){
+            PlayVideo.answersModelsArray.clear();
+        }
+        Toast.makeText(HomePage.this, "Refreshed!!", Toast.LENGTH_SHORT).show();
     }
 
     private void changeProfilePic1() {
@@ -356,7 +372,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
             childModel = new MenuModel("On Court Skills", false, false, new Performance_fragment(uname, id, utype, lastScoreDate, Score, scoreFilter, "player"));
             childModelsList.add(childModel);
             if (menuModel.hasChildren) {
-                Log.d("API123", "here");
+                //Log.d("API123", "here");
                 childList.put(menuModel, childModelsList);
             }
         } else {
@@ -381,7 +397,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
             childModel = new MenuModel("On Court Skills", false, false, new Performance_fragment(uname, id, utype, scoreFilter));
             childModelsList.add(childModel);
             if (menuModel.hasChildren) {
-                Log.d("API123", "here");
+                //Log.d("API123", "here");
                 childList.put(menuModel, childModelsList);
             }
         }
@@ -431,6 +447,9 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
             childModelsList.add(childModel);
 
             childModel = new MenuModel("Reset Password", false, false, null);
+            childModelsList.add(childModel);
+
+            childModel = new MenuModel("Refresh Game", false, false, null);
             childModelsList.add(childModel);
 
             childModel = new MenuModel("Sync Data", false, false, null);
@@ -501,7 +520,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
                 != PackageManager.PERMISSION_GRANTED
                 || ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
-            Log.e("verify", "permission not given ");
+            //Log.e("verify", "permission not given ");
 
             // We don't have permission so prompt the user
             ActivityCompat.requestPermissions(
@@ -511,7 +530,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
 
             );
         } else {
-            Log.e("verify", "permission given ");
+            //Log.e("verify", "permission given ");
             permissionGiven = true;
         }
     }
@@ -672,7 +691,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
     }
 
     private void changeProfilePic() {
-        Log.e("changeProfilePic", "permission " + permissionGiven);
+        //Log.e("changeProfilePic", "permission " + permissionGiven);
         final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -736,7 +755,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
                                 byte[] b = baos.toByteArray();
 
                                 String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-                                Log.e("pickimage", "path image" + encodedImage);*/
+                                //Log.e("pickimage", "path image" + encodedImage);*/
 
                             profilePic.setImageBitmap(BitmapFactory.decodeFile(picturePath));
                             convertTobase64(BitmapFactory.decodeFile(picturePath));
@@ -787,7 +806,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
                                 byte[] b = baos.toByteArray();
 
                                 String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-                                Log.e("pickimage", "path image" + encodedImage);*/
+                                //Log.e("pickimage", "path image" + encodedImage);*/
 
                                     profilePic.setImageBitmap(BitmapFactory.decodeFile(picturePath));
                                     convertTobase64(BitmapFactory.decodeFile(picturePath));
@@ -807,7 +826,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
             image.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
             byte[] b = baos.toByteArray();
             imageString = Base64.encodeToString(b, Base64.DEFAULT);
-            Log.e("imagePooja ", "convertTobase641: " + imageString);
+            //Log.e("imagePooja ", "convertTobase641: " + imageString);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -823,7 +842,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
             /*editor.putString("Image", imageString);
             editor.apply();*/
 
-            Log.e("image string", "homePage" + Base64.encodeToString(b, Base64.DEFAULT) + "User id " + id);
+            //Log.e("image string", "homePage" + Base64.encodeToString(b, Base64.DEFAULT) + "User id " + id);
             uploadProfilePicToServer(playerImage);
 
         } catch (Exception e) {
@@ -837,7 +856,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
                 "<user_id>" + id + "</user_id>\n" +
                 "<image>" + playerImage + "</image>\n" +
                 "</change_pic>\n";
-        Log.i("HomePage", "uploadProfilePicToServer:XML " + xml);
+        //Log.i("HomePage", "uploadProfilePicToServer:XML " + xml);
 
         progressDialog = ProgressDialog.show(this, "Updating picture", "Please wait..", false, false);
 
@@ -899,11 +918,13 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void showLogoutDialog() {
         try {
             AlertDialog.Builder alert = new AlertDialog.Builder(HomePage.this);
             alert.setMessage("Are you sure?")
                     .setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.O)
                         public void onClick(DialogInterface dialog, int which) {
                             settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
                             editor = settings.edit();
@@ -923,7 +944,9 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void logout() {
+        refreshGameOrClearDBOnLogout();
         startActivity(new Intent(this, Login.class));
         finish();
     }
@@ -945,7 +968,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
     @Override
     public void onTaskComplete(String result) {
         try {
-            Log.e("onTaskComplete: ", "res " + result);
+            //Log.e("onTaskComplete: ", "res " + result);
             if (progressDialog != null) {
                 progressDialog.dismiss();
             }
@@ -1089,10 +1112,10 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
                 maxTime[i] = Integer.parseInt(answerContents[4]);
 
                 db.storeCorrectAnswers(videoId[i], correctShotLoc[i], correctShotType[i], pauses[i], maxTime[i], videoName);
-                Log.e("playVideo", "pauses are " + pauses[i] + " ");
+                //Log.e("playVideo", "pauses are " + pauses[i] + " ");
             }
-            System.out.println("correct ansers" + correctAnswers);
-            System.out.println("pauses" + pauses.toString());
+            //System.out.println("correct ansers" + correctAnswers);
+            //System.out.println("pauses" + pauses.toString());
             downloadVideo.start();
         } catch (NumberFormatException e) {
             e.printStackTrace();
@@ -1108,7 +1131,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
     private void checkDBAndGetCorrectAnswer() {
         if (db.isDataEmpty()) {
             playGameLayout.setEnabled(false); // disable the play button untill the video is downloaded!!
-            Log.e("database ", "db is empty");
+            //Log.e("database ", "db is empty");
             if (isConnected()) {
                 new WebService(HomePage.this).execute(API.ServerAddress + API.ANSWERS, "user_id=" + id);
             } else {
@@ -1126,9 +1149,9 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
             File sourceFile = new File(sourceFileUri + "/badmintonLogs.txt");
             if (sourceFile.exists()) {
                 if (sourceFile.delete()) {
-                    System.out.println("file Deleted :" + sourceFile.getPath());
+                    //System.out.println("file Deleted :" + sourceFile.getPath());
                 } else {
-                    System.out.println("file not Deleted :" + sourceFile.getPath());
+                    //System.out.println("file not Deleted :" + sourceFile.getPath());
                 }
             }
         } catch (Exception e) {
@@ -1207,7 +1230,7 @@ public class HomePage extends AppCompatActivity implements AsyncResponse, Naviga
                 } else {
                     permissionGiven = false;
                     Toast.makeText(this, "Grant permissions!!", Toast.LENGTH_LONG).show();
-                    Log.i("Permission", "onRequestPermissionsResult: Permission Denied");
+                    //Log.i("Permission", "onRequestPermissionsResult: Permission Denied");
                 }
             }
         }

@@ -74,7 +74,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
-            Log.e("onCreate: ", "***from activity***" + this.getLocalClassName());
+            //Log.e("onCreate: ", "***from activity***" + this.getLocalClassName());
             setContentView(R.layout.activity_selected_user);
             settings = getSharedPreferences(PREFS_NAME, 0);
             initUI();
@@ -163,7 +163,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
                 }
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
@@ -317,7 +317,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
 
         }
 
@@ -342,7 +342,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
 
         }
     }
@@ -384,16 +384,16 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
                 c.setTime(date);
                 c.add(Calendar.DATE, +i);
                 inputDate = format.format(c.getTime());
-                Log.d("asd", "selected date : " + inputDate);
+                //Log.d("asd", "selected date : " + inputDate);
                 return inputDate;
 
             }
 
-            // System.out.println(date);
+            // //System.out.println(date);
         } catch (Exception e) {
             // TODO Auto-generated catch slice
             e.printStackTrace();
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
 
             inputDate = "";
         }
@@ -415,7 +415,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
             datePickerDialog.show();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
 
         }
     }
@@ -424,7 +424,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
     @Override
     public void onTaskComplete(String result) {
         try {
-            Log.e("onTaskComplete: ", "uploadtxt " + result);
+            //Log.e("onTaskComplete: ", "uploadtxt " + result);
 
             if (result.equals("0")) {
                 progressDialog.dismiss();
@@ -438,7 +438,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
 
         }
 
@@ -473,7 +473,7 @@ public class SelectedUserActivity extends AppCompatActivity implements DatePicke
             selected = ymdDateFormat.format(c.getTime());
             DOScore.setError(null);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
 
             e.printStackTrace();
         }

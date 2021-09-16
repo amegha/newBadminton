@@ -54,7 +54,7 @@ public class ScoreFrom extends AppCompatActivity implements AsyncResponse {
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
-            Log.e("onCreate: ", "***from activity***" + this.getLocalClassName());
+            //Log.e("onCreate: ", "***from activity***" + this.getLocalClassName());
             setContentView(R.layout.activity_score__from);
 
 
@@ -382,7 +382,7 @@ public class ScoreFrom extends AppCompatActivity implements AsyncResponse {
     @Override
     public void onTaskComplete(String result) {
         try {
-            Log.e("onTaskComplete: ", "result " + result);
+            //Log.e("onTaskComplete: ", "result " + result);
             switch (result) {
                 case "00": {
                     Toast.makeText(this, "file could not get uploaded!", Toast.LENGTH_SHORT).show();
@@ -394,7 +394,7 @@ public class ScoreFrom extends AppCompatActivity implements AsyncResponse {
                     break;
                 }
                 case "404": {
-                    Log.e("File", "not found");
+                    //Log.e("File", "not found");
                     break;
                 }
                 default: {
@@ -403,7 +403,7 @@ public class ScoreFrom extends AppCompatActivity implements AsyncResponse {
 
                 }
             }
-            Log.e("onTaskComplete: ", "userLogUpload");
+            //Log.e("onTaskComplete: ", "userLogUpload");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -416,9 +416,9 @@ public class ScoreFrom extends AppCompatActivity implements AsyncResponse {
             File sourceFile = new File(sourceFileUri + "/badmintonLogs.txt");
             if (sourceFile.exists()) {
                 if (sourceFile.delete()) {
-                    System.out.println("file Deleted :" + sourceFile.getPath());
+                    //System.out.println("file Deleted :" + sourceFile.getPath());
                 } else {
-                    System.out.println("file not Deleted :" + sourceFile.getPath());
+                    //System.out.println("file not Deleted :" + sourceFile.getPath());
                 }
             }
         } catch (Exception e) {

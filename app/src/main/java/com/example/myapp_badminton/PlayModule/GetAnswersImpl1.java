@@ -42,8 +42,8 @@ public class GetAnswersImpl1 implements GetAnswers {
         String[] shotLoc;
         String[] shotType;
         String[] answerContents;
-        Log.e(TAG, "length is" + correctAnswers.length);
-        Log.e(TAG, "V_ID" + correctAnswers[0].split(":").length);
+        //Log.e(TAG, "length is" + correctAnswers.length);
+        //Log.e(TAG, "V_ID" + correctAnswers[0].split(":").length);
         pauses = new int[correctAnswers[0].length()];
         shotLoc = new String[correctAnswers[0].length()];
         shotType = new String[correctAnswers[0].length()];

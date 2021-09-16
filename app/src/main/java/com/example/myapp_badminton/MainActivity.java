@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (position > 0) {
                 final Country country = (Country) country_Spinner.getItemAtPosition(position);
-                Log.d("SpinnerCountry", "onItemSelected: country: " + country.getCountryID());
+                //Log.d("SpinnerCountry", "onItemSelected: country: " + country.getCountryID());
                 ArrayList<State> tempStates = new ArrayList<>();
 
                 tempStates.add(new State(0, new Country(0, "Choose a Country"), "Choose a State"));
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (position > -1) {
                 stateName = (String) state_Spinner.getItemAtPosition(position);
-                Log.d("SpinnerCountry", "onItemSelected: state: ");
+                //Log.d("SpinnerCountry", "onItemSelected: state: ");
 
                 cityArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, db.getCities(stateName));
                 cityArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
                 } else {
 //                    Toast.makeText(this, "Grant permissions!!", Toast.LENGTH_LONG).show();
-                    Log.i("Permission", "onRequestPermissionsResult: Permission Denied");
+                    //Log.i("Permission", "onRequestPermissionsResult: Permission Denied");
                 }
                 break;
             }
@@ -306,7 +306,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
-            Log.e("onCreate: ", "***from activity***" + this.getLocalClassName());
+            //Log.e("onCreate: ", "***from activity***" + this.getLocalClassName());
 //        ActivityTracker.writeActivityLogs(this.getLocalClassName());
             setContentView(R.layout.activity_main);
             verifyStoragePermissions(this);
@@ -412,7 +412,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 }
             });
 //        getAcademyInfo();
-        /*System.out.println("from mainActivity!!" + Collections.singletonList(parsexml.stateList));
+        /*//System.out.println("from mainActivity!!" + Collections.singletonList(parsexml.stateList));
         String[] statesArr = new String[parsexml.stateList.size()];
         statesArr = (String[]) parsexml.stateList.toArray(statesArr);
 
@@ -656,7 +656,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             image.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
             byte[] b = baos.toByteArray();
             imageString = Base64.encodeToString(b, Base64.DEFAULT);
-            Log.e("image ", "convertTobase64: " + imageString);
+            //Log.e("image ", "convertTobase64: " + imageString);
             add.setEnabled(true);
         } catch (Exception e) {
             e.printStackTrace();
@@ -823,7 +823,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                                  image_uri, String radio_gender, String radio_education, String age, String dob, String
                                  timestamp1) {
         try {
-            Log.e("getdata", "entered form xml: ");
+            //Log.e("getdata", "entered form xml: ");
             String xml = "<user_details>\n" +
                     "<userName>" + name + "</userName>\n" +
                     "<phoneNumber>" + phone + "</phoneNumber>\n" + //                "<etPassword>" + radio_playerType + "</etPassword>\n" +
@@ -843,7 +843,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                     "</user_details>\n";
             try {
                 //   writeToTxtFile(xml);
-                Log.e("getdata", "dataXml: " + xml);
+                //Log.e("getdata", "dataXml: " + xml);
                 sendRequest(xml);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -870,7 +870,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     @Override
     public void onTaskComplete(String result) {
         try {
-            Log.e("ontask complt", "response" + result);
+            //Log.e("ontask complt", "response" + result);
             progressDismiss();
             if (result.equals("pre_registration/0/pre_reg ")) {
 //                sendOtpProgressDialog.dismiss();
@@ -948,11 +948,11 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     /*    @Override
     public void onTaskComplete(String result) {
         try {
-            Log.e("ontask complete", "Upload status" + result);
+            //Log.e("ontask complete", "Upload status" + result);
             String[] arrRes;
             arrRes = result.split("/");
             String locationXml;
-            Log.e("ViewUserDetails", "arrRes[0]" + arrRes[0] + " arrRes[1] " + arrRes[1]);
+            //Log.e("ViewUserDetails", "arrRes[0]" + arrRes[0] + " arrRes[1] " + arrRes[1]);
             if (arrRes[1].equals("0 ")) { // space is added
                 if (arrRes[0].equals("pre_registration")) {//coming from pre_register after sending the otp to the mailid
                     LayoutInflater li = LayoutInflater.from(this);
@@ -1025,32 +1025,32 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         for (int stateCount = 0; stateCount < stateInfo.length; stateCount++) {
             nextState = 0;
             statesList.add(new State(stateCount, stateInfo[stateCount]));
-            System.out.println("stateList: " + Collections.singletonList(statesList));
+            //System.out.println("stateList: " + Collections.singletonList(statesList));
             cityInfo = (academyResponse[1].split(";")); //same state cities are seperated by ;chennai;Hydrabaad;Belagavi.Bengaluru
 
             for (int cityInfoCount = tempNextState; cityInfoCount < cityInfo.length; cityInfoCount++) {
                 nextCity = 0;
                 if (tempNextState > 0)
                     break;
-                System.out.println("split by dot " + cityInfo[cityInfoCount].split("@").length);
+                //System.out.println("split by dot " + cityInfo[cityInfoCount].split("@").length);
                 if (1 < cityInfo[cityInfoCount].split("@").length) { //if more cities are the
                     respectivePlaces = cityInfo[cityInfoCount].split("@");
                     for (int respectiveCitiesCount = 0; respectiveCitiesCount < respectivePlaces.length; respectiveCitiesCount++) {
                         citiesList.add(new City(cityInfoCount, statesList.get(stateCount), respectivePlaces[respectiveCitiesCount]));
-                        Log.e("loc ", "---->" + cityInfoCount + "\n" +
+                        /*Log.e("loc ", "---->" + cityInfoCount + "\n" +
                                 statesList.get(stateCount) + "\n" +
-                                respectivePlaces[respectiveCitiesCount]);
+                                respectivePlaces[respectiveCitiesCount]);*/
                     }
                 } else {
                     citiesList.add(new City(cityInfoCount, statesList.get(stateCount), cityInfo[cityInfoCount]));
                     tempNextState = nextState + 1;
-                    Log.e("loc 1 ", "---->" + cityInfoCount + "\n" +
+                    /*Log.e("loc 1 ", "---->" + cityInfoCount + "\n" +
                             statesList.get(stateCount) + "\n" +
-                            cityInfo[cityInfoCount]);
+                            cityInfo[cityInfoCount]);*/
 
                 }
 //                locationInfo = (academyResponse[2].split(";"));
-//                System.out.println("LocationInfo" + Collections.singletonList(locationInfo));
+//                //System.out.println("LocationInfo" + Collections.singletonList(locationInfo));
                 locationInfo = (academyResponse[2].split(";")); //same state cities are seperated by ;chennai;Hydrabaad;Belagavi.Bengaluru
                 for (int locationInfoCount = tempNextCity; locationInfoCount < locationInfo.length; locationInfoCount++) {
                     if (nextCity > 0)
@@ -1059,7 +1059,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                         respectivePlaces = locationInfo[locationInfoCount].split("@");
                         for (int respectiveCitiesCount = 0; respectiveCitiesCount < respectivePlaces.length; respectiveCitiesCount++) {
                             locationList.add(new LocalLocation(locationInfoCount, statesList.get(stateCount), citiesList.get(cityInfoCount), respectivePlaces[respectiveCitiesCount]));
-                            /*System.out.println(cityInfoCount + "\n" +
+                            /*//System.out.println(cityInfoCount + "\n" +
                                     statesList.get(cityInfoCount) + "\n" +
                                     respectivePlaces[respectiveCitiesCount]);*/
                         }
@@ -1070,9 +1070,9 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 }
 
                 academyNameInfo = (academyResponse[3].split(";"));
-                System.out.println("academyNameInfo " + Collections.singletonList(statesList));
-                System.out.println("academyNameInfo " + Collections.singletonList(citiesList));
-                System.out.println("academyNameInfo " + Collections.singletonList(locationList));
+                //System.out.println("academyNameInfo " + Collections.singletonList(statesList));
+                //System.out.println("academyNameInfo " + Collections.singletonList(citiesList));
+                //System.out.println("academyNameInfo " + Collections.singletonList(locationList));
             }
         }
 
@@ -1092,20 +1092,20 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                     statesList.add(new State(stateCount, stateInfo[stateCount]));
                 }
 //                stateInfo.add(academyResponse[0].split(","));
-//                System.out.println("stateInfo " + Collections.singletonList(stateInfo))
-                System.out.println("stateList: " + Collections.singletonList(statesList));
+//                //System.out.println("stateInfo " + Collections.singletonList(stateInfo))
+                //System.out.println("stateList: " + Collections.singletonList(statesList));
 
             } else if (i == 1) {
                 cityInfo = (academyResponse[1].split(";")); //same state cities are seperated by ;chennai;Hydrabaad;Belagavi.Bengaluru
                 for (int cityInfoCount = 0; cityInfoCount < cityInfo.length; cityInfoCount++) {
-                    System.out.println("split by dot " + cityInfo[cityInfoCount].split("@").length);
+                    //System.out.println("split by dot " + cityInfo[cityInfoCount].split("@").length);
                     if (1 < cityInfo[cityInfoCount].split("@").length) {
                         respectivePlaces = cityInfo[cityInfoCount].split("@");
                         for (int respectiveCitiesCount = 0; respectiveCitiesCount < respectivePlaces.length; respectiveCitiesCount++) {
                             citiesList.add(new City(cityInfoCount, statesList.get(cityInfoCount), respectivePlaces[respectiveCitiesCount]));
-                            System.out.println(cityInfoCount + "\n" +
+                            /*System.out.println(cityInfoCount + "\n" +
                                     statesList.get(cityInfoCount) + "\n" +
-                                    respectivePlaces[respectiveCitiesCount]);
+                                    respectivePlaces[respectiveCitiesCount]);*/
                         }
                     } else {
                         citiesList.add(new City(cityInfoCount, statesList.get(cityInfoCount), cityInfo[cityInfoCount]));
@@ -1113,17 +1113,17 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 }
             } else if (i == 2) {
 //                locationInfo = (academyResponse[2].split(";"));
-//                System.out.println("LocationInfo" + Collections.singletonList(locationInfo));
+//                //System.out.println("LocationInfo" + Collections.singletonList(locationInfo));
                 for (int stateCount = 0; stateCount < stateInfo.length; stateCount++) {
                     for (int cityCount = 0; cityCount < cityInfo.length; cityCount++) {
                         locationInfo = (academyResponse[2].split(";")); //same state cities are seperated by ;chennai;Hydrabaad;Belagavi.Bengaluru
                         for (int locationInfoCount = 0; locationInfoCount < locationInfo.length; locationInfoCount++) {
-                            System.out.println("split by dot " + locationInfo[locationInfoCount].split("@").length);
+                            //System.out.println("split by dot " + locationInfo[locationInfoCount].split("@").length);
                             if (1 < locationInfo[locationInfoCount].split("@").length) {
                                 respectivePlaces = locationInfo[locationInfoCount].split("@");
                                 for (int respectiveCitiesCount = 0; respectiveCitiesCount < respectivePlaces.length; respectiveCitiesCount++) {
                                     locationList.add(new LocalLocation(locationInfoCount, statesList.get(locationInfoCount), citiesList.get(locationInfoCount), respectivePlaces[respectiveCitiesCount]));
-                            /*System.out.println(cityInfoCount + "\n" +
+                            /*//System.out.println(cityInfoCount + "\n" +
                                     statesList.get(cityInfoCount) + "\n" +
                                     respectivePlaces[respectiveCitiesCount]);*/
                                 }
@@ -1136,7 +1136,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
             } else if (i == 3) {
                 academyNameInfo = (academyResponse[3].split(";"));
-                System.out.println("academyNameInfo " + Collections.singletonList(academyNameInfo));
+                //System.out.println("academyNameInfo " + Collections.singletonList(academyNameInfo));
             }
 
         }
@@ -1210,7 +1210,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     public void resetPasswordOrPin(View view) {
         try {
             alertDialog.dismiss();
-            Log.e("reset", "resetPasswordOrPin: " + m_id);
+            //Log.e("reset", "resetPasswordOrPin: " + m_id);
             progressDialog = ProgressDialog.show(this, "Password setting", "Please wait..", false, false);
             sNewPass = newPass.getText().toString();
             sNewPassConfirm = confirmNewPass.getText().toString();

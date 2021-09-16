@@ -32,6 +32,7 @@ public class ViewAnswers extends Activity implements AsyncResponse {
     private GetAnswers getAnswers;
     private String pid;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         try {
@@ -143,6 +144,7 @@ public class ViewAnswers extends Activity implements AsyncResponse {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void sendResultToServer(String playerAnswers) {
 
         new WebService(this).execute(PlayVideo.baseURL+"api/" + API.SYNC_TO_SERVER, playerAnswers);

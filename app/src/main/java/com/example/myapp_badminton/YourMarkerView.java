@@ -41,7 +41,7 @@ public class YourMarkerView extends MarkerView {
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
 
-        System.out.println("Categories"+category.get((int) e.getX()));
+        //System.out.println("Categories"+category.get((int) e.getX()));
         tvContent.setText("" + category.get((int) e.getX()));
 
         // this will perform necessary layouting

@@ -90,7 +90,7 @@ public class DBHandler extends SQLiteOpenHelper {
         try {
             db.insertOrThrow(PLAYER_LOG, null, values);
         } catch (SQLiteConstraintException e) {
-           System.out.println(e.getMessage());
+           //System.out.println(e.getMessage());
             // TODO Auto-generated catch slice
             return;
         }
@@ -104,7 +104,7 @@ public class DBHandler extends SQLiteOpenHelper {
         c = db.rawQuery("SELECT  " + LOG_STRING + " FROM " + PLAYER_LOG, null);
         c.moveToFirst();
         selection = c.getString(0);
-        System.out.println("LogString " + selection);
+        //System.out.println("LogString " + selection);
         return selection;
     }
 
@@ -120,7 +120,7 @@ public class DBHandler extends SQLiteOpenHelper {
             i++;
             c.moveToNext();
         }
-        System.out.println("get states " + Arrays.toString(selection));
+        //System.out.println("get states " + Arrays.toString(selection));
 
         return selection;
     }
@@ -136,7 +136,7 @@ public class DBHandler extends SQLiteOpenHelper {
             i++;
             c.moveToNext();
         }
-        System.out.println("get states " + Arrays.toString(selection));
+        //System.out.println("get states " + Arrays.toString(selection));
 
         return selection;
     }
@@ -152,7 +152,7 @@ public class DBHandler extends SQLiteOpenHelper {
             i++;
             c.moveToNext();
         }
-        System.out.println("get states " + Arrays.toString(selection));
+        //System.out.println("get states " + Arrays.toString(selection));
 
         return selection;
     }
@@ -168,7 +168,7 @@ public class DBHandler extends SQLiteOpenHelper {
             i++;
             c.moveToNext();
         }
-        System.out.println("get states " + Arrays.toString(selection));
+        //System.out.println("get states " + Arrays.toString(selection));
 
         return selection;
     }
@@ -181,7 +181,7 @@ public class DBHandler extends SQLiteOpenHelper {
         for (int i = 0; i < c.getColumnCount(); i++) {
             selection[i] = c.getString(i);
         }
-        System.out.println("get all data " + Arrays.toString(selection));
+        //System.out.println("get all data " + Arrays.toString(selection));
 
         return selection;
     }

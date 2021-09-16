@@ -52,7 +52,7 @@ public class SearchActivity extends AppCompatActivity implements UsersAdapter.Se
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_search);
-            Log.e("onCreate: ", "***from activity***" + this.getLocalClassName());
+            //Log.e("onCreate: ", "***from activity***" + this.getLocalClassName());
 
             recyclerView = findViewById(R.id.recyclerview);
             toolbar = findViewById(R.id.toolbar);

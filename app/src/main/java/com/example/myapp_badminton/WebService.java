@@ -41,7 +41,7 @@ public class WebService extends AsyncTask<String, String, String> {
         networkAvailability = NetworkAvailability.getInstance(context);
         SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
         baseURL=settings.getString("baseURL","");
-        Log.e("WebService ", "WebService: "+baseURL );
+        //Log.e("WebService ", "WebService: "+baseURL );
 
     }
   private void getServerBaseURL(Context context) {
@@ -71,14 +71,14 @@ public class WebService extends AsyncTask<String, String, String> {
                 File sourceFile = new File(sourceFileUri , arg0[1] + ".txt");
 
 
-                Log.e("file path", "web service " + sourceFile.toString());
+                //Log.e("file path", "web service " + sourceFile.toString());
 
                 if (sourceFile.isFile() && (sourceFile.exists())) {
 
                     try {
                         int serverResponseCode;
                         String upLoadServerUri = arg0[0];/*API.ServerAddress+API.OFFLINE_PARKOUT_NEW ,"http://stage1.optipacetech.com/MCGM/optipace_api/parkout_new.php","http://stage1.optipacetech.com/MCGM/optipace_api/parkin_new.php";*/
-                        Log.d("the postURL is", " " + upLoadServerUri);
+                       // Log.d("the postURL is", " " + upLoadServerUri);
 
                         // open a URL connection to the Servlet
                         FileInputStream fileInputStream = new FileInputStream(sourceFile);
@@ -135,7 +135,7 @@ public class WebService extends AsyncTask<String, String, String> {
                         serverResponseCode = conn.getResponseCode();
                         String serverResponseMessage = conn
                                 .getResponseMessage();
-                        Log.e("serverResp", "getResponseCode" + serverResponseCode + " getResponseMessage " + serverResponseMessage);
+                        //Log.e("serverResp", "getResponseCode" + serverResponseCode + " getResponseMessage " + serverResponseMessage);
                         if (serverResponseCode == 200) {
 
                             // messageText.setText(msg);
@@ -151,7 +151,7 @@ public class WebService extends AsyncTask<String, String, String> {
                             }
                             br.close();
                             responseString = sb.toString();
-                            Log.e("RESPONSE:Offline", "" + responseString);
+                            //Log.e("RESPONSE:Offline", "" + responseString);
 
                         }
 
@@ -188,8 +188,8 @@ public class WebService extends AsyncTask<String, String, String> {
                 con.setDoOutput(true);  //indicates POST request
                 con.setDoInput(true);   //indicates server returns response
                 con.setUseCaches(false);
-                Log.d("the postURL is", " " + baseURL+"/"+arg0[0]);
-                Log.d("the postData is", " " + arg0[1]);
+                //Log.d("the postURL is", " " + baseURL+"/"+arg0[0]);
+                //Log.d("the postData is", " " + arg0[1]);
                 OutputStreamWriter os = new OutputStreamWriter(con.getOutputStream());
             /*if(arg0.length==3){
                 nameValuePairs.add(new BasicNameValuePair("id", "12345"));
@@ -199,7 +199,7 @@ public class WebService extends AsyncTask<String, String, String> {
                 os.write(arg0[1]);//arg0[1]=data
                 os.flush();
                 os.close();
-                Log.d("Response from Server", " " + con.getResponseCode());
+                //Log.d("Response from Server", " " + con.getResponseCode());
                 res = String.valueOf(con.getResponseCode());
                 if (res.equals("200")) {//success
                     BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -255,7 +255,7 @@ public class WebService extends AsyncTask<String, String, String> {
             responseString="done";
             f.close();
         } catch (Exception e) {
-            Log.d("Error....", e.toString());
+           // Log.d("Error....", e.toString());
         }
     }
 

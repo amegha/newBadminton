@@ -52,9 +52,9 @@ public class Parsexml {
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
                     cList = eElement.getChildNodes();
-                    System.out.println("length " + cList.getLength()); //blore and belagavi
+                    //System.out.println("length " + cList.getLength()); //blore and belagavi
                     for (int j = 0; j < cList.getLength(); j++) {
-                        System.out.println("state child node " + cList.item(j).getNodeName()); //blore and belagavi
+                        //System.out.println("state child node " + cList.item(j).getNodeName()); //blore and belagavi
                         cityList.add(cList.item(j).getNodeName());
                     }
 //                    allCities.add(cityList);
@@ -67,9 +67,9 @@ public class Parsexml {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("cityStateMap: " + Collections.singletonList(cityList));
-        System.out.println("all cities" + Collections.singletonList(allCities));
-        System.out.println("from mainActivity!!" + Collections.singletonList(stateList));
+        //System.out.println("cityStateMap: " + Collections.singletonList(cityList));
+        //System.out.println("all cities" + Collections.singletonList(allCities));
+        //System.out.println("from mainActivity!!" + Collections.singletonList(stateList));
 
 
 
@@ -83,7 +83,7 @@ public class Parsexml {
                 Element eElement = (Element) nNode;
                 cList = eElement.getChildNodes();
                 for (int i = 0; i < cList.getLength(); i++) {
-                    System.out.println("child node " + cList.item(i).getNodeName());
+                    //System.out.println("child node " + cList.item(i).getNodeName());
                     stateList.add(cList.item(i).getNodeName());
 //                    getChild(doc, doc.getElementsByTagName(cList.item(i).getNodeName()));
                 }

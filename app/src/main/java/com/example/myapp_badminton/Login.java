@@ -10,16 +10,20 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +33,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class Login extends AppCompatActivity implements AsyncResponse {
 
@@ -40,6 +48,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
     };
+    private final int counter = 5;
     public Button btn_signIn, reset;
     public EditText etName, etPassword, email, etOTP, newPass, confirmNewPass;
     public TextView Registration, password_forgot;
@@ -54,11 +63,13 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     Cursor cursor, cursor_name;//cursor_days_not_entered,cursor_lastDate,cursor_sec_last_login;
     String last_date, savedID, UserName, sec_lastDate, pending_day;
     NetworkAvailability networkAvailability;
+    private ImageView app_logoIV;
     private boolean permissionGiven;
-    private final int counter = 5;
     private int x;
     private GetOTP getOTP;
     private ConfirmOTP confirmOTP;
+    private String baseURL;
+    private Handler mHandler;
 //    private ProgressDialog password_reset;
 
     //this is for first time registration
@@ -107,7 +118,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                 } else {
                     permissionGiven = false;
                     Toast.makeText(this, "Grant permissions!!", Toast.LENGTH_LONG).show();
-                    Log.i("Permission", "onRequestPermissionsResult: Permission Denied");
+                    //Log.i("Permission", "onRequestPermissionsResult: Permission Denied");
                 }
             }
         }
@@ -118,12 +129,29 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_login_new);
-            etName = findViewById(R.id.username_signin);
-            etPassword = findViewById(R.id.password_signin);
-            btn_signIn = findViewById(R.id.btn_signIn);
-            reset = findViewById(R.id.btn_reset);
+            initView();
             deleteFile();
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            getBaseURL(settings);
+            String URL = baseURL + API.GET_LOGO;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    Bitmap myBitmap = loadLOGOFromServer(URL);
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (myBitmap != null) {
+                                app_logoIV.setImageBitmap(myBitmap);
+                            }
+                            app_logoIV.setVisibility(View.VISIBLE);
+
+
+                        }
+                    });
+                }
+            }).start();
             if (settings.getString("logged", "").equals("logged")) {
 //                ActivityTracker.writeActivityLogs(this.getLocalClassName(), settings.getString("Id", ""), getApplicationContext());
 
@@ -166,23 +194,54 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
     }
 
+    private void initView() {
+        etName = findViewById(R.id.username_signin);
+        etPassword = findViewById(R.id.password_signin);
+        btn_signIn = findViewById(R.id.btn_signIn);
+        reset = findViewById(R.id.btn_reset);
+        app_logoIV = findViewById(R.id.app_logo);
+        mHandler = new Handler();
+    }
+
+    private Bitmap loadLOGOFromServer(String src) {
+        try {
+            ////Log.e("src", src);
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            ////Log.e("Bitmap", "returned");
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            ////Log.e("Exception", e.getMessage());
+            return null;
+        }
+    }
+
+    private void getBaseURL(SharedPreferences settings) {
+        baseURL = settings.getString("baseURL", "");
+    }
+
     private void deleteFile() {
         try {
-            System.out.println("Delete file: ");
+            //System.out.println("Delete file: ");
 
             String sourceFileUri = getFileUri(getApplicationContext());
             File sourceFile = new File(sourceFileUri + "/databases" + "/badminton.db");
 
             if (sourceFile.exists()) {
                 if (sourceFile.delete()) {
-                    System.out.println("file Deleted :" + sourceFile.getPath());
+                    //System.out.println("file Deleted :" + sourceFile.getPath());
                 } else {
-                    System.out.println("file not Deleted :" + sourceFile.getPath());
+                    //System.out.println("file not Deleted :" + sourceFile.getPath());
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Login :" + e.getMessage());
+            //System.out.println("Login :" + e.getMessage());
 
 
         }
@@ -241,7 +300,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
     @Override
     public void onTaskComplete(String result) {
         try {
-            Log.e("sign in", "result " + result);
+            ////Log.e("sign in", "result " + result);
             if (progressDialog != null) {
                 progressDialog.dismiss();
             }
@@ -291,7 +350,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                     prosesseSignInResponse(result);
                     break;
             }
-        /*Log.e("here", "onTaskComplete: " + result);
+        /*//Log.e("here", "onTaskComplete: " + result);
         if (result.equals("forgot_password/0/getOTP ")) {
             createConfirmOTPAlertDialog();
         } else if (result.equals("forgot_password/0/confirmOTP")) {
@@ -313,11 +372,11 @@ public class Login extends AppCompatActivity implements AsyncResponse {
 
     private void prosesseSignInResponse(String result) {
         try {
-            Log.e("here", "onTaskComplete: " + result);
+            ////Log.e("here", "onTaskComplete: " + result);
             String[] arrRes;
             arrRes = result.split(",");
             String locationXml;
-//        Log.e("ViewUserDetails", " arrRes[0] " + arrRes[0] + " arrRes[1]  " + arrRes[1] + "  arrRes[2]" + arrRes[2]);
+//        //Log.e("ViewUserDetails", " arrRes[0] " + arrRes[0] + " arrRes[1]  " + arrRes[1] + "  arrRes[2]" + arrRes[2]);
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             SharedPreferences.Editor editor = settings.edit();
 
@@ -560,6 +619,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         startActivity(new Intent(this, WebPortal.class));
         finish();
     }
+
     private void saveURL(String url) {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();

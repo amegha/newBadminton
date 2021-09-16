@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.PlaybackParams;
 import android.net.ConnectivityManager;
@@ -38,6 +39,7 @@ import java.util.Arrays;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class VideoCommentActivity extends Activity implements AsyncResponse {
 
+    private static final String PREFS_NAME = "LoginPrefs";
     static MediaPlayer mediaPlayer;
     static String link = API.VIDEO_LINK, videoName;
     Context context;
@@ -60,16 +62,16 @@ public class VideoCommentActivity extends Activity implements AsyncResponse {
         public boolean onInfo(MediaPlayer mp, int what, int extra) {
             switch (what) {
                 case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START: {
-                    Log.e("info", "MEDIA_INFO_VIDEO_RENDERING_START");
+                    ////Log.e("info", "MEDIA_INFO_VIDEO_RENDERING_START");
                     return true;
                 }
                 case MediaPlayer.MEDIA_INFO_BUFFERING_START: {
-                    Log.e("info", "MEDIA_INFO_BUFFERING_START");
+                    ////Log.e("info", "MEDIA_INFO_BUFFERING_START");
                     progressBar.setVisibility(View.VISIBLE);
                     return true;
                 }
                 case MediaPlayer.MEDIA_INFO_BUFFERING_END: {
-                    Log.e("info", "MEDIA_INFO_BUFFERING_END");
+                    ////Log.e("info", "MEDIA_INFO_BUFFERING_END");
                     progressBar.setVisibility(View.GONE);
                     return true;
                 }
@@ -88,7 +90,7 @@ public class VideoCommentActivity extends Activity implements AsyncResponse {
             sCurrPos = String.valueOf(currPos = (mediaPlayer.getCurrentPosition()));/*(pauses[pauseAt])/11; vv.getCurrentPosition();*/
             if (((pauseAt < pauses.length)))
                 if (pauses[pauseAt] <= currPos)/*sCurrPos.length() >= 4 && sCurrPos.substring(0, 3).equals(pauses[pauseAt].substring(0, 3))*/ {
-                    Log.e("run: ", "String current pos subString " + sCurrPos + " pause[] value " + pauses[pauseAt] + "media Player " + mediaPlayer);
+                    ////Log.e("run: ", "String current pos subString " + sCurrPos + " pause[] value " + pauses[pauseAt] + "media Player " + mediaPlayer);
                     mediaPlayer.pause();
 //                    buttonEnable();
                     watchAgainCount = 0;
@@ -108,6 +110,7 @@ public class VideoCommentActivity extends Activity implements AsyncResponse {
 
         }
     };
+    private String baseURL;
 
     private void showNextVideoDialog() {
         new AlertDialog.Builder(this)
@@ -219,7 +222,7 @@ public class VideoCommentActivity extends Activity implements AsyncResponse {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         start = System.nanoTime();
-                        Log.e("playvideo", "showquestions start time" + start);
+                        ////Log.e("playvideo", "showquestions start time" + start);
                         startActivityForResult(intent, REQUEST_ANSWER);
                     }
                 }).show();
@@ -237,6 +240,9 @@ public class VideoCommentActivity extends Activity implements AsyncResponse {
         setContentView(R.layout.activity_paly_video);
         Intent i = getIntent();
         Bundle bundle = i.getExtras();
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        baseURL =settings.getString("baseURL","")+"/";
+        baseURL = checkForHTTP(baseURL);
         p_id = bundle.getString("userId");
         vv = findViewById(R.id.video_view);
         ctv = findViewById(R.id.count_down);
@@ -252,6 +258,15 @@ public class VideoCommentActivity extends Activity implements AsyncResponse {
 //        connectionAndVideoStream();
     }
 
+        private String checkForHTTP(String url) {
+            if(!url.substring(0,8).equals("https://")) {
+                url = url.substring(0, 7).equals("http://") ? url.substring(7) :  url;
+                url="https://" +url;
+            }
+            return url;
+        }
+
+
     private void getCommentsFromServer() {
         new WebService(this).execute(API.ServerAddress + "" + API.COMMENTS, "user_id=" + p_id);
     }
@@ -265,7 +280,7 @@ public class VideoCommentActivity extends Activity implements AsyncResponse {
                     + File.separator + "My_Video/video.mp4";
         } else {
             link = API.VIDEO_LINK + videoName;
-            System.out.println("Live streaming!!");
+            //System.out.println("Live streaming!!");
         }*/
         if (isConnectingToInternet(this)) {
             try {
@@ -289,11 +304,11 @@ public class VideoCommentActivity extends Activity implements AsyncResponse {
                 });
             } catch (Exception e) {
                 // TODO: handle exception
-                Log.e("exception in connection", " " + e.getMessage());
+                ////Log.e("exception in connection", " " + e.getMessage());
             }
         } else {
             Toast.makeText(this, "No Network or Slow network", Toast.LENGTH_SHORT).show();
-            Log.e("exception in connection", "No network");
+            ////Log.e("exception in connection", "No network");
         }
     }
 
@@ -341,7 +356,7 @@ public class VideoCommentActivity extends Activity implements AsyncResponse {
         currPos = vv.getCurrentPosition();
 //        buttonEnable();
         watchAgainCount = 0;
-        Log.e("autoPauseVideo:", " timer " + pauseAt + "\n video time " + nonTimer);
+        ////Log.e("autoPauseVideo:", " timer " + pauseAt + "\n video time " + nonTimer);
 //        handler.postDelayed(stopPlayerTask, vv.getCurrentPosition()/+ (secondsCompleted+1000)/);//pauses at 9 secs
 //        handler.post(stopPlayerTask);
     }
@@ -352,7 +367,7 @@ public class VideoCommentActivity extends Activity implements AsyncResponse {
         *//*if (!(pauseAt > pauses.length)) {
             initPos = currPos;
             pauseAt = pauseAt + 1;
-            Log.e("answerButton pressed", " init pos is " + initPos);
+            ////Log.e("answerButton pressed", " init pos is " + initPos);
             vv.requestFocus();
 //            mediaPlayer.start();
             mediaPlayer.seekTo(initPos,MediaPlayer.SEEK_CLOSEST);
@@ -392,7 +407,7 @@ public class VideoCommentActivity extends Activity implements AsyncResponse {
         try {
             Process mIpAddrProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
             int mExitValue = mIpAddrProcess.waitFor();
-            System.out.println(" mExitValue " + mExitValue);
+            //System.out.println(" mExitValue " + mExitValue);
             if (mExitValue == 0) {
                 return true;
             } else if (mExitValue == 2) {
@@ -402,10 +417,10 @@ public class VideoCommentActivity extends Activity implements AsyncResponse {
             }
         } catch (InterruptedException ignore) {
             ignore.printStackTrace();
-            System.out.println(" Exception:" + ignore);
+            //System.out.println(" Exception:" + ignore);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println(" Exception:" + e);
+            //System.out.println(" Exception:" + e);
         }
         return false;
     }
@@ -422,7 +437,7 @@ public class VideoCommentActivity extends Activity implements AsyncResponse {
             link = "android.resource://" + getPackageName() + "/" + R.raw.training;
 
 //            link = API.VIDEO_LINK + videoName;
-            System.out.println("Live streaming!!");
+            //System.out.println("Live streaming!!");
         }
 
     }
@@ -502,10 +517,10 @@ public class VideoCommentActivity extends Activity implements AsyncResponse {
 //                    score += 1;
 //                }
 //                db.saveAnswers(shotLoc, shotType, playerTime, score);
-//                Log.e("type and loc", "onActivityResult: " + shotLoc + "\n" + shotType + "\n elapsed time " + playerTime);
+//                ////Log.e("type and loc", "onActivityResult: " + shotLoc + "\n" + shotType + "\n elapsed time " + playerTime);
 //
 //                answersModelsArray.add(new AnswersModel(answerCount + 1, shotType, shotLoc, correctShotType[answerCount], correctShotLoc[answerCount], playerTime, maxTime[answerCount]));
-//                Log.e("array val ", "here " + answersModelsArray.size());
+//                ////Log.e("array val ", "here " + answersModelsArray.size());
 //               /* answersModel.setShotLocation((String) bundle.get("shot_location"));
 //                answersModel.setShotType((String) bundle.get("shot_type"));*/
 //
@@ -513,21 +528,21 @@ public class VideoCommentActivity extends Activity implements AsyncResponse {
 //                    intent = new Intent(SwipeCard.this, OnlineTransActivity.class);
 //                    intent.putExtras(bundle);
 //                    startActivity(intent);*/
-//                Log.e("onActivityResult0", "curr pos " + currPos + "\n init pos " + initPos);
+//                ////Log.e("onActivityResult0", "curr pos " + currPos + "\n init pos " + initPos);
 //
 //                if (!(pauseAt > pauses.length - 1)) {
-//                    Log.e("onActivityResult1", "curr pos " + currPos + "\n init pos " + initPos);
+//                    ////Log.e("onActivityResult1", "curr pos " + currPos + "\n init pos " + initPos);
 //                    initPos = currPos;
 //                    pauseAt = pauseAt + 1;
 //                    answerCount++;
-//                    Log.e("onActivityResult2", "curr pos " + currPos + "\n init pos " + initPos);
+//                    ////Log.e("onActivityResult2", "curr pos " + currPos + "\n init pos " + initPos);
 //                }
 //                connectionAndVideoStream();
 //
 //                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 //                    @Override
 //                    public void onCompletion(MediaPlayer mp) {
-//                        Log.e("redirecting", "to view answer");
+//                        ////Log.e("redirecting", "to view answer");
 //                        bundle.putParcelable("answerModel", (Parcelable) answersModelsArray);
 //                        startActivity(new Intent(getApplication(), ViewAnswers.class).putExtras(bundle));
 //                        finish();
@@ -543,7 +558,7 @@ public class VideoCommentActivity extends Activity implements AsyncResponse {
 
     @Override
     public void onTaskComplete(String result) {
-        System.out.println("get_comment.php response " + result);
+        //System.out.println("get_comment.php response " + result);
         if (result != null)
             switch (result) {
                 case "00":
@@ -578,7 +593,8 @@ public class VideoCommentActivity extends Activity implements AsyncResponse {
 //            result="super admin:241,Left leg position incorrect :1409,Shot type Incorrect :5076,Shot location should be top left :8742,training/k2.mp4";
             correctAnswers = result.split(",");
             videoName = correctAnswers[correctAnswers.length - 1];
-            link = API.VIDEO_LINK + videoName;
+            link = baseURL+ videoName;
+            System.out.println("The link form viewComment "+link);
             pauses = new int[correctAnswers.length - 1];
             comments = new String[correctAnswers.length - 1];
             for (int i = 0; i < correctAnswers.length - 1; i++) {  //correctAnswer.length-1 coz it fetches the video name also at the end which is appended to result, seperated by ','
@@ -587,9 +603,9 @@ public class VideoCommentActivity extends Activity implements AsyncResponse {
                 comments[i] = answerContents[0];
                 pauses[i] = Integer.parseInt(answerContents[1]);
             }
-            System.out.println("correct answers" + Arrays.toString(correctAnswers));
-            System.out.println("correct comment" + Arrays.toString(comments));
-            System.out.println("pauses" + Arrays.toString(pauses));
+            //System.out.println("correct answers" + Arrays.toString(correctAnswers));
+            //System.out.println("correct comment" + Arrays.toString(comments));
+            //System.out.println("pauses" + Arrays.toString(pauses));
             connectionAndVideoStream();
 //                downloadVideo.start();
 

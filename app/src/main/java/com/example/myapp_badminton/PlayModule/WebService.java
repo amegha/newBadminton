@@ -46,13 +46,13 @@ public class WebService extends AsyncTask<String, String, String> {
                 con.setDoOutput(true);  //indicates POST request
                 con.setDoInput(true);   //indicates server returns response
                 con.setUseCaches(false);
-                Log.d("the postURL is", " " + arg0[0]);
-                Log.d("the postData is", " " + arg0[1]);
+                //Log.d("the postURL is", " " + arg0[0]);
+                //Log.d("the postData is", " " + arg0[1]);
                 OutputStreamWriter os = new OutputStreamWriter(con.getOutputStream());
                 os.write(arg0[1]);//arg0[1]=data
                 os.flush();
                 os.close();
-                Log.d("Response from Server", " " + con.getResponseCode());
+                //Log.d("Response from Server", " " + con.getResponseCode());
                 res = String.valueOf(con.getResponseCode());
                 if (res.equals("200")) {//success
                     BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -63,7 +63,7 @@ public class WebService extends AsyncTask<String, String, String> {
                     }
                     br.close();
                     responseString = sb.toString();//result form the server
-//                Log.e("Response ", "From " + arg0[2] + " " + responseString);
+//                //Log.e("Response ", "From " + arg0[2] + " " + responseString);
                 } else responseString = res;//other http errors-->server busy
             }else{
                 downloadfile(arg0[0]);
@@ -127,7 +127,7 @@ public class WebService extends AsyncTask<String, String, String> {
             responseString="done";
             f.close();
         } catch (Exception e) {
-            Log.d("Error....", e.toString());
+            //Log.d("Error....", e.toString());
         }
     }
     public static boolean encrypt(String path) {

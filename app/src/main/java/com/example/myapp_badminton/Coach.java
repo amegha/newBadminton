@@ -75,7 +75,7 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (position > -1) {
                 cityName = (String) city_Spinner.getItemAtPosition(position);
-                Log.d("SpinnerCountry", "onItemSelected: state: ");
+                //Log.d("SpinnerCountry", "onItemSelected: state: ");
 
                 adapter_location = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, datahelper.allDataHelper.getLocations(cityName));
                 adapter_location.setDropDownViewResource(R.layout.spinner_item);
@@ -99,7 +99,7 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
         try {
             super.onCreate(savedInstanceState);
 //        ActivityTracker.writeActivityLogs(this.getLocalClassName());
-            Log.e("onCreate: ","***from activity***"+this.getLocalClassName() );
+            //Log.e("onCreate: ","***from activity***"+this.getLocalClassName() );
 
             setContentView(R.layout.activity_coach);
 
@@ -152,7 +152,7 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
     @Override
     public void onTaskComplete(String result) {
         try {
-            Log.e("onTaskComplete: ", "" + result);
+            //Log.e("onTaskComplete: ", "" + result);
             switch (result) {
                 case "00": {
                     Toast.makeText(this, "Invalid Request", Toast.LENGTH_LONG).show();
@@ -187,11 +187,11 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
                     academyResponse = result.split(";");
                     for (int i = 0; i < academyResponse.length; i++) {
                         LocationInfo(academyResponse[i], cities, academy_name, aid, gamelevels, state, area);
-                        Log.d("Total Size", String.valueOf(academyResponse.length));
+                        //Log.d("Total Size", String.valueOf(academyResponse.length));
                     }
-                    System.out.println("all the cities " + Collections.singletonList(cities));
+                    /*System.out.println("all the cities " + Collections.singletonList(cities));
                     System.out.println("all the Academy Ids " + Collections.singletonList(aid));
-                    System.out.println("all the academy names " + Collections.singletonList(academy_name));
+                    System.out.println("all the academy names " + Collections.singletonList(academy_name));*/
                     //used to display city
                     adapter_city = new ArrayAdapter<String>(this, R.layout.spinner_item, datahelper.allDataHelper.getCity());
                     adapter_city.setDropDownViewResource(R.layout.spinner_item);
@@ -208,7 +208,7 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
     private void LocationInfo(String s, ArrayList<String> cities, ArrayList<String> academy_name, ArrayList<String> aid, ArrayList<String> gamelevels, ArrayList<String> states, ArrayList<String> area) {
         try {
             String[] locInfo = s.split(",");
-            Log.d("Total Location Size", String.valueOf(locInfo.length));
+            //Log.d("Total Location Size", String.valueOf(locInfo.length));
             aid.add(locInfo[0]);
             academy_name.add(locInfo[1]);
             states.add(locInfo[2]);
@@ -290,7 +290,7 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
 
         try {
             super.onStop();
-            Log.e("onStop: ", "onstop called");
+            //Log.e("onStop: ", "onstop called");
 //            datahelper.allDataHelper.delete();
         } catch (Exception e) {
             e.printStackTrace();
@@ -307,7 +307,7 @@ public class Coach extends AppCompatActivity implements AsyncResponse {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.e("pause: ", "pause called");
+        //Log.e("pause: ", "pause called");
 
     }
 

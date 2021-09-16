@@ -48,7 +48,7 @@ public class CustomAdapter extends ArrayAdapter<AnswersModel> implements View.On
 
                 Snackbar.make(v, "Release date " + dataModel.getQuestionNumber(), Snackbar.LENGTH_LONG)
                         .setAction("No action", null).show();
-                Log.e("adapter", "id is****** " + dataModel.questionNumber);
+                //Log.e("adapter", "id is****** " + dataModel.questionNumber);
 
 
                 break;
@@ -61,7 +61,7 @@ public class CustomAdapter extends ArrayAdapter<AnswersModel> implements View.On
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
         answersModel = getItem(position);
-        Log.e("answer model", "-->" + answersModel.toString());
+        //Log.e("answer model", "-->" + answersModel.toString());
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
 

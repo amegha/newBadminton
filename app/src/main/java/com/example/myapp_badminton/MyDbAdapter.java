@@ -83,7 +83,7 @@ public class MyDbAdapter {
             String timestamp = cursor.getString(cursor.getColumnIndex(myDbHelper.TIMESTAMP));
 
             String toXml = "<user_details>\n<userName>" + fname + "</userName>\n<userType>" + player_type + "</userType>\n<uAge>" + age + "</uAge>\n<uDob>" + dob + "</uDob>\n<usex>" + gender + "</usex>\n<ueducation>" + education + "</ueducation>\n<umailid>" + email + "</umailid>\n<utraining>" + training_center + "</utraining>\n <uothers>no Center</uothers>\n<ustateRanking>" + s_rank + "</ustateRanking>\n<unationalRank>" + n_rank + "</unationalRank>\n<uphoto>" + image + "</uphoto>\n</user_details>\n";
-            Log.e(TAG, "getData: " + toXml);
+//            Log.e(TAG, "getData: " + toXml);
             writeToTxtFile(toXml);
             try {
                 sendRequest(toXml);

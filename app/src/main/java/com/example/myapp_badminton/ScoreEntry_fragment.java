@@ -71,7 +71,6 @@ public class ScoreEntry_fragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         today = sdf.format(date1);
 
-
         Intent intentCoach = getActivity().getIntent();
         Bundle bundleCoach = intentCoach.getExtras();
 

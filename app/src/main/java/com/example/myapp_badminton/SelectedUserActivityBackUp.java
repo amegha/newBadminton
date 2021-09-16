@@ -89,7 +89,7 @@ public class SelectedUserActivityBackUp extends AppCompatActivity implements Dat
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
-            Log.e("onCreate: ", "***from activity***" + this.getLocalClassName());
+            //Log.e("onCreate: ", "***from activity***" + this.getLocalClassName());
             setContentView(R.layout.activity_selected_user);
             tvUser = findViewById(R.id.display_userName);
             tv_userId = findViewById(R.id.display_userId);
@@ -465,7 +465,7 @@ public class SelectedUserActivityBackUp extends AppCompatActivity implements Dat
                 c.setTime(date);
                 c.add(Calendar.DATE, +i);
                 inputDate = format.format(c.getTime());
-                Log.d("asd", "selected date : " + inputDate);
+                //Log.d("asd", "selected date : " + inputDate);
                 return inputDate;
 
             }
@@ -648,7 +648,7 @@ public class SelectedUserActivityBackUp extends AppCompatActivity implements Dat
 
     private void formXMlPlayer(String playerId, String date, String last_mainCat, String last_sub_cat, String last_score) {
         try {
-            Log.e("getdata", "entered form xml: ");
+            //Log.e("getdata", "entered form xml: ");
 //<playerScore>
 //<module>player</module>
 //<pid>1089</pid>
@@ -670,7 +670,7 @@ public class SelectedUserActivityBackUp extends AppCompatActivity implements Dat
                     "</playerScore>";
             try {
                 writeToTxtFile(xml);
-                Log.e("getdata", "dataXml: " + xml);
+                //Log.e("getdata", "dataXml: " + xml);
 //                confirmRequest(xml);
                 sendRequest(xml);
             } catch (Exception e) {
@@ -684,7 +684,7 @@ public class SelectedUserActivityBackUp extends AppCompatActivity implements Dat
 
     private void formXMlCoach(String Cid, String playerId, String date, String last_mainCat, String last_sub_cat, String last_score, String level, String aid) {
         try {
-            Log.e("getdata", "entered form xml: ");
+            //Log.e("getdata", "entered form xml: ");
 //<playerScore>
 //    <module>coach</module>
 //    <pid>1099</pid>
@@ -709,7 +709,7 @@ public class SelectedUserActivityBackUp extends AppCompatActivity implements Dat
                     "</playerScore>";
             try {
                 writeToTxtFile(xml);
-                Log.e("getdata", "dataXml: " + xml);
+                //Log.e("getdata", "dataXml: " + xml);
                 confirmRequest(xml);
 //                sendRequest(xml);
             } catch (Exception e) {

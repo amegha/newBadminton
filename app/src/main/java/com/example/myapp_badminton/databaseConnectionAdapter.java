@@ -182,7 +182,7 @@ public class databaseConnectionAdapter {
                 arrayList.add((cursor.getString(0)));
                 cursor.moveToNext();
             }
-            Log.e("academy name", "getAcademies: "+ Collections.singleton(arrayList));
+            //Log.e("academy name", "getAcademies: "+ Collections.singleton(arrayList));
             cursor.close();
             return arrayList;
         }
@@ -569,7 +569,7 @@ public class databaseConnectionAdapter {
             for (int i = 0; i < c.getColumnCount(); i++) {
                 selection[i] = c.getString(i);
             }
-            System.out.println("get all data " + Arrays.toString(selection));
+            //System.out.println("get all data " + Arrays.toString(selection));
 
             return selection;
         }
@@ -585,7 +585,7 @@ public class databaseConnectionAdapter {
             for (int i = 0; i < c.getColumnCount(); i++) {
                 selection[i] = c.getString(i);
             }
-            System.out.println("get all data " + Arrays.toString(selection));
+            //System.out.println("get all data " + Arrays.toString(selection));
 
             return selection;
         }

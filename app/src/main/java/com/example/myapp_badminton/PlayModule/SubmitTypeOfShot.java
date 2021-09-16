@@ -37,7 +37,7 @@ public class SubmitTypeOfShot extends Fragment implements View.OnLongClickListen
         Bundle b = this.getArguments();
         if (b != null) {
             String s = b.getString("location");
-            Log.e("shot", "onSaveInstanceState: " + s);
+            //Log.e("shot", "onSaveInstanceState: " + s);
         }
         b1 = v.findViewById(R.id.dd);
         b2 = v.findViewById(R.id.long_defence);

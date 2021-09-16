@@ -28,6 +28,7 @@ public class API {
     public static String ANSWERS = "api/download_answers.php";
     public static String COMMENTS = "api/get_comment.php";
     public static String UPDATE_WATCH_FLAG = "api/update_watchflag.php";
+    public static String GET_LOGO = "/image/app_logo.jpg";
 
 
     public static String PROFILE_PIC_UPDATE = "api/update_profile_pic.php";

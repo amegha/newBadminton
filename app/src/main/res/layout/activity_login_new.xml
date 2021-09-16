@@ -23,10 +23,11 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:orientation="vertical">
+
             <Button
                 android:id="@+id/change_url"
-                style="@style/TextyButton"
-                android:layout_width="wrap_content"
+                style="@style/Button1"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginRight="24dp"
@@ -41,6 +42,8 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="32dp"
                 android:scaleType="centerInside"
+                android:id="@+id/app_logo"
+                android:visibility="invisible"
                 app:srcCompat="@drawable/app_logo_login" />
 
             <TextView

@@ -50,7 +50,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
     public static final String PREFS_NAME = "LoginPrefs";
     private static final int REQUEST_RUNTIME_PERMISSIONS = 1;
     static MediaPlayer mediaPlayer;
-    static ArrayList<AnswersModel> answersModelsArray = new ArrayList<>();
+    public static ArrayList<AnswersModel> answersModelsArray = new ArrayList<>();
     static int[] pauses, maxTime;
     static String link ,videoName;
     private static CustomAdapter adapter;
@@ -76,16 +76,16 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
         public boolean onInfo(MediaPlayer mp, int what, int extra) {
             switch (what) {
                 case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START: {
-                    Log.e("info", "MEDIA_INFO_VIDEO_RENDERING_START");
+                    //Log.e("info", "MEDIA_INFO_VIDEO_RENDERING_START");
                     return true;
                 }
                 case MediaPlayer.MEDIA_INFO_BUFFERING_START: {
-                    Log.e("info", "MEDIA_INFO_BUFFERING_START");
+                    //Log.e("info", "MEDIA_INFO_BUFFERING_START");
                     progressBar.setVisibility(View.VISIBLE);
                     return true;
                 }
                 case MediaPlayer.MEDIA_INFO_BUFFERING_END: {
-                    Log.e("info", "MEDIA_INFO_BUFFERING_END");
+                    //Log.e("info", "MEDIA_INFO_BUFFERING_END");
                     progressBar.setVisibility(View.GONE);
                     return true;
                 }
@@ -104,7 +104,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
             sCurrPos = String.valueOf(currPos = (mediaPlayer.getCurrentPosition()));/*(pauses[pauseAt])/11; vv.getCurrentPosition();*/
             if (((pauseAt < pauses.length)))
                 if (pauses[pauseAt] <= currPos)/*sCurrPos.length() >= 4 && sCurrPos.substring(0, 3).equals(pauses[pauseAt].substring(0, 3))*/ {
-                    Log.e("run: ", "String current pos subString " + sCurrPos + " pause[] value " + pauses[pauseAt] + "media Player " + mediaPlayer);
+                    //Log.e("run: ", "String current pos subString " + sCurrPos + " pause[] value " + pauses[pauseAt] + "media Player " + mediaPlayer);
                     mediaPlayer.pause();
                     buttonEnable();
                     watchAgainCount = 0;
@@ -116,7 +116,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    Log.e("redirecting", "to view answer");
+                    //Log.e("redirecting", "to view answer");
                     startActivity(new Intent(getApplication(), ViewAnswers.class).putExtras(bundle));
                     finish();
 //                        new WebService(this).execute(API.ServerAddress + "" + API.USER_REGISTER, xml);
@@ -231,9 +231,10 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
 //                    connectionAndVideoStream();
                     getAnswers = new GetAnswersImpl1(this, new WebService(this), p_id,baseURL);
                     getAnswers.getCorrectAnswersFromServer();
-//                    Log.i(TAG, "onRequestPermissionsResult: Permission Granted");
-                } else
+//                    //Log.i(TAG, "onRequestPermissionsResult: Permission Granted");
+                } else {
                     Log.i("Permission", "Permission Denied");
+                }
             }
             /*getAnswers = new GetAnswersImpl1(this, new WebService(this));
             getAnswers.getCorrectAnswersFromServer();*/
@@ -256,7 +257,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         start = System.nanoTime();
-                        Log.e("playvideo", "showquestions start time" + start);
+                        //Log.e("playvideo", "showquestions start time" + start);
                         startActivityForResult(intent, REQUEST_ANSWER);
                     }
                 }).show();
@@ -307,6 +308,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
                 }
                 mediaController.setAnchorView(vv);
                 Uri video = Uri.parse(link);
+                Log.e("Playvideo", "connectionAndVideoStream:------>"+link );
                 vv.setMediaController(null);
                 vv.setVideoURI(video);
                 buttonDisable();
@@ -321,11 +323,11 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
                 });
             } catch (Exception e) {
                 // TODO: handle exception
-                Log.e("exception in connection", " " + e.getMessage());
+                //Log.e("exception in connection", " " + e.getMessage());
             }
         } else {
             Toast.makeText(this, "No Network or Slow network", Toast.LENGTH_SHORT).show();
-            Log.e("exception in connection", "No network");
+            //Log.e("exception in connection", "No network");
         }
     }
 
@@ -340,7 +342,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
                     mp.seekTo(initPos, MediaPlayer.SEEK_CLOSEST);
                 else
                     mp.seekTo(initPos);
-                Log.e("TAG", "playVideoWithHandler: initPOS "+initPos );
+                //Log.e("TAG", "playVideoWithHandler: initPOS "+initPos );
                 mp.start();
                 mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
                     @Override
@@ -358,7 +360,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
             }// END OF IF
         } catch (IllegalStateException e) {
             e.printStackTrace();
-            Log.e("exception", "playVideoWithHandler: "+e.getMessage() );
+            //Log.e("exception", "playVideoWithHandler: "+e.getMessage() );
         }
     }
 
@@ -376,7 +378,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
         currPos = vv.getCurrentPosition();
         buttonEnable();
         watchAgainCount = 0;
-        Log.e("autoPauseVideo:", " timer " + pauseAt + "\n video time " + nonTimer);
+        //Log.e("autoPauseVideo:", " timer " + pauseAt + "\n video time " + nonTimer);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -407,7 +409,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
         try {
             Process mIpAddrProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
             int mExitValue = mIpAddrProcess.waitFor();
-            System.out.println(" mExitValue " + mExitValue);
+            ////System.out.println(" mExitValue " + mExitValue);
             if (mExitValue == 0) {
                 return true;
             } else if (mExitValue == 2) {
@@ -417,10 +419,10 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
             }
         } catch (InterruptedException ignore) {
             ignore.printStackTrace();
-            System.out.println(" Exception:" + ignore);
+            ////System.out.println(" Exception:" + ignore);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println(" Exception:" + e);
+            ////System.out.println(" Exception:" + e);
         }
         return false;
     }
@@ -434,7 +436,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
                     + File.separator + "My_Video/video.mp4";
         } else {*/
             link = baseURL + videoName;
-            System.out.println("Live streaming!!"+ link);
+            System.out.println("Live streaming---------->"+ link);
 //        }
 
     }
@@ -514,7 +516,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
                     score += 1;
                 }
                 db.saveAnswers(shotLoc, shotType, playerTime, score);
-                Log.e("type and loc", "onActivityResult: " + shotLoc + "\n" + shotType + "\n elapsed time " + playerTime);
+                //Log.e("type and loc", "onActivityResult: " + shotLoc + "\n" + shotType + "\n elapsed time " + playerTime);
 
                 answersModelsArray.add(new AnswersModel(answerCount + 1, shotType, shotLoc, correctShotType[answerCount], correctShotLoc[answerCount], playerTime, maxTime[answerCount]));
                 if (!(pauseAt > pauses.length - 1)) {
@@ -527,7 +529,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
-                        Log.e("redirecting", "to view answer");
+                        //Log.e("redirecting", "to view answer");
                         bundle.putParcelable("answerModel", (Parcelable) answersModelsArray);
                         startActivity(new Intent(getApplication(), ViewAnswers.class).putExtras(bundle));
                         finish();
@@ -542,7 +544,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void onTaskComplete(String result) {
-        System.out.println("download_answers.php response " + result);
+        ////System.out.println("download_answers.php response " + result);
         if (result != null)
             switch (result) {
                 case "00":
@@ -591,10 +593,10 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
                 maxTime[i] = Integer.parseInt(answerContents[4]);
 
                 db.storeCorrectAnswers(videoId[i], correctShotLoc[i], correctShotType[i], pauses[i], maxTime[i], videoName);
-                Log.e("playVideo", "pauses are " + pauses[i] + " ");
+                //Log.e("playVideo", "pauses are " + pauses[i] + " ");
             }
-            System.out.println("correct ansers" + correctAnswers);
-            System.out.println("pauses" + pauses.toString());
+            ////System.out.println("correct ansers" + correctAnswers);
+            ////System.out.println("pauses" + pauses.toString());
             connectionAndVideoStream();
         }
         } catch (Exception e) {
@@ -603,7 +605,7 @@ public class PlayVideo extends AppCompatActivity implements AsyncResponse {
     }
 
     public void answersFromServer(String[] shotLoc, String[] shotType, int[] pauses, int length) {
-        Log.e("playVideo", "answersFromServer: pauses are set");
+        //Log.e("playVideo", "answersFromServer: pauses are set");
 //        this.pauses = pauses;
         correctShotLoc = shotLoc;
         correctShotType = shotType;

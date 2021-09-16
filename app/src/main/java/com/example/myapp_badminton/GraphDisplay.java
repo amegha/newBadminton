@@ -89,11 +89,11 @@ public class GraphDisplay extends AppCompatActivity implements AsyncResponse {
             /* if(result.equals("Success")){*/
             progressDialog.dismiss();
 
-            Log.e("ViewUserDetails", "Upload status " + result);
+            //Log.e("ViewUserDetails", "Upload status " + result);
             String[] arrRes;
             arrRes = result.split(",");
             String locationXml;
-//        Log.e("ViewUserDetails", " arrRes[0] " + arrRes[0] + " arrRes[1]  " +  arrRes[1] + "  arrRes[2]" + arrRes[2]);
+//        //Log.e("ViewUserDetails", " arrRes[0] " + arrRes[0] + " arrRes[1]  " +  arrRes[1] + "  arrRes[2]" + arrRes[2]);
             arrRes = result.split("/");
             for (int i = 1; i < arrRes.length; i++) {
                 getCorrected(arrRes[i]);
@@ -110,7 +110,7 @@ public class GraphDisplay extends AppCompatActivity implements AsyncResponse {
         academyResponse = result.split(";");
         for (int i = 0; i < academyResponse.length; i++) {
             LocationInfo(academyResponse[i],ScoreDate,Scores);
-            Log.d("Total Entry Size", String.valueOf(academyResponse.length));
+            //Log.d("Total Entry Size", String.valueOf(academyResponse.length));
         }
         System.out.println("all the cities "+ Collections.singletonList(ScoreDate));
         System.out.println("all the Academy Ids "+ Collections.singletonList(Scores));
@@ -241,7 +241,7 @@ public class GraphDisplay extends AppCompatActivity implements AsyncResponse {
 
         try {
             String[] locInfo = s.split(",");
-            Log.d("Total Module Size", String.valueOf(locInfo.length));
+            //Log.d("Total Module Size", String.valueOf(locInfo.length));
             scoredate.add(locInfo[0]);
             score.add(locInfo[1]);
             ArrayList<String> convertedDate = new ArrayList<>();
@@ -304,10 +304,10 @@ public class GraphDisplay extends AppCompatActivity implements AsyncResponse {
             academyResponse = s.split(";");
             for (int i = 0; i < academyResponse.length; i++) {
                 LocationInfo(academyResponse[i], ScoreDate, Scores);
-                Log.d("Total Entry Size", String.valueOf(academyResponse.length));
+                //Log.d("Total Entry Size", String.valueOf(academyResponse.length));
             }
-            System.out.println("all the cities " + Collections.singletonList(ScoreDate));
-            System.out.println("all the Academy Ids " + Collections.singletonList(Scores));
+           // System.out.println("all the cities " + Collections.singletonList(ScoreDate));
+           // System.out.println("all the Academy Ids " + Collections.singletonList(Scores));
         } catch (Exception e) {
             e.printStackTrace();
         }

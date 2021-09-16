@@ -48,7 +48,7 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
         try {
             super.onCreate(savedInstanceState);
 //        ActivityTracker.writeActivityLogs(this.getLocalClassName());
-            Log.e("onCreate: ", "***from activity***" + this.getLocalClassName());
+            //Log.e("onCreate: ", "***from activity***" + this.getLocalClassName());
             setContentView(R.layout.activity_display_player);
             datahelper = new databaseConnectionAdapter(getApplicationContext());
             db = datahelper.allDataHelper.getReadableDatabase();
@@ -248,7 +248,7 @@ public class DisplayPlayer extends AppCompatActivity implements AsyncResponse {
             for (int i = 0; i < academyResponse.length; i++) {
 
                 ImageInfo(academyResponse[i], i);
-                Log.d("Total display Player", String.valueOf(academyResponse.length));
+                //Log.d("Total display Player", String.valueOf(academyResponse.length));
             }
         } catch (Exception e) {
             e.printStackTrace();

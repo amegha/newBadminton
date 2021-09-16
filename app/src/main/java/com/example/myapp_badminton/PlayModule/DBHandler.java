@@ -7,7 +7,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class DBHandler extends SQLiteOpenHelper {
     private static final String TAG = DBHandler.class.getSimpleName();
@@ -97,7 +96,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 + TIME_TAKEN_TO_ANSWER + " NUMBER,"
                 + SCORE + " NUMBER"
                 + ")";
-        Log.e(TAG, "create table" + ANSWERS);
+        //Log.e(TAG, "create table" + ANSWERS);
         db.execSQL(CREATE_ANSWERS);
 
         String CREATE_CORRECT_ANSWERS = "CREATE TABLE IF NOT EXISTS " + CORRECT_ANSWERS + "("
@@ -109,7 +108,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 + MAX_TIME + " NUMBER,"
                 + VIDEO_NAME + " TEXT"
                 + ")";
-        Log.e(TAG, "create table" + CREATE_CORRECT_ANSWERS);
+        //Log.e(TAG, "create table" + CREATE_CORRECT_ANSWERS);
         db.execSQL(CREATE_CORRECT_ANSWERS);
     }
 
@@ -124,9 +123,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
 //    public boolean deleteRecord(String rcptNo) {
 //        db = this.getWritableDatabase();
-//        Log.e("delete", "inside delete");
+//        //Log.e("delete", "inside delete");
 //        db.delete(PARK_IN, RECEIPT_NUM + "=" + rcptNo, null);
-//        Log.e("db", "do nothing");
+//        //Log.e("db", "do nothing");
 //        return true;
 //    }
 
@@ -135,12 +134,12 @@ public class DBHandler extends SQLiteOpenHelper {
 //        db = this.getReadableDatabase();
 //        if (action.equals("offlineParkOut")) {
 //            numRows = DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM PARK_IN WHERE FLAG=2 AND loc_id=" + LoginActivity.locId, null);
-//            Log.i("count", " " + Long.toString(numRows));
+//            //Log.i("count", " " + Long.toString(numRows));
 //        } else {
 //            numRows = DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM PARK_IN WHERE FLAG=0 AND loc_id=" + LoginActivity.locId, null);
-//            Log.i("count", " " + Long.toString(numRows));
+//            //Log.i("count", " " + Long.toString(numRows));
 //        }
-//        Log.e("db", "do nothing");
+//        //Log.e("db", "do nothing");
 //        return numRows;
 //
 //    }
@@ -169,7 +168,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(SHOT_TYPE, shotType);
         values.put(TIME_TAKEN_TO_ANSWER, elapsedTime);
         values.put(SCORE, score);
-        Log.e(TAG, "my answers!!" + db.insert(ANSWERS, null, values));
+        db.insert(ANSWERS, null, values);
     }
 
     public void storeCorrectAnswers(String vid, String shotLoc, String shotType, long endtime, int maxTime, String videoName) {
@@ -181,20 +180,15 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(MAX_TIME, maxTime);
         values.put(VIDEO_ID, vid);
         values.put(VIDEO_NAME, videoName);
-
-        Log.e(TAG, "correct answers!!" + db.insert(CORRECT_ANSWERS, null, values));
+        db.insert(CORRECT_ANSWERS, null, values);
     }
 
     public boolean isDataEmpty() {
-            db = this.getReadableDatabase();
+        db = this.getReadableDatabase();
         c = db.rawQuery("SELECT * FROM CORRECT_ANSWER ", null);
-        if (c.getCount() > 0) {
-            Log.e("db", "correct answers table not empty " + c.getCount());
-            return false;
-        } else {
-            Log.e("db", "correct answers table is empty " + c.getCount());
-            return true;
-        }
+        //Log.e("db", "correct answers table not empty " + c.getCount());
+        //Log.e("db", "correct answers table is empty " + c.getCount());
+        return c.getCount() <= 0;
 
     }
 
@@ -208,7 +202,7 @@ public class DBHandler extends SQLiteOpenHelper {
             pause[0] = c.getInt(0);
             if (c.moveToNext())
                 pause[1] = c.getInt(0);
-//            Log.e("db", "the end pause 2" + c.getInt(1));
+//            //Log.e("db", "the end pause 2" + c.getInt(1));
         }
 
         return pause;
@@ -245,7 +239,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 c.moveToPosition(j);
                 for (int i = 1; i < c.getColumnCount() - 1; i++) {
                     if (i > 3) {
-                        s_selelction = s_selelction + String.valueOf(c.getInt(i)); //gets the integer value which starts from 3rd column.
+                        s_selelction = s_selelction + c.getInt(i); //gets the integer value which starts from 3rd column.
                     } else {
                         s_selelction = s_selelction + c.getString(i);// first 2 column are string
                     }
@@ -309,10 +303,10 @@ public class DBHandler extends SQLiteOpenHelper {
             stringBuilder.append(String.format("<total_time>%s</total_time>\n" +
                     "<total_score>%s</total_score>\n" +
                     "<pid>%s</pid>\n" +
-                    "</player_record>\n\n", timeSum, scoreSum,pid ));
+                    "</player_record>\n\n", timeSum, scoreSum, pid));
 
             xmldata = stringBuilder.toString();
-            Log.e("db handler", "xml data \n" + xmldata);
+            //Log.e("db handler", "xml data \n" + xmldata);
         }
         return xmldata;
     }
